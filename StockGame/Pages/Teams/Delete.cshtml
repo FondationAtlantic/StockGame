@@ -1,0 +1,52 @@
+@page
+@model StockGame.Pages.Teams.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Team</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Team.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Team.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Team.AllowJoin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Team.AllowJoin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Team.JoinPassword)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Team.JoinPassword)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Team.Group)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Team.Group.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Team.OwnerUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Team.OwnerUser.Id)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Team.Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

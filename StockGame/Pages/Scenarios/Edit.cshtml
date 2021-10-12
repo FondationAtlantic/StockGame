@@ -1,0 +1,195 @@
+@page
+@model StockGame.Pages.Scenarios.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h2>Edit</h2>
+
+<h4>Scenario @Model.Scenario.Name</h4>
+<hr />
+
+<div>
+    <a asp-page="./Equities" asp-route-id="@Model.Scenario.Id">Edit Equities</a>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Scenario.Id" />
+            <input type="hidden" asp-for="Scenario.PlayableEpisodeCount">
+            <input type="hidden" asp-for="Scenario.HistoricalEpisodeCount">
+            <div class="form-group">
+                <label asp-for="Scenario.Name" class="control-label"></label>
+                <input asp-for="Scenario.Name" class="form-control" />
+                <span asp-validation-for="Scenario.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+
+            <ul class="nav nav-tabs">
+                <li><a data-toggle="tab" href="#episodes">Episodes</a></li>
+                <li class="active"><a data-toggle="tab" href="#equities">Equities</a></li>
+            </ul>
+
+
+            <div class="tab-content" width="100%">
+                <div id="episodes" class="tab-pane fade">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Episodes[0].EpisodeIndex)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Episodes[0].Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Episodes[0].AllowTransactions)
+                                </th>
+                                <th>
+                                    News Title
+                                </th>
+                                <th>
+                                    News Detail
+                                </th>
+                                <th>
+                                    News Image
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody align="center">
+                            @for (int i = 0; i < Model.Episodes.Count; i++)
+                            {
+                            <input type="hidden" asp-for="@Model.Episodes[i].Id" />
+                            <input type="hidden" asp-for="@Model.Episodes[i].EpisodeIndex" />
+                            <input type="hidden" asp-for="@Model.Episodes[i].ScenarioId" />
+
+                            <tr>
+                                <th>@Model.Episodes[i].EpisodeIndex</th>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.Episodes[i].Name" class="form-control" />
+                                        <span asp-validation-for="@Model.Episodes[i].Name" class="text-danger"></span>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input asp-for="@Model.Episodes[i].AllowTransactions" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.Episodes[i].NewsTitle" class="form-control" />
+                                        <span asp-validation-for="@Model.Episodes[i].NewsTitle" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <textarea style="height:100px;resize:vertical;" asp-for="@Model.Episodes[i].NewsDetail" class="form-control"></textarea>
+                                        <span asp-validation-for="@Model.Episodes[i].NewsDetail" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if(!String.IsNullOrEmpty(@Model.Episodes[i].NewsImgPath))
+                                    { 
+                                        <img style="height:auto;width:50%" src="@Url.Content(Model.Episodes[i].NewsImgPath)" alt="image" />
+                                    }
+                                    <div class="form-group">
+                                        <input name="RawUploadedNewsImg[@i]" id="RawUploadedNewsImg[@i]" type="file" class="form-control" style="height:auto" />
+                                        <input asp-for="@Model.Episodes[i].NewsImgPath" class="form-control" readonly="readonly"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+
+
+                <div id="equities" class="tab-pane fade in active">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                </th>
+                                <th>
+                                    <a asp-page="./Edit" asp-route-id="@Model.Scenario.Id" asp-route-sortOrder="@Model.EquitySort">
+                                        @Html.DisplayNameFor(model => model.ScenarioEquities[0].Equity.Name)
+                                    </a>
+                                </th>
+                                <th>
+                                    <a asp-page="./Edit" asp-route-id="@Model.Scenario.Id" asp-route-sortOrder="@Model.IndustrySort">
+                                        @Html.DisplayNameFor(model => model.ScenarioEquities[0].Equity.Industry)
+                                    </a>
+                                </th>
+                                <th>Episode Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.ScenarioEquities.Count; i++)
+                            {
+                            <tr>
+                                <td>
+                                     <img src="@Url.Content(Model.ScenarioEquities[i].Equity.ThumbPath)" />
+                                </td>
+                                <td>
+                                     @Html.DisplayFor(model => model.ScenarioEquities[i].Equity.Name)
+                                </td>
+                                <td>
+                                     @Html.DisplayFor(model => model.ScenarioEquities[i].Equity.Industry.Name)
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <style type="text/css">
+                                            label.hoverlink {
+                                                color: #337ab7;
+                                                cursor: pointer;
+                                                font-weight: normal;
+                                            }
+
+                                            label.hoverlink:hover{
+                                              text-decoration: underline;
+                                            }
+                                        </style>
+                                        <a asp-page="./EpisodeEquityInfos" asp-route-id="@Model.ScenarioEquities[i].Id">Edit</a> |
+                                        <label class="hoverlink" for="RawUploadedCsvData[@i]">Import Csv...</label>
+                                        <input asp-page-handler="Import" name="RawUploadedCsvData[@i]" id="RawUploadedCsvData[@i]" type="file" accept=".csv" onchange="this.form.submit()" style="display:none"/>
+                                        <input type="hidden" asp-for="@Model.ScenarioEquities[i].Id" />
+                                        <span asp-validation-for="@Model.ScenarioEquities[i].Id" class="text-danger"></span>
+                                        <input type="hidden" asp-for="@Model.ScenarioEquities[i].EquityId" />
+                                        <input type="hidden" asp-for="@Model.ScenarioEquities[i].ScenarioId" />
+                                    </div>
+                                </td>                                
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

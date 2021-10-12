@@ -1,0 +1,71 @@
+﻿@page
+@model StockGame.Pages.Games.DetailsModel
+@using StockGame.Models.ViewModels
+
+@{
+    ViewData["Title"] = "Détails";
+}
+
+<h2>Détails</h2>
+<h4>Partie <strong>@Model.Game.Name</strong></h4>
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Game.Name)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.Name)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Game.CurrentEpisodeIndex)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.CurrentEpisodeIndex)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Game.InitialCash)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.InitialCash)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Game.AllowJoin)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.AllowJoin)
+    </dd>
+    <dt>AllowJoinEpisodeRange MinIndex</dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.AllowJoinEpisodeRange.MinIndex)
+    </dd>
+    <dt>AllowJoinEpisodeRange MaxIndex</dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.AllowJoinEpisodeRange.MaxIndex)
+    </dd>
+    <dt>ShowLeverageEpisodeRange MinIndex</dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.ShowLeverageEpisodeRange.MinIndex)
+    </dd>
+    <dt>ShowLeverageEpisodeRange MaxIndex</dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.ShowLeverageEpisodeRange.MaxIndex)
+    </dd>
+    <dt>ShowPriceEarningsEpisodeRange MinIndex</dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.ShowPriceEarningsEpisodeRange.MinIndex)
+    </dd>
+    <dt>ShowPriceEarningsEpisodeRange MaxIndex</dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.ShowPriceEarningsEpisodeRange.MaxIndex)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Game.Scenario)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Game.Scenario.Name)
+    </dd>
+</dl>
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Game.Id">Éditer</a> |
+    <a asp-page="./Index">Retour à la liste</a>
+</div>

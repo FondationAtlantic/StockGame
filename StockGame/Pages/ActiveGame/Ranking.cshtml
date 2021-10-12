@@ -1,0 +1,198 @@
+﻿@page
+@model StockGame.Pages.Games.RankingModel
+@using StockGame.Models.ViewModels
+@using Microsoft.AspNetCore.Html
+
+@{
+    ViewData["Title"] = "Classement";
+}
+
+<h2>Classement</h2>
+<h4>Partie <strong>@Model.Game.Name</strong></h4>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#rankings">Tableau</a></li>
+    <li><a data-toggle="tab" href="#charts">Graphique</a></li>
+</ul>
+
+<style type="text/css">
+    .nowrap {
+        white-space: nowrap;
+    }
+
+    .negative {
+        color: red;
+    }
+</style>
+
+@{
+    Func<string, IHtmlContent> SortArrow = (prefix) => new Func<object, IHtmlContent>(@<text>
+    @if (Model.SortOrder.StartsWith(prefix))
+    {
+        @if (Model.SortOrder.EndsWith("_asc"))
+        {
+            <span class="dropup"> <span class="caret"></span> </span>
+        }
+        else
+        {
+            <span class="caret"></span>
+        }
+    }
+    </text>)(null);
+}
+
+<div class="tab-content" width="100%">
+    <div id="rankings" class="tab-pane fade in active">
+        <div class="panel panel-default" style="border-top: 0px solid transparent;">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>
+                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">Équipe @SortArrow("Team_")</a>
+                            </th>
+                            <th>
+                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement Session @SortArrow("GainPct_")</a>
+                            </th>
+                            <th>
+                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">Gain Session @SortArrow("Gain_")</a>
+                            </th>
+                            <th>
+                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">Rendement Total @SortArrow("TotalPct_")</a>
+                            </th>
+                            <th>
+                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">Valeur Totale @SortArrow("TotalValue_")</a>
+                            </th>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <th></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PortfolioGameRankingItems)
+                        {
+                            <tr class=@(item.Team == Model.ActiveTeam ? "success" : "none")>
+                                <td>@Html.DisplayFor(model => item.Rank)</td>
+                                <td>@Html.DisplayFor(model => item.Team.Name)</td>
+                                <td><span class="@(item.PctGain < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.PctGain)</span></td>
+                                <td class="nowrap">
+                                    @Html.DisplayFor(model => item.Gain)
+                                    @switch (item.Trend)
+                                    {
+                                        case PortfolioGameRankingItem.ValueTrend.Up:
+                                            <img src="~/images/up_arrow.png" />
+                                            break;
+                                        case PortfolioGameRankingItem.ValueTrend.Down:
+                                            <img src="~/images/down_arrow.png" />
+                                            break;
+                                    }
+                                </td>
+                                <td><span class="@(item.TotalPctGain < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalPctGain)</span></td>
+                                <td><span class="@(item.TotalValue < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalValue)</span></td>
+
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <td>
+                                        @if (item.Team == Model.ActiveTeam)
+                                        {
+                                            <!--a asp-page="./Ranking" asp-route-SelectActiveTeamId="-1">Forget</!a-->
+                                        }
+                                        else
+                                        {
+                                            <a asp-page="./Ranking" asp-route-SelectActiveGameId="@Model.Game.Id" asp-route-SelectActiveTeamId="@item.Team.Id">Select</a>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="charts" class="tab-pane fade">
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="portfolio_chart_div"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+
+        var data = @Html.Raw(Json.Serialize(Model.PortfolioGameHistory));
+
+        var portfolioChartData;
+        var portfolioChart;
+        var portfolioChartOptions;
+
+        google.charts.setOnLoadCallback(LoadChartData);
+
+        function LoadChartData() {
+            LoadChart(data);
+            return false;
+        }
+
+        function LoadChart(portfolioGameHistory) {
+
+            portfolioChartData = new google.visualization.DataTable();
+            portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+            portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
+            portfolioChartOptions = {
+                height: "400",
+                title: "Valeur des portefeuilles",
+                chartArea: { width: '50%', top: 55, height: '60%' },
+                hAxis: { slantedText: true, slantedTextAngle: 60 },
+                vAxis: { title: 'Valeur' },
+            };
+
+            var portfolioDataArray = [];
+
+            //add episode names
+            $.each(portfolioGameHistory.episodeNames, function (i, name) {
+                portfolioDataArray.push([name]);
+            });
+            $.each(portfolioGameHistory.teamHistories, function (i, portfolioTeamHistory) {
+                portfolioChartData.addColumn('number', portfolioTeamHistory.teamName); // Implicit domain label col.
+                $.each(portfolioTeamHistory.items, function (j, item) {
+                    var row = portfolioDataArray[j];
+                    row.push(item.totalValue);
+                });
+            });
+
+            portfolioChartData.addRows(portfolioDataArray);
+
+            $("a[href='#charts']").on('shown.bs.tab', function (e) {
+                ResizeCharts();
+            });
+
+            if (document.addEventListener) {
+                window.addEventListener('resize', ResizeCharts);
+            }
+            else if (document.attachEvent) {
+                window.attachEvent('onresize', ResizeCharts);
+            }
+            else {
+                window.resize = ResizeCharts;
+            }
+
+            return false;
+        }
+
+        function ResizeCharts(data) {
+            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+        }
+
+    </script>
+}

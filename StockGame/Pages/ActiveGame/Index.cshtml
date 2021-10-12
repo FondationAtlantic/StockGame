@@ -1,0 +1,44 @@
+@page
+@model StockGame.Pages.ActiveGame.IndexModel
+
+@{
+    ViewData["Title"] = "Partie Active";
+}
+
+<h2>Partie Active</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveGameTeams[0].Game)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveGameTeams[0].TeamMember)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ActiveGameTeams) {
+        <tr class=@(item.Selected ? "success" : "none")>
+            <td>
+                @Html.DisplayFor(modelItem => item.Game.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamMember.Team.Name)
+            </td>
+            <td>
+                @if(item.Selected)
+                {
+                    <div>Partie Active</div>
+                }
+                else
+                {
+                    <a asp-page="./Index" asp-route-SelectActiveGameId="@item.Game.Id" asp-route-SelectActiveTeamMemberId="@item.TeamMember.Id">Choisir</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

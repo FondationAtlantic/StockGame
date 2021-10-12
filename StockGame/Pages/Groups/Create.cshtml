@@ -1,0 +1,61 @@
+@page
+@model StockGame.Pages.Groups.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Group</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Group.SchoolId" class="control-label"></label>
+                <select asp-for="Group.SchoolId" class ="form-control" asp-items="ViewBag.SchoolId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.TeacherUserId" class="control-label"></label>
+                <select asp-for="Group.TeacherUserId" class ="form-control" asp-items="ViewBag.TeacherUserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.Name" class="control-label"></label>
+                <input asp-for="Group.Name" class="form-control" />
+                <span asp-validation-for="Group.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Group.AllowJoin" /> @Html.DisplayNameFor(model => model.Group.AllowJoin)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Group.AllowAutoCreateTeam" /> @Html.DisplayNameFor(model => model.Group.AllowAutoCreateTeam)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.AutoCreateTeamPassword" class="control-label"></label>
+                <input asp-for="Group.AutoCreateTeamPassword" class="form-control" />
+                <span asp-validation-for="Group.AutoCreateTeamPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/StockGame/obj
+/StockGame/9to5games.com.publishsettings
+/StockGame/resoluteinvestor.com.publishsettings
+/StockGame/bin
+/StockGame/wwwroot/images/db/upload_news_img

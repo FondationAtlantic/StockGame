@@ -1,0 +1,53 @@
+@page
+@model StockGame.Pages.Equities.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Equity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Equity.Name" class="control-label"></label>
+                <input asp-for="Equity.Name" class="form-control" />
+                <span asp-validation-for="Equity.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equity.IndustryId" class="control-label"></label>
+                <select asp-for="Equity.IndustryId" class ="form-control" asp-items="ViewBag.IndustryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equity.DividendFrequency" class="control-label"></label>
+                <select asp-for="Equity.DividendFrequency" class="form-control" asp-items="Html.GetEnumSelectList<StockGame.Models.Equity.DividendFrequencies>()"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equity.StatementPresentation" class="control-label"></label>
+                <select asp-for="Equity.StatementPresentation" class="form-control" asp-items="Html.GetEnumSelectList<StockGame.Models.Equity.StatementPresentations>()"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Equity.ImgPath" class="control-label"></label>
+                <input name="RawUploadedEquityImg" id="RawUploadedEquityImg" type="file" class="form-control" style="height:auto" />
+                <input type="hidden" asp-for="Equity.ImgPath" class="form-control"/>
+                <input type="hidden" asp-for="Equity.ThumbPath" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
