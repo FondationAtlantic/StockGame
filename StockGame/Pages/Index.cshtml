@@ -4,31 +4,36 @@
     ViewData["Title"] = "Accueil";
 }
 
-
-<h2>Bienvenue!</h2>
-
-
-@if(!User.Identity.IsAuthenticated)
-{
-    <p>Si vous n'avez pas de compte, veuillez <a asp-page="./Account/Register">vous enregistrer</a>.</p> 
-    <p>Sinon veuillez <a asp-page="./Account/Login">vous identifier</a> pour continuer.</p>
-}
-else if(User.IsInRole("Student"))
-{
-    <h3>Bonjour @Model.CurrentUser.FullName!</h3> 
-    @if(!Model.HasJoinedTeam)
+<div class="login centered">
+  <div>
+    <div class="logo">
+      <img src="~/images/stockgame.png" alt="Stockgame" />
+    </div>
+    @if (!User.Identity.IsAuthenticated)
     {
-        <p>Les étudiants sont invités à commencer par <a asp-page="./Teams/Join">joindre une équipe</a>.</p>
+      <div class="loginChoices">
+        <a class="btn big" asp-page="./Account/Login">Se connecter</a>
+        <a asp-page="./Account/Register">Je n'ai pas de compte</a>
+      </div>
     }
-    else
+    else if (User.IsInRole("Student"))
     {
-        @if(Model.ActiveGame != null && Model.ActiveTeam != null)
+      <h3>Bonjour @Model.CurrentUser.FullName!</h3>
+      @if (!Model.HasJoinedTeam)
+      {
+        <p>Les étudiants sont invités à commencer par <a asp-page="./Teams/Join">joindre une équipe</a>.</p>
+      }
+      else
+      {
+        @if (Model.ActiveGame != null && Model.ActiveTeam != null)
         {
-            <p>Vous avez une partie en cours! La session courante est <strong>@Model.ActiveTradingSession.Episode.Name</strong>.</p>
-            <p>Nous vous invitons à analyser les <a asp-page="./Analysis/Index">données financières courantes</a>, et visionner <a asp-page="./Portfolio/Trade">votre portefeuille</a> pour y effectuer des transactions.</p>
+          <p>Vous avez une partie en cours! La session courante est <strong>@Model.ActiveTradingSession.Episode.Name</strong>.</p>
+          <p>Nous vous invitons à analyser les <a asp-page="./Analysis/Index">données financières courantes</a>, et visionner <a asp-page="./Portfolio/Trade">votre portefeuille</a> pour y effectuer des transactions.</p>
         }
 
         <p>Vous pouvez <a asp-page="./ActiveGame/Index">basculer dans une partie</a> en tout temps.</p>
-        <br/>
+        <br />
+      }
     }
-}
+  </div>
+</div>

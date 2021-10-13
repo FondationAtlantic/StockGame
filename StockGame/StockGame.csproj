@@ -6,8 +6,14 @@
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="9to5games.com.publishsettings" />
     <None Remove="resoluteinvestor.com.publishsettings" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="compilerconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
@@ -26,5 +32,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace StockGame.Data
         public static async Task CreateDefaultData(StockGameContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IHostingEnvironment env)
         {
             //TODO rmove?
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             //initializing custom roles 
             string[] roleNames = { "Admin", "Teacher", "Student" };
