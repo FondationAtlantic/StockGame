@@ -1,0 +1,412 @@
+﻿@import "mixins.scss";
+
+$mobileFontSize: 16;
+
+@function em($target, $context: $mobileFontSize) {
+  @return ($target / $context) * 1em;
+}
+
+@function rem($target, $context: $mobileFontSize) {
+  @return ($target / $context) * 1rem;
+}
+
+@function percent($elem, $container: 375) {
+  @return #{(($elem * 100) / $container) + "%"};
+}
+
+$t1: 0.25s;
+$t2: 0.5s;
+
+// ================================================================================================================
+// COULEURS
+// ================================================================================================================
+
+//Texte courant
+$text: #172A3A;
+//Texte (variante)
+$label: #508991;
+
+$c1: #81C14B;
+$c1h: #468412;
+
+$c2: #74B3CE;
+$c2h: #307796;
+
+$c3: #004346;
+$c3h: #000000;
+
+//Filigrane
+$filigrane: #11115f;
+
+//Bordures
+$border: #cacaca;
+//Validation
+$valid: #00c609;
+//Avertissement
+$warning: #f98900;
+//Erreur
+$error: #e10a00;
+
+// ================================================================================================================
+// POLICES DE CARACTÈRE
+// ================================================================================================================
+
+//Texte courant
+$font: "Roboto", sans-serif;
+$heading: "Space Grotesk", sans-serif;
+//FontAwesome
+$fa: "FontAwesome";
+$fab: "FontAwesomeBrands";
+
+// ================================================================================================================
+// TEXTE
+// ================================================================================================================
+
+h1 {
+  font-family: $heading;
+  font-size: rem(60);
+  color: $label;
+  line-height: 105%;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-family: $heading;
+  font-size: rem(44);
+  line-height: 105%;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+h3 {
+  font-family: $heading;
+  font-size: rem(18);
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+h4 {
+  font-family: $heading;
+  font-size: rem(24);
+  line-height: 105%;
+  letter-spacing: -0.01em;
+}
+
+.text {
+  line-height: 1.7;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  a {
+    text-decoration: underline;
+    color: $c2;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  ul {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  ul > li {
+    list-style: none;
+    list-style-image: none;
+    padding-left: rem(16);
+    margin-left: 0;
+    position: relative;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+
+    &:before {
+      @include awesome("\f0da", 1rem, 700);
+      color: $c2;
+      position: absolute;
+      left: 0;
+      top: rem(2);
+    }
+  }
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1rem 0;
+}
+
+a {
+  text-decoration: underline;
+  color: $c2;
+
+  &:visited {
+  }
+
+  &:hover,
+  &:active {
+    text-decoration: none;
+    color: $c2;
+  }
+}
+
+img {
+  vertical-align: middle;
+  max-width: 100%;
+}
+
+// ================================================================================================================
+// BOUTONS
+// ================================================================================================================
+.btn {
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+  text-decoration: none !important;
+  padding: rem(16) rem(24);
+  border-radius: 9999px;
+  background: $c1;
+  color: #fff;
+  font-size: rem(16);
+  font-weight: 500;
+  transition: all $t1;
+
+  &:hover {
+    background: $c1h;
+    color: #fff;
+  }
+
+  &.alt {
+  }
+
+  &.big {
+    font-size: rem(22);
+  }
+}
+
+// ================================================================================================================
+// FORMS
+// ================================================================================================================
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]) {
+  border-radius: 9999px;
+  background: $c1;
+  color: $text;
+  height: rem(60);
+  padding: 0 rem(28);
+  width: 100%;
+  border: none;
+}
+
+input[type="submit"],
+input[type="button"] {
+  border-radius: 9999px;
+  background: $c3;
+  color: #fff;
+  border: none;
+  padding: 0 rem(26);
+  font-weight: 700;
+
+  &:hover {
+    background: $c2;
+  }
+}
+
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+:-moz-placeholder {
+  /* Chrome/Opera/Safari */
+  color: $text;
+}
+
+.customCheckbox {
+  display: flex;
+
+  input {
+    position: absolute;
+    left: -9999px;
+  }
+
+  input + span {
+    display: block;
+    width: rem(20);
+    height: rem(20);
+    box-sizing: border-box;
+    border: 1px solid #1040a1;
+    border-radius: 4px;
+    margin-right: rem(16);
+  }
+
+  input:focus + span {
+    border-color: $c2;
+  }
+
+  input:checked + span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:before {
+      @include awesome("\f00c", 0.875rem, 700);
+      display: block;
+    }
+  }
+}
+
+// ================================================================================================================
+// BASE
+// ================================================================================================================
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+  font-family: $font;
+  color: $text;
+  font-size: 16px;
+  background-color: #fff;
+}
+
+body {
+  position: relative;
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+  @include flex(column,nowrap,space-between,flex-start,flex-start);
+}
+
+.wrapAll {
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 0 rem(36);
+  box-sizing: border-box;
+  font-family: $font;
+  color: $text;
+
+  &.loginBody {
+    overflow: hidden;
+    position: relative;
+
+    + footer {
+      position: absolute;
+      bottom: 0;
+    }
+
+    &:before {
+      content: "";
+      width: 800px;
+      height: 800px;
+      background: $c1;
+      display: block;
+      position: absolute;
+      top: -460px;
+      left: -460px;
+      transform: rotate(25deg);
+      outline: 6px solid $text;
+      outline-offset: 1rem;
+    }
+
+    &:after {
+      content: "";
+      width: 800px;
+      height: 800px;
+      background: $c1;
+      display: block;
+      position: absolute;
+      bottom: -460px;
+      right: -460px;
+      transform: rotate(25deg);
+      outline: 6px solid $text;
+      outline-offset: 1rem;
+    }
+  }
+}
+
+.wrapper {
+  max-width: 1024px;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+}
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  .logo {
+    max-width: 600px;
+    margin: 0 auto rem(80);
+  }
+}
+
+.loginChoices {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  font-size: rem(18);
+  text-align: center;
+
+  .btn {
+    margin-bottom: rem(32);
+  }
+}
+
+footer {
+  text-align: center;
+  width: 100%;
+}
+
+@media screen and (max-width:1280px) {
+  .wrapAll {
+    &.loginBody {
+      &:before {
+        top: rem(-820);
+        left: rem(-400);
+      }
+
+      &:after {
+        bottom: rem(-820);
+        right: rem(-400);
+      }
+    }
+  }
+}
+
+@media screen and (max-width:768px) {
+  html {
+    height: auto;
+  }
+
+  .login.centered {
+    padding: 0 rem(24);
+
+    .loginChoices {
+      padding: 0 rem(48);
+    }
+  }
+
+  .wrapAll {
+    &.loginBody {
+      &:before {
+        top: rem(-800);
+        left: rem(-560);
+      }
+
+      &:after {
+        bottom: rem(-800);
+        right: rem(-560);
+      }
+    }
+  }
+}
