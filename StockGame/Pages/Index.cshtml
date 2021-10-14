@@ -1,39 +1,67 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Accueil";
+  ViewData["Title"] = "Accueil";
 }
 
-<div class="login centered">
-  <div>
-    <div class="logo">
-      <img src="~/images/stockgame.png" alt="Stockgame" />
-    </div>
-    @if (!User.Identity.IsAuthenticated)
-    {
+
+@if (!User.Identity.IsAuthenticated)
+{
+  <div class="login centered">
+    <div>
+      <div class="logo">
+        <img src="~/images/stockgame.png" alt="Stockgame" />
+      </div>
       <div class="loginChoices">
         <a class="btn big" asp-page="./Account/Login">Se connecter</a>
         <a asp-page="./Account/Register">Je n'ai pas de compte</a>
       </div>
-    }
-    else if (User.IsInRole("Student"))
-    {
-      <h3>Bonjour @Model.CurrentUser.FullName!</h3>
-      @if (!Model.HasJoinedTeam)
-      {
-        <p>Les étudiants sont invités à commencer par <a asp-page="./Teams/Join">joindre une équipe</a>.</p>
-      }
-      else
-      {
-        @if (Model.ActiveGame != null && Model.ActiveTeam != null)
-        {
-          <p>Vous avez une partie en cours! La session courante est <strong>@Model.ActiveTradingSession.Episode.Name</strong>.</p>
-          <p>Nous vous invitons à analyser les <a asp-page="./Analysis/Index">données financières courantes</a>, et visionner <a asp-page="./Portfolio/Trade">votre portefeuille</a> pour y effectuer des transactions.</p>
-        }
-
-        <p>Vous pouvez <a asp-page="./ActiveGame/Index">basculer dans une partie</a> en tout temps.</p>
-        <br />
-      }
-    }
+    </div>
   </div>
+}
+else if (User.IsInRole("Student"))
+{
+  @if (!Model.HasJoinedTeam)
+  {
+    <p>Les étudiants sont invités à commencer par <a asp-page="./Teams/Join">joindre une équipe</a>.</p>
+  }
+  else
+  {
+    <section class="newsfeed">
+      <h2>Nouvelles</h2>
+    </section>
+    <section class="wallet">
+      <h2>Mon porte-feuille</h2>
+    </section>
+    <section class="market">
+      <h2>Marché actuel</h2>
+    </section>
+  }
+}
+
+<div style="display:none">
+  @if (Model.ActiveGame != null && Model.ActiveTeam != null)
+  {
+    <p>Vous avez une partie en cours! La session courante est <strong>@Model.ActiveTradingSession.Episode.Name</strong>.</p>
+    <p>Nous vous invitons à analyser les <a asp-page="./Analysis/Index">données financières courantes</a>, et visionner <a asp-page="./Portfolio/Trade">votre portefeuille</a> pour y effectuer des transactions.</p>
+  }
+
+  <p>Vous pouvez <a asp-page="./ActiveGame/Index">basculer dans une partie</a> en tout temps.</p>
+  <br />
 </div>
+@*Style temporaire*@
+<style>
+  .mainWindow{
+    padding: 2rem;
+  }
+
+  .mainWindow section {
+    background: rgba(0,0,0,0.1);
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+</style>

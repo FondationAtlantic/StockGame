@@ -286,7 +286,6 @@ body {
 .wrapAll {
   flex: 1 0 auto;
   width: 100%;
-  padding: 0 rem(36);
   box-sizing: border-box;
   font-family: $font;
   color: $text;
@@ -294,6 +293,7 @@ body {
   &.loginBody {
     overflow: hidden;
     position: relative;
+    padding: 0 rem(36);
 
     + footer {
       position: absolute;
@@ -366,6 +366,147 @@ footer {
   text-align: center;
   width: 100%;
 }
+
+// ================================================================================================================
+// TOPBAR
+// ================================================================================================================
+.topBar {
+  height: rem(60);
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .left {
+    display: flex;
+    width: 50%;
+    flex-shrink: 0;
+
+    .logo {
+      width: 160px;
+      padding: rem(12);
+      box-sizing: border-box;
+      flex-shrink: 0;
+
+      a {
+        width: auto;
+        padding: 0;
+        border: 0;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  .right {
+    display: flex;
+    width: 50%;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    height: 100%;
+
+    .currentGame {
+      border-left: 1px solid #ddd;
+      padding: rem(8);
+      text-align: left;
+
+      .label {
+        color: $text;
+        font-weight: 700;
+        font-size: rem(18);
+        text-align: left;
+        padding: 0;
+      }
+
+      .value{
+        white-space: nowrap;
+        font-weight: 500;
+
+        a{
+          display: inline;
+          font-size: rem(14);
+          border: 0;
+          font-weight: 400;
+          color: $c1;
+
+          &:hover{
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
+    form {
+      display: flex;
+      height: 100%;
+    }
+  }
+
+  a, button {
+    width: rem(60);
+    box-sizing: border-box;
+    border-left: 1px solid #ddd;
+    height: 100%;
+    display: flex;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    color: $text;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: rem(24);
+    transition: all $t1;
+
+    &:hover {
+      background-color: $c1;
+      color: #FFF;
+    }
+  }
+}
+
+.app {
+  height: calc(100% - #{rem(60)});
+  display: flex;
+
+  .leftBar {
+    width: rem(60);
+    border-right: 1px solid #ddd;
+    height: 100%;
+
+    a {
+      width: rem(60);
+      box-sizing: border-box;
+      border-bottom: 1px solid #ddd;
+      height: rem(60);
+      display: flex;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: $text;
+      margin: 0;
+      align-items: center;
+      justify-content: center;
+      font-size: rem(24);
+      transition: all $t1;
+      text-decoration: none;
+
+      &:hover {
+        background-color: $c1;
+        color: #FFF;
+      }
+    }
+  }
+
+  .mainWindow{
+    width: calc(100% - #{rem(60)});
+    box-sizing: border-box;
+  }
+}
+
 
 @media screen and (max-width:1280px) {
   .wrapAll {

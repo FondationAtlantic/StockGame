@@ -174,13 +174,13 @@ body {
 .wrapAll {
   flex: 1 0 auto;
   width: 100%;
-  padding: 0 2.25rem;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
   color: #172A3A; }
   .wrapAll.loginBody {
     overflow: hidden;
-    position: relative; }
+    position: relative;
+    padding: 0 2.25rem; }
     .wrapAll.loginBody + footer {
       position: absolute;
       bottom: 0; }
@@ -237,6 +237,107 @@ body {
 footer {
   text-align: center;
   width: 100%; }
+
+.topBar {
+  height: 3.75rem;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  .topBar .left {
+    display: flex;
+    width: 50%;
+    flex-shrink: 0; }
+    .topBar .left .logo {
+      width: 160px;
+      padding: 0.75rem;
+      box-sizing: border-box;
+      flex-shrink: 0; }
+      .topBar .left .logo a {
+        width: auto;
+        padding: 0;
+        border: 0; }
+        .topBar .left .logo a:hover {
+          background-color: transparent; }
+  .topBar .right {
+    display: flex;
+    width: 50%;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    height: 100%; }
+    .topBar .right .currentGame {
+      border-left: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: left; }
+      .topBar .right .currentGame .label {
+        color: #172A3A;
+        font-weight: 700;
+        font-size: 1.125rem;
+        text-align: left;
+        padding: 0; }
+      .topBar .right .currentGame .value {
+        white-space: nowrap;
+        font-weight: 500; }
+        .topBar .right .currentGame .value a {
+          display: inline;
+          font-size: 0.875rem;
+          border: 0;
+          font-weight: 400;
+          color: #81C14B; }
+          .topBar .right .currentGame .value a:hover {
+            background-color: transparent; }
+    .topBar .right form {
+      display: flex;
+      height: 100%; }
+  .topBar a, .topBar button {
+    width: 3.75rem;
+    box-sizing: border-box;
+    border-left: 1px solid #ddd;
+    height: 100%;
+    display: flex;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    color: #172A3A;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.25s; }
+    .topBar a:hover, .topBar button:hover {
+      background-color: #81C14B;
+      color: #FFF; }
+
+.app {
+  height: calc(100% - 3.75rem);
+  display: flex; }
+  .app .leftBar {
+    width: 3.75rem;
+    border-right: 1px solid #ddd;
+    height: 100%; }
+    .app .leftBar a {
+      width: 3.75rem;
+      box-sizing: border-box;
+      border-bottom: 1px solid #ddd;
+      height: 3.75rem;
+      display: flex;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: #172A3A;
+      margin: 0;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.25s;
+      text-decoration: none; }
+      .app .leftBar a:hover {
+        background-color: #81C14B;
+        color: #FFF; }
+  .app .mainWindow {
+    width: calc(100% - 3.75rem);
+    box-sizing: border-box; }
 
 @media screen and (max-width: 1280px) {
   .wrapAll.loginBody:before {
