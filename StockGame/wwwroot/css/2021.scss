@@ -53,7 +53,7 @@ $error: #e10a00;
 
 //Texte courant
 $font: "Roboto", sans-serif;
-$heading: "Space Grotesk", sans-serif;
+$heading: "Ubuntu", sans-serif;
 //FontAwesome
 $fa: "FontAwesome";
 $fab: "FontAwesomeBrands";
@@ -72,10 +72,20 @@ h1 {
 
 h2 {
   font-family: $heading;
-  font-size: rem(44);
+  font-size: rem(36);
   line-height: 105%;
   letter-spacing: -0.01em;
   font-weight: 700;
+  margin-bottom: rem(32);
+
+  &:after{
+    content: "";
+    display: block;
+    height: 2px;
+    margin-top: rem(4);
+    width: rem(36);
+    background-color: $c1;
+  }
 }
 
 h3 {
@@ -193,295 +203,333 @@ img {
 // ================================================================================================================
 // FORMS
 // ================================================================================================================
+.form-group {
+  &.flex {
+    display: flex;
+    align-items: center;
+    margin-top: rem(24);
+
+    input, button {
+      margin-right: rem(16);
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
 input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]) {
-  border-radius: 9999px;
-  background: $c1;
   color: $text;
-  height: rem(60);
-  padding: 0 rem(28);
+  height: rem(48);
+  padding: 0 rem(18);
+  font-size: rem(18);
   width: 100%;
-  border: none;
+  border: 1px solid $text;
+  transition: border-color $t2;
+
+  &:focus {
+    border-color: $c1;
+    box-shadow: none;
+  }
+}
+
+input:-webkit-autofill::first-line {
+  font-family: $font;
+  font-size: rem(18);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 input[type="submit"],
+button[type="submit"],
 input[type="button"] {
   border-radius: 9999px;
-  background: $c3;
+  background: $c1;
   color: #fff;
   border: none;
   padding: 0 rem(26);
   font-weight: 700;
+  outline: 0;
+  border: 0;
+  height: rem(48);
+  box-sizing: border-box;
+  border: 2px solid $c1;
+
+  &:active, &:focus {
+    border: 2px solid #FFF;
+    outline: 1px solid $text;
+    background-color: $c1;
+    box-shadow: none;
+    color: #fff;
+
+    &:focus, &:hover {
+      background-color: $c1;
+      outline: 1px solid $text;
+      border: 2px solid #FFF;
+      color: #fff;
+    }
+  }
 
   &:hover {
-    background: $c2;
+    background-color: $c1h;
+    border: 2px solid $c1h;
   }
 }
 
-::-webkit-input-placeholder,
-::-moz-placeholder,
-:-ms-input-placeholder,
-:-moz-placeholder {
-  /* Chrome/Opera/Safari */
-  color: $text;
-}
-
-.customCheckbox {
-  display: flex;
-
-  input {
-    position: absolute;
-    left: -9999px;
+  ::-webkit-input-placeholder,
+  ::-moz-placeholder,
+  :-ms-input-placeholder,
+  :-moz-placeholder {
+    /* Chrome/Opera/Safari */
+    color: $text;
   }
 
-  input + span {
-    display: block;
-    width: rem(20);
-    height: rem(20);
-    box-sizing: border-box;
-    border: 1px solid #1040a1;
-    border-radius: 4px;
-    margin-right: rem(16);
+  form label {
+    font-family: $heading;
+    font-size: rem(18);
   }
 
-  input:focus + span {
-    border-color: $c2;
-  }
-
-  input:checked + span {
+  .customCheckbox {
     display: flex;
-    justify-content: center;
-    align-items: center;
 
-    &:before {
-      @include awesome("\f00c", 0.875rem, 700);
-      display: block;
-    }
-  }
-}
-
-// ================================================================================================================
-// BASE
-// ================================================================================================================
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-  scroll-behavior: smooth;
-  height: 100%;
-  width: 100%;
-  font-family: $font;
-  color: $text;
-  font-size: 16px;
-  background-color: #fff;
-}
-
-body {
-  position: relative;
-  background-color: #fff;
-  height: 100vh;
-  width: 100%;
-  @include flex(column,nowrap,space-between,flex-start,flex-start);
-}
-
-.wrapAll {
-  flex: 1 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: $font;
-  color: $text;
-
-  &.loginBody {
-    overflow: hidden;
-    position: relative;
-    padding: 0 rem(36);
-
-    + footer {
+    input {
       position: absolute;
-      bottom: 0;
+      left: -9999px;
     }
 
-    &:before {
-      content: "";
-      width: 800px;
-      height: 800px;
-      background: $c1;
+    input + span {
       display: block;
-      position: absolute;
-      top: -460px;
-      left: -460px;
-      transform: rotate(25deg);
-      outline: 6px solid $text;
-      outline-offset: 1rem;
-    }
-
-    &:after {
-      content: "";
-      width: 800px;
-      height: 800px;
-      background: $c1;
-      display: block;
-      position: absolute;
-      bottom: -460px;
-      right: -460px;
-      transform: rotate(25deg);
-      outline: 6px solid $text;
-      outline-offset: 1rem;
-    }
-  }
-}
-
-.wrapper {
-  max-width: 1024px;
-  padding: 0;
-  margin: 0 auto;
-  position: relative;
-}
-
-.centered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-
-  .logo {
-    max-width: 600px;
-    margin: 0 auto rem(80);
-  }
-}
-
-.loginChoices {
-  max-width: 400px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  font-size: rem(18);
-  text-align: center;
-
-  .btn {
-    margin-bottom: rem(32);
-  }
-}
-
-footer {
-  text-align: center;
-  width: 100%;
-}
-
-// ================================================================================================================
-// TOPBAR
-// ================================================================================================================
-.topBar {
-  height: rem(60);
-  border-bottom: 1px solid #ddd;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .left {
-    display: flex;
-    width: 50%;
-    flex-shrink: 0;
-
-    .logo {
-      width: 160px;
-      padding: rem(12);
+      width: rem(20);
+      height: rem(20);
       box-sizing: border-box;
-      flex-shrink: 0;
+      border: 1px solid #1040a1;
+      border-radius: 4px;
+      margin-right: rem(16);
+    }
 
-      a {
-        width: auto;
-        padding: 0;
-        border: 0;
+    input:focus + span {
+      border-color: $c2;
+    }
 
-        &:hover {
-          background-color: transparent;
-        }
+    input:checked + span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:before {
+        @include awesome("\f00c", 0.875rem, 700);
+        display: block;
       }
     }
   }
 
-  .right {
+  .hint{
     display: flex;
-    width: 50%;
-    flex-shrink: 0;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .checkbox{
+    margin-top: rem(18);
+  }
+
+
+  // ================================================================================================================
+  // BASE
+  // ================================================================================================================
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
+    font-family: $font;
+    color: $text;
+    font-size: 16px;
+    background-color: #fff;
+  }
+
+  body {
+    position: relative;
+    background-color: #fff;
+    height: 100vh;
+    width: 100%;
+    @include flex(column,nowrap,space-between,flex-start,flex-start);
+  }
+
+  .wrapAll {
+    flex: 1 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: $font;
+    color: $text;
+
+    &.loginBody {
+      overflow: hidden;
+      position: relative;
+      padding: 0 rem(36);
+
+      + footer {
+        position: absolute;
+        bottom: 0;
+      }
+
+      &:before {
+        content: "";
+        width: 800px;
+        height: 800px;
+        background: $c1;
+        display: block;
+        position: absolute;
+        top: -460px;
+        left: -460px;
+        transform: rotate(25deg);
+        outline: 6px solid $text;
+        outline-offset: 1rem;
+      }
+
+      &:after {
+        content: "";
+        width: 800px;
+        height: 800px;
+        background: $c1;
+        display: block;
+        position: absolute;
+        bottom: -460px;
+        right: -460px;
+        transform: rotate(25deg);
+        outline: 6px solid $text;
+        outline-offset: 1rem;
+      }
+    }
+  }
+
+  .wrapper {
+    max-width: 1024px;
+    padding: 0;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
 
-    .currentGame {
-      border-left: 1px solid #ddd;
-      padding: rem(8);
-      text-align: left;
+    .logo {
+      max-width: 600px;
+      margin: 0 auto rem(80);
+    }
+  }
 
-      .label {
-        color: $text;
-        font-weight: 700;
-        font-size: rem(18);
-        text-align: left;
-        padding: 0;
-      }
+  .loginChoices {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    font-size: rem(18);
+    text-align: center;
 
-      .value{
-        white-space: nowrap;
-        font-weight: 500;
+    .btn {
+      margin-bottom: rem(32);
+    }
+  }
 
-        a{
-          display: inline;
-          font-size: rem(14);
+  footer {
+    text-align: center;
+    width: 100%;
+  }
+  // ================================================================================================================
+  // TOPBAR
+  // ================================================================================================================
+  .topBar {
+    height: rem(60);
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      width: 50%;
+      flex-shrink: 0;
+
+      .logo {
+        width: 160px;
+        padding: rem(12);
+        box-sizing: border-box;
+        flex-shrink: 0;
+
+        a {
+          width: auto;
+          padding: 0;
           border: 0;
-          font-weight: 400;
-          color: $c1;
 
-          &:hover{
+          &:hover {
             background-color: transparent;
           }
         }
       }
     }
 
-    form {
+    .right {
       display: flex;
+      width: 50%;
+      flex-shrink: 0;
+      justify-content: flex-end;
       height: 100%;
+
+      .currentGame {
+        border-left: 1px solid #ddd;
+        padding: rem(8);
+        text-align: left;
+
+        .label {
+          color: $text;
+          font-weight: 700;
+          font-size: rem(18);
+          text-align: left;
+          padding: 0;
+        }
+
+        .value {
+          white-space: nowrap;
+          font-weight: 500;
+
+          a {
+            display: inline;
+            font-size: rem(14);
+            border: 0;
+            font-weight: 400;
+            color: $c1;
+
+            &:hover {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+
+      form {
+        display: flex;
+        height: 100%;
+      }
     }
-  }
 
-  a, button {
-    width: rem(60);
-    box-sizing: border-box;
-    border-left: 1px solid #ddd;
-    height: 100%;
-    display: flex;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    color: $text;
-    margin: 0;
-    align-items: center;
-    justify-content: center;
-    font-size: rem(24);
-    transition: all $t1;
-
-    &:hover {
-      background-color: $c1;
-      color: #FFF;
-    }
-  }
-}
-
-.app {
-  height: calc(100% - #{rem(60)});
-  display: flex;
-
-  .leftBar {
-    width: rem(60);
-    border-right: 1px solid #ddd;
-    height: 100%;
-
-    a {
+    a, button {
       width: rem(60);
       box-sizing: border-box;
-      border-bottom: 1px solid #ddd;
-      height: rem(60);
+      border-left: 1px solid #ddd;
+      height: 100%;
       display: flex;
       background: transparent;
       padding: 0;
@@ -492,7 +540,6 @@ footer {
       justify-content: center;
       font-size: rem(24);
       transition: all $t1;
-      text-decoration: none;
 
       &:hover {
         background-color: $c1;
@@ -501,53 +548,94 @@ footer {
     }
   }
 
-  .mainWindow{
-    width: calc(100% - #{rem(60)});
-    box-sizing: border-box;
-  }
-}
+  .app {
+    height: calc(100% - #{rem(60)});
+    display: flex;
 
+    .leftBar {
+      width: rem(60);
+      border-right: 1px solid #ddd;
+      height: 100%;
 
-@media screen and (max-width:1280px) {
-  .wrapAll {
-    &.loginBody {
-      &:before {
-        top: rem(-820);
-        left: rem(-400);
+      a {
+        width: rem(60);
+        box-sizing: border-box;
+        border-bottom: 1px solid #ddd;
+        height: rem(60);
+        display: flex;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        color: $text;
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+        font-size: rem(24);
+        transition: all $t1;
+        text-decoration: none;
+
+        &:hover {
+          background-color: $c1;
+          color: #FFF;
+        }
       }
+    }
 
-      &:after {
-        bottom: rem(-820);
-        right: rem(-400);
+    .mainWindow {
+      width: calc(100% - #{rem(60)});
+      box-sizing: border-box;
+    }
+  }
+
+
+  @media screen and (max-width:1280px) {
+    .wrapAll {
+      &.loginBody {
+        &:before {
+          top: rem(-820);
+          left: rem(-400);
+        }
+
+        &:after {
+          bottom: rem(-820);
+          right: rem(-400);
+        }
       }
     }
   }
-}
 
-@media screen and (max-width:768px) {
-  html {
-    height: auto;
-  }
-
-  .login.centered {
-    padding: 0 rem(24);
-
-    .loginChoices {
-      padding: 0 rem(48);
+  @media screen and (max-width:768px) {
+    html {
+      height: auto;
     }
-  }
 
-  .wrapAll {
-    &.loginBody {
-      &:before {
-        top: rem(-800);
-        left: rem(-560);
-      }
+    .login.centered {
+      padding: 0 rem(24);
 
-      &:after {
-        bottom: rem(-800);
-        right: rem(-560);
+      .loginChoices {
+        padding: 0 rem(48);
       }
     }
+
+    .wrapAll {
+      &.loginBody {
+        &:before {
+          top: rem(-820);
+          left: rem(-580);
+        }
+
+        &:after {
+          bottom: rem(-820);
+          right: rem(-580);
+        }
+      }
+    }
+
+    h2{
+      font-size: rem(28);
+    }
+
+    .centered .logo{
+      margin-bottom: 3rem;  
+    }
   }
-}
