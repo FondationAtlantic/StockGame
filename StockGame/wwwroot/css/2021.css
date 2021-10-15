@@ -1,26 +1,34 @@
 ﻿@charset "UTF-8";
 h1 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 3.75rem;
   color: #508991;
   line-height: 105%;
   letter-spacing: -0.01em; }
 
 h2 {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 2.75rem;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 2.25rem;
   line-height: 105%;
   letter-spacing: -0.01em;
-  font-weight: 700; }
+  font-weight: 700;
+  margin-bottom: 2rem; }
+  h2:after {
+    content: "";
+    display: block;
+    height: 2px;
+    margin-top: 0.25rem;
+    width: 2.25rem;
+    background-color: #81C14B; }
 
 h3 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 1.125rem;
   line-height: 1.1;
   font-weight: 700; }
 
 h4 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 1.5rem;
   line-height: 105%;
   letter-spacing: -0.01em; }
@@ -92,26 +100,79 @@ img {
   .btn.big {
     font-size: 1.375rem; }
 
+.form-group.flex {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem; }
+  .form-group.flex input, .form-group.flex button {
+    margin-right: 1rem; }
+    .form-group.flex input:last-child, .form-group.flex button:last-child {
+      margin-right: 0; }
+
 input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]) {
-  border-radius: 9999px;
-  background: #81C14B;
   color: #172A3A;
-  height: 3.75rem;
-  padding: 0 1.75rem;
+  height: 3rem;
+  padding: 0 1.125rem;
+  font-size: 1.125rem;
   width: 100%;
-  border: none; }
+  border: 1px solid #172A3A;
+  transition: border-color 0.5s; }
+  input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):focus {
+    border-color: #81C14B;
+    box-shadow: none; }
+
+input:-webkit-autofill::first-line {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.125rem; }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important; }
 
 input[type="submit"],
+button[type="submit"],
 input[type="button"] {
   border-radius: 9999px;
-  background: #004346;
+  background: #81C14B;
   color: #fff;
   border: none;
   padding: 0 1.625rem;
-  font-weight: 700; }
+  font-weight: 700;
+  outline: 0;
+  border: 0;
+  height: 3rem;
+  box-sizing: border-box;
+  border: 2px solid #81C14B; }
+  input[type="submit"]:active, input[type="submit"]:focus,
+  button[type="submit"]:active,
+  button[type="submit"]:focus,
+  input[type="button"]:active,
+  input[type="button"]:focus {
+    border: 2px solid #FFF;
+    outline: 1px solid #172A3A;
+    background-color: #81C14B;
+    box-shadow: none;
+    color: #fff; }
+    input[type="submit"]:active:focus, input[type="submit"]:active:hover, input[type="submit"]:focus:focus, input[type="submit"]:focus:hover,
+    button[type="submit"]:active:focus,
+    button[type="submit"]:active:hover,
+    button[type="submit"]:focus:focus,
+    button[type="submit"]:focus:hover,
+    input[type="button"]:active:focus,
+    input[type="button"]:active:hover,
+    input[type="button"]:focus:focus,
+    input[type="button"]:focus:hover {
+      background-color: #81C14B;
+      outline: 1px solid #172A3A;
+      border: 2px solid #FFF;
+      color: #fff; }
   input[type="submit"]:hover,
+  button[type="submit"]:hover,
   input[type="button"]:hover {
-    background: #74B3CE; }
+    background-color: #468412;
+    border: 2px solid #468412; }
 
 ::-webkit-input-placeholder,
 ::-moz-placeholder,
@@ -119,6 +180,10 @@ input[type="button"] {
 :-moz-placeholder {
   /* Chrome/Opera/Safari */
   color: #172A3A; }
+
+form label {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1.125rem; }
 
 .customCheckbox {
   display: flex; }
@@ -146,6 +211,14 @@ input[type="button"] {
       font-size: 0.875rem;
       font-weight: 700;
       display: block; }
+
+.hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+
+.checkbox {
+  margin-top: 1.125rem; }
 
 html {
   -webkit-font-smoothing: antialiased;
@@ -355,8 +428,12 @@ footer {
     .login.centered .loginChoices {
       padding: 0 3rem; }
   .wrapAll.loginBody:before {
-    top: -50rem;
-    left: -35rem; }
+    top: -51.25rem;
+    left: -36.25rem; }
   .wrapAll.loginBody:after {
-    bottom: -50rem;
-    right: -35rem; } }
+    bottom: -51.25rem;
+    right: -36.25rem; }
+  h2 {
+    font-size: 1.75rem; }
+  .centered .logo {
+    margin-bottom: 3rem; } }
