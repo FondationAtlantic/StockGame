@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using StockGame.Models;
 using System;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace StockGame.Data
 {
     public static class DbInitializer
     {
-        public static async Task CreateDefaultData(StockGameContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IHostingEnvironment env)
+        public static async Task CreateDefaultData(StockGameContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IHostEnvironment env)
         {
             //TODO rmove?
             context.Database.EnsureCreated();
@@ -105,7 +106,7 @@ namespace StockGame.Data
             return user;
         }
 
-        public static async Task CreateMockupData(StockGameContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment env)
+        public static async Task CreateMockupData(StockGameContext context, UserManager<ApplicationUser> userManager, IHostEnvironment env)
         {
             if (env.IsProduction())
                 return;

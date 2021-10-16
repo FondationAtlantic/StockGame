@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using StockGame.Data;
 using StockGame.Models;
 
@@ -22,9 +23,9 @@ namespace StockGame.Pages.Equities
     [Authorize(Roles = "Admin")]
     public class EditModel : StockPageModel
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IHostEnvironment _environment;
 
-        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostingEnvironment environment) : base(userManager, context)
+        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostEnvironment environment) : base(userManager, context)
         {
             _environment = environment;
         }
@@ -69,7 +70,7 @@ namespace StockGame.Pages.Equities
                 string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
 
                 // Combines two strings into a path.
-                fileName = Path.Combine(_environment.WebRootPath, "images/db/upload_equity_img") + $@"\{newFileName}";
+                fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_equity_img") + $@"\{newFileName}";
 
                 Equity.ImgPath = "~/images/db/upload_equity_img/" + newFileName;
                 Equity.ThumbPath = "~/images/db/upload_equity_thumb/" + newFileName;

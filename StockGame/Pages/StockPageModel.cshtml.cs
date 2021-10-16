@@ -45,7 +45,7 @@ namespace StockGame.Pages
             _context = context;
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task<ApplicationUser> GetCurrentUser()
         {
             ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
@@ -53,7 +53,7 @@ namespace StockGame.Pages
             return CurrentUser;
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task FindActiveGameAndTeam(bool trackUser = false)
         {
             if (CurrentUser == null)
@@ -179,7 +179,7 @@ namespace StockGame.Pages
             return RedirectToPage();
         }
         
-        [Authorize]
+        //[Authorize]
         public async Task FindActiveEpisodeEquityInfos()
         {
             if (ActiveGame == null)
@@ -205,7 +205,7 @@ namespace StockGame.Pages
             ActiveEpisodeEquityInfos = ActiveAndPastEpisodeEquityInfos.Where(eei => eei.Episode.EpisodeIndex == ActiveEpisodeIndex).ToList();
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task<PortfolioGameHistory> PortfolioHistories(Game game, IEnumerable<Team> teams = null, int upToEpisodeIndex = int.MaxValue)
         {
             if (teams == null)

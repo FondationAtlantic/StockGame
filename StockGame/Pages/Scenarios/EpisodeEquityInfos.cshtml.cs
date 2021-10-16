@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using StockGame.Data;
 using StockGame.Models;
 using StockGame.Models.ViewModels;
@@ -23,9 +24,9 @@ namespace StockGame.Pages.Scenarios
     [Authorize(Roles = "Admin")]
     public class EpisodeEquityInfosModel : StockGame.Pages.StockPageModel
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IHostEnvironment _environment;
 
-        public EpisodeEquityInfosModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostingEnvironment environment) : base(userManager, context)
+        public EpisodeEquityInfosModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostEnvironment environment) : base(userManager, context)
         {
             _environment = environment;
         }
@@ -100,7 +101,7 @@ namespace StockGame.Pages.Scenarios
                     string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
 
                     // Combines two strings into a path.
-                    fileName = Path.Combine(_environment.WebRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
+                    fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
 
                     eei.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
 

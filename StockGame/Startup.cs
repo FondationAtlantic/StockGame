@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using StockGame.Data;
 using StockGame.Models;
 using StockGame.Services;
+using System;
 
 namespace StockGame
 {
@@ -32,13 +29,14 @@ namespace StockGame
             //services.AddDbContext<StockGameContext>(options =>
             //    options.UseSqlite("Data Source=StockGame.db"));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 4;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                })
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
                 .AddEntityFrameworkStores<StockGameContext>()
                 .AddDefaultTokenProviders();
 
@@ -49,10 +47,10 @@ namespace StockGame
             {
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(14);
-                options.Cookie.Expiration = TimeSpan.FromDays(14);
+                //options.Cookie.Expiration = TimeSpan.FromDays(14);
             });
 
-            services.AddMvc()
+            services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeFolder("/Account/Manage");
@@ -65,12 +63,12 @@ namespace StockGame
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            if (true)
+            //if (true)
+            if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
