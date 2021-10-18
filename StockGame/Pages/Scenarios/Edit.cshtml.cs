@@ -1,3 +1,13 @@
+//using ImageSharp;
+//using ImageSharp.Processing;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using StockGame.Data;
+using StockGame.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,27 +16,15 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-//using ImageSharp;
-//using ImageSharp.Processing;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using StockGame.Data;
-using StockGame.Models;
 
 namespace StockGame.Pages.Scenarios
 {
     [Authorize(Roles = "Admin")]
     public class EditModel : StockGame.Pages.StockPageModel
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IHostEnvironment _environment;
 
-        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostingEnvironment environment) : base(userManager, context)
+        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostEnvironment environment) : base(userManager, context)
         {
             _environment = environment;
         }
@@ -91,7 +89,7 @@ namespace StockGame.Pages.Scenarios
                 return await OnGetAsync(Scenario.Id, null);
 
             //Is this a CSV Import submit ?
-            for (int i = Episodes.Count; i < Episodes.Count+ScenarioEquities.Count; i++)
+            for (int i = Episodes.Count; i < Episodes.Count + ScenarioEquities.Count; i++)
             {
                 IFormFile file = HttpContext.Request.Form.Files[i];
                 if (file.Length > 0)
@@ -120,7 +118,7 @@ namespace StockGame.Pages.Scenarios
                     string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
 
                     // Combines two strings into a path.
-                    fileName = Path.Combine(_environment.WebRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
+                    fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
 
                     ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
 
@@ -186,7 +184,7 @@ namespace StockGame.Pages.Scenarios
 
                 t = Nullable.GetUnderlyingType(t);
             }
-            else if(t.IsPrimitive)
+            else if (t.IsPrimitive)
                 value = Regex.Replace(value, @"\s+", "");
 
             return Convert.ChangeType(value, t);
@@ -227,7 +225,7 @@ namespace StockGame.Pages.Scenarios
                         }
 
                         string[] columnHeaders = SplitCSV(headerLine);
-                        if(columnHeaders.Length < 1 || columnHeaders[0] != "EpisodeIndex")
+                        if (columnHeaders.Length < 1 || columnHeaders[0] != "EpisodeIndex")
                         {
                             ModelState.AddModelError(modelStateProperty, "First column must be named EpisodeIndex.");
                             return false;
@@ -239,10 +237,10 @@ namespace StockGame.Pages.Scenarios
                         }
 
                         PropertyInfo[] properties = new PropertyInfo[columnHeaders.Length];
-                        for(int i = 1; i < columnHeaders.Length; i++)
+                        for (int i = 1; i < columnHeaders.Length; i++)
                         {
                             PropertyInfo prop = typeof(EpisodeEquityInfo).GetProperty(columnHeaders[i]);
-                            if(prop == null)
+                            if (prop == null)
                             {
                                 ModelState.AddModelError(modelStateProperty, String.Format("{0} is not a property of EpisodeEquityInfo.", columnHeaders[i]));
                                 return false;
@@ -261,13 +259,13 @@ namespace StockGame.Pages.Scenarios
                         while ((line = reader.ReadLine()) != null)
                         {
                             string[] row = SplitCSV(line);
-                            if(row.Length != columnHeaders.Length)
+                            if (row.Length != columnHeaders.Length)
                             {
                                 ModelState.AddModelError(modelStateProperty, String.Format("Line {0} has wrong field count.", lineIndex));
                                 return false;
                             }
 
-                            if(lineIndex > episodeEquityInfos.Count)
+                            if (lineIndex > episodeEquityInfos.Count)
                             {
                                 ModelState.AddModelError(modelStateProperty, String.Format("Too many lines in file. Expecting {0} episodes.", episodeEquityInfos.Count));
                                 return false;
@@ -303,7 +301,7 @@ namespace StockGame.Pages.Scenarios
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError(modelStateProperty, String.Format("Unhandled exception! ({0})", ex.Message));
                 return false;

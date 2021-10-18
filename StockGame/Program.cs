@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using StockGame.Models;
 using StockGame.Data;
+using StockGame.Models;
+using System;
 
 namespace StockGame
 {
@@ -26,9 +22,9 @@ namespace StockGame
                 try
                 {
                     StockGameContext context = services.GetRequiredService<StockGameContext>();
-                    var roleManager = services.GetRequiredService< RoleManager<IdentityRole> >();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var env = services.GetRequiredService<IHostingEnvironment>();
+                    var env = services.GetRequiredService<IHostEnvironment>();
                     DbInitializer.CreateDefaultData(context, roleManager, userManager, env).Wait();
                 }
                 catch (Exception ex)
