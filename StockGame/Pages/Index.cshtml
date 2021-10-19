@@ -45,11 +45,9 @@ else if (User.IsInRole("Student"))
         {
             @if (item.EpisodeEquityInfo.NewsTitle != null)
             {
-                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
-                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</a>
-                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsImgPath)</a>
-                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/newspaper_small.png" title="Nouvelle!" /></a>
-
+                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
+                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</a>
+                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> <img src="@Url.Content(item.EpisodeEquityInfo.NewsImgPath)" style="max-width:50%;" /></a>
             }
         }
 </section>
