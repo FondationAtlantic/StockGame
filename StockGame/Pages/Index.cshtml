@@ -172,23 +172,23 @@ else if (User.IsInRole("Student"))
                     }
                     <tr>
                         <td>
-                            <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img style="margin: 0px 8px" src="@Url.Content(item.EpisodeEquityInfo.Equity.ThumbPath)" /></a>
+                            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img style="margin: 0px 8px" src="@Url.Content(item.EpisodeEquityInfo.Equity.ThumbPath)" /></a>
                         </td>
                         <td>
-                            <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
+                            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
                         </td>
                         <td class="nowrap">
                             @if (item.EpisodeEquityInfo.NewsTitle != null)
                             {
-                                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/newspaper_small.png" title="Nouvelle!" /></a>
+                                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/newspaper_small.png" title="Nouvelle!" /></a>
                             }
                             @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
                             {
-                                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/results_small.png" title="Publication des résultats" /></a>
+                                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/results_small.png" title="Publication des résultats" /></a>
                             }
                             @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
                             {
-                                <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/dividend_small.png" title="Dividende imminent" /></a>
+                                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/dividend_small.png" title="Dividende imminent" /></a>
                             }
                         </td>
                         <td class="nowrap-right">
