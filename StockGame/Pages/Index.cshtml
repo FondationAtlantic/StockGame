@@ -42,14 +42,15 @@ else if (User.IsInRole("Student"))
         </div>
     }
     @foreach (var item in Model.IndexItems)
+    {
+        @if (item.EpisodeEquityInfo.NewsTitle != null)
         {
-            @if (item.EpisodeEquityInfo.NewsTitle != null)
-            {
-                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
-                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</a>
-                <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> <img src="@Url.Content(item.EpisodeEquityInfo.NewsImgPath)" style="max-width:50%;" /></a>
-            }
+            <img style="margin: 0px 8px" src="@Url.Content(item.EpisodeEquityInfo.Equity.ThumbPath)" />
+            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
+            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</a>
+            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> <img src="@Url.Content(item.EpisodeEquityInfo.NewsImgPath)" style="max-width:50%;" /></a>
         }
+    }
 </section>
     <section class="wallet">
         <h2>Mon porte-feuille</h2>
