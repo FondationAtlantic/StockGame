@@ -29,9 +29,9 @@ else if (User.IsInRole("Student"))
   {
     <div class="dashboard">
       <section class="newsfeed">
-        <h2>Dernière heure</h2>
         @if (Model.ActiveTradingSession.Episode.NewsTitle != null)
         {
+          <h1>Dernière heure</h1>
           <div class="panel panel-default">
             <div class="panel-heading"><img src="~/images/newspaper_small.png" title="Nouvelles" /> Nouvelles</div>
             <div class="panel-body">
@@ -46,9 +46,18 @@ else if (User.IsInRole("Student"))
         {
           @if (item.EpisodeEquityInfo.NewsTitle != null)
           {
-            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
-            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</a>
-            <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> <img src="@Url.Content(item.EpisodeEquityInfo.NewsImgPath)" style="max-width:50%;" /></a>
+            <div class="slide">
+              <div class="img" style="background-image: url(@Url.Content(item.EpisodeEquityInfo.NewsImgPath))">
+              </div>
+              <div class="left">
+                <h2>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</h2>
+                <p>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsDetail)</p>
+                <a class="btn" asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">Plus d'informations</a>
+              </div>
+              <div class="right">
+                <img style="margin: 0px 8px" src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+              </div>
+            </div>
           }
         }
       </section>
@@ -99,73 +108,7 @@ else if (User.IsInRole("Student"))
                 </h4>
               </div>
             </div>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>
-                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.ThumbPath)
-                  </th>
-                  <th>
-                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.Name)
-                  </th>
-                  <th class="text-right">
-                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Amount)
-                  </th>
-                  <th class="text-right">
-                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Price)
-                  </th>
-                  <th class="text-right">
-                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Value)
-                  </th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach (var item in Model.Portfolio.Items)
-                {
-                  @if (item.Amount <= 0) { continue; }
-                  <tr>
-                    <td>
-                      <img src="@Url.Content(item.Equity.ThumbPath)" />
-                    </td>
-                    <td>
-                      @Html.DisplayFor(modelItem => item.Equity.Name)
-                    </td>
-                    <td class="text-right">
-                      @if (item.Amount > 0)
-                      {@Html.DisplayFor(modelItem => item.Amount);
-                    }
-                    </td>
-                    <td class="text-right">
-                      @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td class="text-right">
-                      @if (item.Value > 0f)
-                      {@Html.DisplayFor(modelItem => item.Value)}
-                    </td>
-                  </tr>
-                }
-                <tr class="success">
-                  <td>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="text-right">
-                    @Html.DisplayFor(model => model.Portfolio.Cash)
-                  </td>
-                </tr>
-                <tr style="border-bottom: 1px solid;border-bottom-color: lightgray;">
-                  <td>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="text-right">
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
           </section>
           <section class="market">
             <h2>Marché actuel</h2>
@@ -271,10 +214,96 @@ else if (User.IsInRole("Student"))
           </section>
         </div>
         <div class="right">
+          <div class="infoBlock">
+            <div class="title">
+              <h3>Dernières activités</h3>
+            </div>
+            <div class="activities">
+              @foreach (var item in Model.IndexItems)
+              {
+                if (item.EpisodeEquityInfo.AnnounceFinancialResults)
+                {
+                  <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">
+                    <h4>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name) publie ses résultats de trimestre</h4>
+                    <div>
+                      <span style="display:none" class="@(item.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.EpisodeEquityInfo.EarningPerShare)</span> @Html.DisplayFor(model => item.EpisodeEquityInfo.Episode.Name)
+                    </div>
+                  </a>
+                }
+              }
+            </div>
+          </div>
 
         </div>
       </div>
     </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.ThumbPath)
+          </th>
+          <th>
+            @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.Name)
+          </th>
+          <th class="text-right">
+            @Html.DisplayNameFor(model => model.Portfolio.Items[0].Amount)
+          </th>
+          <th class="text-right">
+            @Html.DisplayNameFor(model => model.Portfolio.Items[0].Price)
+          </th>
+          <th class="text-right">
+            @Html.DisplayNameFor(model => model.Portfolio.Items[0].Value)
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var item in Model.Portfolio.Items)
+        {
+          @if (item.Amount <= 0) { continue; }
+          <tr>
+            <td>
+              <img src="@Url.Content(item.Equity.ThumbPath)" />
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.Equity.Name)
+            </td>
+            <td class="text-right">
+              @if (item.Amount > 0)
+              {@Html.DisplayFor(modelItem => item.Amount);
+            }
+            </td>
+            <td class="text-right">
+              @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td class="text-right">
+              @if (item.Value > 0f)
+              {@Html.DisplayFor(modelItem => item.Value)}
+            </td>
+          </tr>
+        }
+        <tr class="success">
+          <td>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right">
+            @Html.DisplayFor(model => model.Portfolio.Cash)
+          </td>
+        </tr>
+        <tr style="border-bottom: 1px solid;border-bottom-color: lightgray;">
+          <td>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right">
+          </td>
+        </tr>
+      </tbody>
+    </table>
   }
 }
 

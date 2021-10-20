@@ -179,7 +179,7 @@ img {
   text-align: center;
   box-sizing: border-box;
   text-decoration: none !important;
-  padding: rem(16) rem(24);
+  padding: rem(14) rem(32);
   border-radius: 9999px;
   background: $c1;
   color: #fff;
@@ -528,6 +528,7 @@ input[type="button"] {
 
     a, button {
       width: rem(60);
+      border: none;
       box-sizing: border-box;
       border-left: 1px solid #ddd;
       height: 100%;
@@ -592,46 +593,162 @@ input[type="button"] {
 // DASHBOARD
 // ================================================================================================================
 .dashboard {
-  h2 {
-    &:after {
-      display: none;
-    }
+  .newsfeed {
+    background: $text;
+    color: #FFF;
 
-    i {
-      margin-right: rem(12);
+    .slide {
+      position: relative;
+      padding: rem(48);
+      background-color: $text;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 50%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-blend-mode: multiply;
+        background-position: center;
+        background-color: $text;
+
+        &:before {
+          content: "";
+          width: 35%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#172a3a+0,ffffff+100&1+0,0+100 */
+          background: -moz-linear-gradient(left, rgba(23,42,58,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(left, rgba(23,42,58,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to right, rgba(23,42,58,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+        }
+
+        &:after {
+          content: "";
+          width: 35%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          right: 0;
+          /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,172a3a+100&0+0,1+100 */
+          background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(23,42,58,1) 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(23,42,58,1) 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(23,42,58,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#172a3a',GradientType=1 ); /* IE6-9 */
+        }
+      }
+
+      .left {
+        max-width: 50%;
+        font-size: rem(20);
+        position: relative;
+        padding-left: rem(60);
+
+        h2 {
+          font-size: rem(48);
+          margin-bottom: rem(16);
+
+          &:after{
+            display: none;
+          }
+        }
+
+        .btn {
+          margin-top: rem(20);
+        }
+      }
+
+      .right {
+        position: relative;
+        max-width: 400px;
+      }
     }
   }
 
-  .newsfeed{
-    background: $text;
-    color: #FFF;
+  .twoCols{
+    padding: rem(32);
+    display: flex;
+    justify-content: space-between;
+
+    > .left{
+      flex: 1;
+      margin-right: rem(32);
+    }
+
+    > .right{
+      width: 450px;
+    }
+
+    h2{
+      i{
+        margin-right: rem(16);
+      }
+
+      &:after{
+        margin-top: rem(20);
+        width: rem(90);
+      }
+    }
   }
 
   .resume {
     display: flex;
+    margin-bottom: rem(32);
 
     > div {
       text-align: center;
       background: #FFF;
       box-shadow: 0 0 20px 7px rgba(0,0,0,0.15);
       padding: rem(24);
-      margin-right: rem(24);
+      margin-right: rem(32);
       flex: 1;
       border-radius: rem(12);
 
-      &:last-child{
+      &:last-child {
         margin-right: 0;
       }
     }
 
     i {
-      font-size: rem(36);
+      font-size: rem(42);
+    }
+
+    h3{
+      margin: 0;
+    }
+
+    h4{
+      font-weight: 700;
     }
 
     .value {
       font-size: rem(32);
       font-weight: 700;
     }
+  }
+}
+
+.infoBlock {
+  background: #FFF;
+  box-shadow: 0 0 20px 7px rgba(0,0,0,0.15);
+  border-radius: rem(12);
+  width: 100%;
+  box-sizing: border-box;
+
+  .title{
+    padding: rem(12) rem(24);
   }
 }
 
