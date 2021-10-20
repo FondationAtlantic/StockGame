@@ -50,6 +50,14 @@ else if (User.IsInRole("Student"))
             <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</a>
             <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> <img src="@Url.Content(item.EpisodeEquityInfo.NewsImgPath)" style="max-width:50%;" /></a>
         }
+        @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
+        {
+            <h3>Nouveau Bénéfice!</h3>
+            <h4>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</h4>
+            <div>
+                <span class="@(item.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.EpisodeEquityInfo.EarningPerShare)</span> [@Html.DisplayFor(model => item.EpisodeEquityInfo.Episode.Name)]
+            </div>
+        }
     }
 </section>
     <section class="wallet">
