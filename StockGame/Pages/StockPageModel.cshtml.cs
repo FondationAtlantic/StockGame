@@ -16,6 +16,8 @@ using StockGame.Models.ViewModels;
 
 namespace StockGame.Pages
 {
+    //[Authorize]
+    [TypeFilter(typeof(AuthorizeIndexPageHandlerFilter))]
     public class StockPageModel : PageModel
     {
         private readonly StockGame.Data.StockGameContext _context;
@@ -46,6 +48,7 @@ namespace StockGame.Pages
         }
 
         //[Authorize]
+        [AuthorizePageHandler]
         public async Task<ApplicationUser> GetCurrentUser()
         {
             ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
@@ -54,6 +57,7 @@ namespace StockGame.Pages
         }
 
         //[Authorize]
+        [AuthorizePageHandler]
         public async Task FindActiveGameAndTeam(bool trackUser = false)
         {
             if (CurrentUser == null)
@@ -178,8 +182,9 @@ namespace StockGame.Pages
 
             return RedirectToPage();
         }
-        
+
         //[Authorize]
+        [AuthorizePageHandler]
         public async Task FindActiveEpisodeEquityInfos()
         {
             if (ActiveGame == null)
@@ -206,6 +211,7 @@ namespace StockGame.Pages
         }
 
         //[Authorize]
+        [AuthorizePageHandler]
         public async Task<PortfolioGameHistory> PortfolioHistories(Game game, IEnumerable<Team> teams = null, int upToEpisodeIndex = int.MaxValue)
         {
             if (teams == null)
