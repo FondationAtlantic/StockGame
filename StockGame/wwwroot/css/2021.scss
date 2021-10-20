@@ -90,14 +90,14 @@ h2 {
 
 h3 {
   font-family: $heading;
-  font-size: rem(18);
+  font-size: rem(28);
   line-height: 1.1;
   font-weight: 700;
 }
 
 h4 {
   font-family: $heading;
-  font-size: rem(24);
+  font-size: rem(22);
   line-height: 105%;
   letter-spacing: -0.01em;
 }
@@ -447,6 +447,7 @@ input[type="button"] {
     text-align: center;
     width: 100%;
   }
+
   // ================================================================================================================
   // TOPBAR
   // ================================================================================================================
@@ -586,6 +587,55 @@ input[type="button"] {
       box-sizing: border-box;
     }
   }
+
+// ================================================================================================================
+// DASHBOARD
+// ================================================================================================================
+.dashboard {
+  h2 {
+    &:after {
+      display: none;
+    }
+
+    i {
+      margin-right: rem(12);
+    }
+  }
+
+  .newsfeed{
+    background: $text;
+    color: #FFF;
+  }
+
+  .resume {
+    display: flex;
+
+    > div {
+      text-align: center;
+      background: #FFF;
+      box-shadow: 0 0 20px 7px rgba(0,0,0,0.15);
+      padding: rem(24);
+      margin-right: rem(24);
+      flex: 1;
+      border-radius: rem(12);
+
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+
+    i {
+      font-size: rem(36);
+    }
+
+    .value {
+      font-size: rem(32);
+      font-weight: 700;
+    }
+  }
+}
+
+
 
 
   @media screen and (max-width:1280px) {

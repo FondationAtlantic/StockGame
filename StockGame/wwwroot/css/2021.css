@@ -23,13 +23,13 @@ h2 {
 
 h3 {
   font-family: "Ubuntu", sans-serif;
-  font-size: 1.125rem;
+  font-size: 1.75rem;
   line-height: 1.1;
   font-weight: 700; }
 
 h4 {
   font-family: "Ubuntu", sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   line-height: 105%;
   letter-spacing: -0.01em; }
 
@@ -411,6 +411,34 @@ footer {
   .app .mainWindow {
     width: calc(100% - 3.75rem);
     box-sizing: border-box; }
+
+.dashboard h2:after {
+  display: none; }
+
+.dashboard h2 i {
+  margin-right: 0.75rem; }
+
+.dashboard .newsfeed {
+  background: #172A3A;
+  color: #FFF; }
+
+.dashboard .resume {
+  display: flex; }
+  .dashboard .resume > div {
+    text-align: center;
+    background: #FFF;
+    box-shadow: 0 0 20px 7px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    margin-right: 1.5rem;
+    flex: 1;
+    border-radius: 0.75rem; }
+    .dashboard .resume > div:last-child {
+      margin-right: 0; }
+  .dashboard .resume i {
+    font-size: 2.25rem; }
+  .dashboard .resume .value {
+    font-size: 2rem;
+    font-weight: 700; }
 
 @media screen and (max-width: 1280px) {
   .wrapAll.loginBody:before {
