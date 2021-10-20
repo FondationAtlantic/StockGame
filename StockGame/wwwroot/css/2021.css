@@ -23,13 +23,13 @@ h2 {
 
 h3 {
   font-family: "Ubuntu", sans-serif;
-  font-size: 1.125rem;
+  font-size: 1.75rem;
   line-height: 1.1;
   font-weight: 700; }
 
 h4 {
   font-family: "Ubuntu", sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   line-height: 105%;
   letter-spacing: -0.01em; }
 
@@ -87,7 +87,7 @@ img {
   text-align: center;
   box-sizing: border-box;
   text-decoration: none !important;
-  padding: 1rem 1.5rem;
+  padding: 0.875rem 2rem;
   border-radius: 9999px;
   background: #81C14B;
   color: #fff;
@@ -365,6 +365,7 @@ footer {
       height: 100%; }
   .topBar a, .topBar button {
     width: 3.75rem;
+    border: none;
     box-sizing: border-box;
     border-left: 1px solid #ddd;
     height: 100%;
@@ -411,6 +412,126 @@ footer {
   .app .mainWindow {
     width: calc(100% - 3.75rem);
     box-sizing: border-box; }
+
+.dashboard .newsfeed {
+  background: #172A3A;
+  color: #FFF; }
+  .dashboard .newsfeed .slide {
+    position: relative;
+    padding: 3rem;
+    background-color: #172A3A;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
+    .dashboard .newsfeed .slide .img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      width: 50%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-blend-mode: multiply;
+      background-position: center;
+      background-color: #172A3A; }
+      .dashboard .newsfeed .slide .img:before {
+        content: "";
+        width: 35%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#172a3a+0,ffffff+100&1+0,0+100 */
+        background: -moz-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 );
+        /* IE6-9 */ }
+      .dashboard .newsfeed .slide .img:after {
+        content: "";
+        width: 35%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,172a3a+100&0+0,1+100 */
+        background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #172a3a 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #172a3a 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #172a3a 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#172a3a',GradientType=1 );
+        /* IE6-9 */ }
+    .dashboard .newsfeed .slide .left {
+      max-width: 50%;
+      font-size: 1.25rem;
+      position: relative;
+      padding-left: 3.75rem; }
+      .dashboard .newsfeed .slide .left h2 {
+        font-size: 3rem;
+        margin-bottom: 1rem; }
+        .dashboard .newsfeed .slide .left h2:after {
+          display: none; }
+      .dashboard .newsfeed .slide .left .btn {
+        margin-top: 1.25rem; }
+    .dashboard .newsfeed .slide .right {
+      position: relative;
+      max-width: 400px; }
+
+.dashboard .twoCols {
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between; }
+  .dashboard .twoCols > .left {
+    flex: 1;
+    margin-right: 2rem; }
+  .dashboard .twoCols > .right {
+    width: 450px; }
+  .dashboard .twoCols h2 i {
+    margin-right: 1rem; }
+  .dashboard .twoCols h2:after {
+    margin-top: 1.25rem;
+    width: 5.625rem; }
+
+.dashboard .resume {
+  display: flex;
+  margin-bottom: 2rem; }
+  .dashboard .resume > div {
+    text-align: center;
+    background: #FFF;
+    box-shadow: 0 0 20px 7px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    margin-right: 2rem;
+    flex: 1;
+    border-radius: 0.75rem; }
+    .dashboard .resume > div:last-child {
+      margin-right: 0; }
+  .dashboard .resume i {
+    font-size: 2.625rem; }
+  .dashboard .resume h3 {
+    margin: 0; }
+  .dashboard .resume h4 {
+    font-weight: 700; }
+  .dashboard .resume .value {
+    font-size: 2rem;
+    font-weight: 700; }
+
+.infoBlock {
+  background: #FFF;
+  box-shadow: 0 0 20px 7px rgba(0, 0, 0, 0.15);
+  border-radius: 0.75rem;
+  width: 100%;
+  box-sizing: border-box; }
+  .infoBlock .title {
+    padding: 0.75rem 1.5rem; }
 
 @media screen and (max-width: 1280px) {
   .wrapAll.loginBody:before {
