@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using StockGame.Data;
 using StockGame.Models;
 using StockGame.Models.ViewModels;
+using StockGame.Pages.Games;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,15 +20,19 @@ namespace StockGame.Pages
         {
         }
 
-        [Display(Name = "Valeur"), DataType(DataType.Currency)]
+        [DataType(DataType.Currency)]
         public float GainsLosses { get; set; }
         [DisplayFormat(DataFormatString = "{0:0.00} %")]
-        public float GainsLossesPercentage { get; set; }
+        public float? GainsLossesPct { get { return (GainsLosses / ActiveGame.InitialCash) * 100; } }
         public bool HasJoinedTeam { get; set; }
         public AnalysisIndexItem HighestYield { get; set; }
         public AnalysisIndexItem LowestYield { get; set; }
         public IList<AnalysisIndexItem> IndexItems { get; set; }
         public PortfolioHistoryItem Portfolio { get; set; }
+        public PortfolioGameHistory PortfolioGameHistory { get; set; }
+        //public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
+        public int MyRank { get; set; }
+
 
         public async Task FetchPortfolio()
         {
@@ -35,6 +43,16 @@ namespace StockGame.Pages
             PortfolioTeamHistory pth = pgh.TeamHistories[0];
 
             Portfolio = pth.Items.LastOrDefault();
+        }
+
+        public async Task GetRanking()
+        {
+            PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
+            PortfolioGameHistory.TeamHistories.Sort((th1, th2) => (th1.Team == ActiveTeam) != (th2.Team == ActiveTeam)
+                                                                    ? (th1.Team == ActiveTeam ? -1 : 1)
+                                                                    : th2.Items.Last().TotalValue.CompareTo(th1.Items.Last().TotalValue));
+
+            MyRank = PortfolioGameHistory.TeamHistories.FindIndex(t => t.Team.Id == ActiveTeam.Id) + 1;
         }
 
         public async Task OnGetAsync()
@@ -49,6 +67,7 @@ namespace StockGame.Pages
                 {
                     await FetchPortfolio();
                     await FindActiveEpisodeEquityInfos();
+                    await GetRanking();
 
                     var items = new List<AnalysisIndexItem>();
 
@@ -80,12 +99,10 @@ namespace StockGame.Pages
                         iterPastEquityInfos.MoveNext();
                         iterPastEquityInfos.MoveNext();
                     }
+                    GainsLosses = Portfolio.TotalValue - ActiveGame.InitialCash;
                     IndexItems = items.OrderBy(item => item.EpisodeEquityInfo.Equity.Industry.Name).ThenBy(item => item.EpisodeEquityInfo.Equity.Name).ToList();
                     HighestYield = items.OrderByDescending(item => item.DividendYield.HasValue).ThenByDescending(items => items.DividendYield).First();
                     LowestYield = items.OrderByDescending(item => item.DividendYield.HasValue).ThenBy(item => item.DividendYield).First();
-
-                    GainsLosses = Portfolio.TotalValue - ActiveGame.InitialCash;
-                    GainsLossesPercentage = ((GainsLosses / ActiveGame.InitialCash) * 100);
                 }
             }
         }

@@ -83,9 +83,9 @@ else if (User.IsInRole("Student"))
               </div>
               <div>
                 <i class="fal fa-arrow-alt-up"></i>
-                <h4>[Classement]</h4>
+                <h4>@Html.DisplayFor(model => model.MyRank)ème Position</h4>
                 <div class="value">
-                  [1ere position]
+                    @Html.DisplayFor(model => model.ActiveTeam.Name)
                 </div>
               </div>
             </div>
@@ -99,14 +99,14 @@ else if (User.IsInRole("Student"))
                     {
                         <div class="value" style="color: darkgreen">
                             @Html.DisplayFor(modelItem => modelItem.GainsLosses)   
-                            @Html.DisplayFor(modelItem => modelItem.GainsLossesPercentage)
+                            @Html.DisplayFor(modelItem => modelItem.GainsLossesPct)
                         </div>
                     }
                     else
                     {
                         <div class="value" style="color: darkred">
                             @Html.DisplayFor(modelItem => modelItem.GainsLosses)   
-                            @Html.DisplayFor(modelItem => modelItem.GainsLossesPercentage)
+                            @Html.DisplayFor(modelItem => modelItem.GainsLossesPct)
                         </div>
                     }
 
