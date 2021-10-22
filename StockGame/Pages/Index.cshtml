@@ -83,7 +83,7 @@ else if (User.IsInRole("Student"))
               </div>
               <div>
                 <i class="fal fa-arrow-alt-up"></i>
-                <h4>@Html.DisplayFor(model => model.MyRank)ème Position</h4>
+                <h4>@Html.DisplayFor(model => model.CurrentRank)ème Position</h4>
                 <div class="value">
                     @Html.DisplayFor(model => model.ActiveTeam.Name)
                 </div>
@@ -91,22 +91,29 @@ else if (User.IsInRole("Student"))
             </div>
             <div class="resume">
                 <div>
-                    <h4>Gains et Pertes</h4>
+                    <h4>Profits et Pertes</h4>
                     <div class="graph">
 
                     </div>
-                    @if (Model.GainsLosses > 0.0f)
+                    @if (Model.ProfitLosses > 0.0f)
                     {
                         <div class="value" style="color: darkgreen">
-                            @Html.DisplayFor(modelItem => modelItem.GainsLosses)   
-                            @Html.DisplayFor(modelItem => modelItem.GainsLossesPct)
+                            @Html.DisplayFor(modelItem => modelItem.ProfitLosses)
+                            @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
+                        </div>
+                    }
+                    else if (Model.ProfitLosses < 0.0f)
+                    {
+                        <div class="value" style="color: darkred">
+                            @Html.DisplayFor(modelItem => modelItem.ProfitLosses)
+                            @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                         </div>
                     }
                     else
                     {
-                        <div class="value" style="color: darkred">
-                            @Html.DisplayFor(modelItem => modelItem.GainsLosses)   
-                            @Html.DisplayFor(modelItem => modelItem.GainsLossesPct)
+                        <div class="value">
+                            @Html.DisplayFor(modelItem => modelItem.ProfitLosses)
+                            @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                         </div>
                     }
 

@@ -20,18 +20,18 @@ namespace StockGame.Pages
         {
         }
 
-        [DataType(DataType.Currency)]
-        public float GainsLosses { get; set; }
-        [DisplayFormat(DataFormatString = "{0:0.00} %")]
-        public float? GainsLossesPct { get { return (GainsLosses / ActiveGame.InitialCash) * 100; } }
+        public int CurrentRank { get; set; }
         public bool HasJoinedTeam { get; set; }
-        public AnalysisIndexItem HighestYield { get; set; }
-        public AnalysisIndexItem LowestYield { get; set; }
+        public AnalysisIndexItem HighestYield { get { return SortedYield.FirstOrDefault(); } }
+        public AnalysisIndexItem LowestYield { get { return SortedYield.LastOrDefault(); } }
         public IList<AnalysisIndexItem> IndexItems { get; set; }
         public PortfolioHistoryItem Portfolio { get; set; }
         public PortfolioGameHistory PortfolioGameHistory { get; set; }
-        //public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
-        public int MyRank { get; set; }
+        [DataType(DataType.Currency)]
+        public float ProfitLosses { get { return Portfolio.TotalValue - ActiveGame.InitialCash; } }
+        [DisplayFormat(DataFormatString = "{0:0.00} %")]
+        public float? ProfitLossesPct { get { return (ProfitLosses / ActiveGame.InitialCash) * 100; } }
+        IList<AnalysisIndexItem> SortedYield { get; set; }
 
 
         public async Task FetchPortfolio()
@@ -52,7 +52,7 @@ namespace StockGame.Pages
                                                                     ? (th1.Team == ActiveTeam ? -1 : 1)
                                                                     : th2.Items.Last().TotalValue.CompareTo(th1.Items.Last().TotalValue));
 
-            MyRank = PortfolioGameHistory.TeamHistories.FindIndex(t => t.Team.Id == ActiveTeam.Id) + 1;
+            CurrentRank = PortfolioGameHistory.TeamHistories.FindIndex(t => t.Team.Id == ActiveTeam.Id) + 1;
         }
 
         public async Task OnGetAsync()
@@ -99,10 +99,13 @@ namespace StockGame.Pages
                         iterPastEquityInfos.MoveNext();
                         iterPastEquityInfos.MoveNext();
                     }
-                    GainsLosses = Portfolio.TotalValue - ActiveGame.InitialCash;
+
                     IndexItems = items.OrderBy(item => item.EpisodeEquityInfo.Equity.Industry.Name).ThenBy(item => item.EpisodeEquityInfo.Equity.Name).ToList();
-                    HighestYield = items.OrderByDescending(item => item.DividendYield.HasValue).ThenByDescending(items => items.DividendYield).First();
-                    LowestYield = items.OrderByDescending(item => item.DividendYield.HasValue).ThenBy(item => item.DividendYield).First();
+
+                    SortedYield = items.Where(items => items.DividendYield != null)
+                                       .OrderByDescending(item => item.DividendYield.HasValue)
+                                       .ThenByDescending(items => items.DividendYield)
+                                       .ToList();
                 }
             }
         }
