@@ -27,6 +27,8 @@ namespace StockGame.Pages
         public IList<AnalysisIndexItem> IndexItems { get; set; }
         public PortfolioHistoryItem Portfolio { get; set; }
         public PortfolioGameHistory PortfolioGameHistory { get; set; }
+        public IList<PortfolioGraphItem> PortfolioGraphItems { get; set; }
+        public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
         [DataType(DataType.Currency)]
         public float ProfitLosses { get { return Portfolio.TotalValue - ActiveGame.InitialCash; } }
         [DisplayFormat(DataFormatString = "{0:0.00} %")]
@@ -34,26 +36,31 @@ namespace StockGame.Pages
         IList<AnalysisIndexItem> SortedYield { get; set; }
 
 
-        public async Task FetchPortfolio()
+        public async Task FetchPortfolios()
         {
             await FindActiveGameAndTeam();
 
-            PortfolioGameHistory pgh = await PortfolioHistories(ActiveGame, Enumerable.Repeat(ActiveTeam, 1), ActiveEpisodeIndex);
-
-            PortfolioTeamHistory pth = pgh.TeamHistories[0];
-
-            Portfolio = pth.Items.LastOrDefault();
-        }
-
-        public async Task GetRanking()
-        {
             PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
+            PortfolioTeamHistory = PortfolioGameHistory.TeamHistories.Find(id => id.Team.Id == ActiveTeam.Id);
+
+            Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
+
             PortfolioGameHistory.TeamHistories.Sort((th1, th2) => (th1.Team == ActiveTeam) != (th2.Team == ActiveTeam)
                                                                     ? (th1.Team == ActiveTeam ? -1 : 1)
                                                                     : th2.Items.Last().TotalValue.CompareTo(th1.Items.Last().TotalValue));
-
             CurrentRank = PortfolioGameHistory.TeamHistories.FindIndex(t => t.Team.Id == ActiveTeam.Id) + 1;
+
+            PortfolioGraphItems = new List<PortfolioGraphItem>();
+            foreach (var item in PortfolioTeamHistory.Items)
+            {
+                PortfolioGraphItems.Add(new PortfolioGraphItem
+                {
+                    EpisodeName = item.Episode.Name,
+                    TotalValue = item.TotalValue
+                });
+            }
         }
+
 
         public async Task OnGetAsync()
         {
@@ -65,9 +72,8 @@ namespace StockGame.Pages
 
                 if (HasJoinedTeam)
                 {
-                    await FetchPortfolio();
+                    await FetchPortfolios();
                     await FindActiveEpisodeEquityInfos();
-                    await GetRanking();
 
                     var items = new List<AnalysisIndexItem>();
 
