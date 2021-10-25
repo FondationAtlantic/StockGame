@@ -26,8 +26,6 @@ namespace StockGame.Pages
         public AnalysisIndexItem LowestYield { get { return SortedYield.LastOrDefault(); } }
         public IList<AnalysisIndexItem> IndexItems { get; set; }
         public PortfolioHistoryItem Portfolio { get; set; }
-        public PortfolioGameHistory PortfolioGameHistory { get; set; }
-        public IList<PortfolioGraphItem> PortfolioGraphItems { get; set; }
         public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
         [DataType(DataType.Currency)]
         public float ProfitLosses { get { return Portfolio.TotalValue - ActiveGame.InitialCash; } }
@@ -40,25 +38,14 @@ namespace StockGame.Pages
         {
             await FindActiveGameAndTeam();
 
-            PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
+            PortfolioGameHistory PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
             PortfolioTeamHistory = PortfolioGameHistory.TeamHistories.Find(id => id.Team.Id == ActiveTeam.Id);
-
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
 
             PortfolioGameHistory.TeamHistories.Sort((th1, th2) => (th1.Team == ActiveTeam) != (th2.Team == ActiveTeam)
                                                                     ? (th1.Team == ActiveTeam ? -1 : 1)
                                                                     : th2.Items.Last().TotalValue.CompareTo(th1.Items.Last().TotalValue));
             CurrentRank = PortfolioGameHistory.TeamHistories.FindIndex(t => t.Team.Id == ActiveTeam.Id) + 1;
-
-            PortfolioGraphItems = new List<PortfolioGraphItem>();
-            foreach (var item in PortfolioTeamHistory.Items)
-            {
-                PortfolioGraphItems.Add(new PortfolioGraphItem
-                {
-                    EpisodeName = item.Episode.Name,
-                    TotalValue = item.TotalValue
-                });
-            }
         }
 
 
