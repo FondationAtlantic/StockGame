@@ -359,7 +359,6 @@ else if (User.IsInRole("Student"))
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 
-        console.log(data);
         var portfolioChartData;
         var portfolioChart;
         var portfolioChartOptions;
@@ -385,7 +384,6 @@ else if (User.IsInRole("Student"))
 
             var portfolioDataArray = [];
             $.each(data, function (i, item) {
-                console.log(item.episodeName, item.totalValue)
                 portfolioDataArray.push([item.episodeName, item.totalValue]);
             });
 
@@ -395,9 +393,9 @@ else if (User.IsInRole("Student"))
 
             portfolioChart.draw(portfolioChartData, portfolioChartOptions);
 
-            //$("a[href='#graph']").on('shown.bs.tab', function (e) {
+            $("a[href='#graph']").on('shown.bs.tab', function (e) {
                 ResizeCharts();
-            //});
+            });
 
             if (document.addEventListener) {
                 window.addEventListener('resize', ResizeCharts);
