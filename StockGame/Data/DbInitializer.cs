@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using StockGame.Models;
 using System;
@@ -13,7 +14,8 @@ namespace StockGame.Data
         public static async Task CreateDefaultData(StockGameContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, IHostEnvironment env)
         {
             //TODO rmove?
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
+            //context.Database.EnsureDeleted();
 
             //initializing custom roles 
             string[] roleNames = { "Admin", "Teacher", "Student" };

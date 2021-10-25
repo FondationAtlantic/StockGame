@@ -80,6 +80,8 @@ namespace StockGame.Pages.Account
 
                     //TODO YLA : wait for email confirmation to add Student role ?
                     await _userManager.AddToRoleAsync(user, "Student");
+                    //await _userManager.AddToRoleAsync(user, "Admin");
+                    //await _userManager.AddToRoleAsync(user, "Teacher");
                     await _context.SaveChangesAsync();
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
