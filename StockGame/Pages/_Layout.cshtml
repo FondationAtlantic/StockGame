@@ -21,177 +21,174 @@
   </environment>
 </head>
 <body>
-    <div class="wrapAll @(!User.Identity.IsAuthenticated ? "loginBody" : null)">
-        @if (User.Identity.IsAuthenticated)
-        {
-            if (User.IsInRole("Student"))
+  <div class="wrapAll @(!User.Identity.IsAuthenticated ? "loginBody" : null)">
+    @if (User.Identity.IsAuthenticated)
+    {
+      if (User.IsInRole("Student"))
+      {
+        <div class="topBar d">
+          <div class="left">
+            <div class="logo">
+              <a asp-page="/Index"><img src="~/images/stockgame.png" /></a>
+            </div>
+          </div>
+          <div class="right">
+            @if (Model.ActiveGame != null && Model.ActiveTeam != null)
             {
-                <div class="topBar">
-                    <div class="left">
-                        <div class="logo">
-                            <a asp-page="/Index"><img src="~/images/stockgame.png" /></a>
-                        </div>
-                    </div>
-                    <div class="right">
-                        @if (Model.ActiveGame != null && Model.ActiveTeam != null)
-                        {
-                            <div class="currentGame">
-                                <div class="label">Partie en cours</div>
-                                <div class="value">@Model.ActiveTradingSession.Episode.Name <a asp-page="./ActiveGame/Index">Changer</a></div>
-                            </div>
-                        }
-                        <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                            <a asp-page="/Account/Manage/Index" title="Mon compte"><i class="fal fa-user"></i></a>
-                            <button type="submit" class="btn btn-link navbar-btn navbar-link" title="Déconnexion"><i class="fal fa-sign-out-alt"></i></button>
-                        </form>
-                    </div>
-                </div>
-                <div class="app">
-                    <div class="leftBar">
-                        @if (Model.ActiveGame != null && Model.ActiveTeam != null)
-                        {
-                            <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
-                            <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
-                            <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
-                        }
-                        <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users-medical"></i></a>
-                    </div>
-                    <div class="mainWindow">
-                        @RenderBody()
-                    </div>
-                </div>
+              <div class="currentGame">
+                <div class="label">Partie en cours</div>
+                <div class="value">@Model.ActiveTradingSession.Episode.Name <a asp-page="./ActiveGame/Index">Changer</a></div>
+              </div>
             }
-            else
+            <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+              <a asp-page="/Account/Manage/Index" title="Mon compte"><i class="fal fa-user"></i></a>
+              <button type="submit" class="btn btn-link navbar-btn navbar-link" title="Déconnexion"><i class="fal fa-sign-out-alt"></i></button>
+            </form>
+          </div>
+        </div>
+        <div class="app">
+          <div class="leftBar">
+            @if (Model.ActiveGame != null && Model.ActiveTeam != null)
             {
-                <nav class="navbar navbar-inverse navbar-fixed-top">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand">Jeu Boursier</a>
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    @if (User.IsInRole("Student"))
-                                    {
-                                        @if (Model.ActiveTradingSession?.Episode?.NewsTitle != null)
-                                        {
-                                            <li is-active-page-regex="^/ActiveGame/News"><a asp-page="/ActiveGame/News"><img src="~/images/newspaper_xsmall.png" title="Nouvelle!" />Nouvelle!</a></li>
-                                        }
-                                    }
-                                    else if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
-                                    {
-                                        @if (Model.ActiveGame != null || Model.ActiveTeam != null)
-                                        {
-                                            <li class="dropdown" is-active-page-regex="^/ActiveGame">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Active <b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    @if (Model.ActiveTradingSession?.Episode?.NewsTitle != null)
-                                                    {
-                                                        <li> <a asp-page="/ActiveGame/News"><img src="~/images/newspaper_xsmall.png" title="News!" />Game News</a></li>
-                                                    }
-                                                    @if (Model.ActiveGame != null)
-                                                    {
-                                                        <li> <a asp-page="/ActiveGame/Ranking">Game Ranking</a></li>
-                                                        <li> <a asp-page="/Analysis/Index">Game Analysis</a></li>
-                                                    }
-                                                    @if (Model.ActiveTeam != null)
-                                                    {
-                                                        <li> <a asp-page="/Portfolio/Trade">Team Portfolio (@Html.DisplayFor(model => model.ActiveTeam.Name))</a></li>
-                                                    }
-                                                    @if (Model.OverrideEpisodeList != null)
-                                                    {
-                                                        <li role="separator" class="divider"></li>
-                                                        @foreach (SelectListItem item in Model.OverrideEpisodeList)
-                                                        {
-                                                            <li>
-                                                                <a asp-page-handler="OverrideEpisodeIndex" asp-route-index="@item.Value" method="get">
-                                                                    @item.Text
-                                                                    @if (item.Selected)
-                                                                    {
-                                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                                    }
-                                                                </a>
-                                                            </li>
-                                                        }
-                                                    }
-                                                </ul>
-                                            </li>
-                                        }
-
-                                        @if (User.IsInRole("Admin"))
-                                        {
-                                            <li is-active-page-regex="^/Equities">  <a asp-page="/Equities/Index">Equities</a></li>
-                                            <li is-active-page-regex="^/Scenarios"> <a asp-page="/Scenarios/Index">Scenarios</a></li>
-                                            <li is-active-page-regex="/Users">      <a asp-page="/Users/Index">Users</a></li>
-                                            <li is-active-page-regex="/Schools">    <a asp-page="/Schools/Index">Schools</a></li>
-                                            <li is-active-page-regex="/Games">      <a asp-page="/Games/Index">Games</a></li>
-                                        }
-                                        @if (User.IsInRole("Teacher"))
-                                        {
-                                            <li is-active-page-regex="/Groups"><a asp-page="/Groups/Index">Groups</a></li>
-                                            <li is-active-page-regex="/Teams"><a asp-page="/Teams/Index">Teams</a></li>
-                                        }
-                                    }
-                                }
-                            </ul>
-                            <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                                <a asp-page="/Account/Manage/Index" title="Mon compte"><i class="fal fa-user"></i></a>
-                                <button type="submit" class="btn btn-link navbar-btn navbar-link" title="Déconnexion"><i class="fal fa-sign-out-alt"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
+              <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i></a>
+              <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
+              <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
+              <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
             }
-
-        }
-        else
-        {
+            <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users-medical"></i></a>
+          </div>
+          <div class="mainWindow">
             @RenderBody()
-        }
+          </div>
+        </div>
+      }
+      else
+      {
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand">Jeu Boursier</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                  @if (User.IsInRole("Student"))
+                  {
+                    @if (Model.ActiveTradingSession?.Episode?.NewsTitle != null)
+                    {
+                      <li is-active-page-regex="^/ActiveGame/News"><a asp-page="/ActiveGame/News"><img src="~/images/newspaper_xsmall.png" title="Nouvelle!" />Nouvelle!</a></li>
+                    }
+                  }
+                  else if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+                  {
+                    @if (Model.ActiveGame != null || Model.ActiveTeam != null)
+                    {
+                      <li class="dropdown" is-active-page-regex="^/ActiveGame">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Active <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          @if (Model.ActiveTradingSession?.Episode?.NewsTitle != null)
+                          {
+                            <li> <a asp-page="/ActiveGame/News"><img src="~/images/newspaper_xsmall.png" title="News!" />Game News</a></li>
+                          }
+                          @if (Model.ActiveGame != null)
+                          {
+                            <li> <a asp-page="/ActiveGame/Ranking">Game Ranking</a></li>
+                            <li> <a asp-page="/Analysis/Index">Game Analysis</a></li>
+                          }
+                          @if (Model.ActiveTeam != null)
+                          {
+                            <li> <a asp-page="/Portfolio/Trade">Team Portfolio (@Html.DisplayFor(model => model.ActiveTeam.Name))</a></li>
+                          }
+                          @if (Model.OverrideEpisodeList != null)
+                          {
+                            <li role="separator" class="divider"></li>
+                            @foreach (SelectListItem item in Model.OverrideEpisodeList)
+                            {
+                              <li>
+                                <a asp-page-handler="OverrideEpisodeIndex" asp-route-index="@item.Value" method="get">
+                                  @item.Text
+                                  @if (item.Selected)
+                                  {
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                  }
+                                </a>
+                              </li>
+                            }
+                          }
+                        </ul>
+                      </li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                      <li is-active-page-regex="^/Equities">  <a asp-page="/Equities/Index">Equities</a></li>
+                      <li is-active-page-regex="^/Scenarios"> <a asp-page="/Scenarios/Index">Scenarios</a></li>
+                      <li is-active-page-regex="/Users">      <a asp-page="/Users/Index">Users</a></li>
+                      <li is-active-page-regex="/Schools">    <a asp-page="/Schools/Index">Schools</a></li>
+                      <li is-active-page-regex="/Games">      <a asp-page="/Games/Index">Games</a></li>
+                    }
+                    @if (User.IsInRole("Teacher"))
+                    {
+                      <li is-active-page-regex="/Groups"><a asp-page="/Groups/Index">Groups</a></li>
+                      <li is-active-page-regex="/Teams"><a asp-page="/Teams/Index">Teams</a></li>
+                    }
+                  }
+                }
+              </ul>
+              <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                <a asp-page="/Account/Manage/Index" title="Mon compte"><i class="fal fa-user"></i></a>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link" title="Déconnexion"><i class="fal fa-sign-out-alt"></i></button>
+              </form>
+            </div>
+          </div>
+        </nav>
+      }
+
+    }
+    else
+    {
+      @RenderBody()
+    }
 
 
-    </div>
-    @*<footer>
-          <p>&copy; 2018 - Jeu Boursier</p>
-        </footer>*@
+  </div>
+  @*<footer>
+      <p>&copy; 2018 - Jeu Boursier</p>
+    </footer>*@
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - Jeu Boursier</p>
-        </footer>
-    </div>
+  <div class="container body-content">
+    @RenderBody()
+  </div>
 
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+  <environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+  </environment>
+  <environment exclude="Development">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+  </environment>
 
-    @RenderSection("Scripts", required: false)
+  @RenderSection("Scripts", required: false)
 </body>
 </html>

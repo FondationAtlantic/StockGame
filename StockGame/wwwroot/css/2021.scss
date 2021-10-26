@@ -78,7 +78,7 @@ h2 {
   font-weight: 700;
   margin-bottom: rem(32);
 
-  &:after{
+  &:after {
     content: "";
     display: block;
     height: 2px;
@@ -282,198 +282,239 @@ input[type="button"] {
   }
 }
 
-  ::-webkit-input-placeholder,
-  ::-moz-placeholder,
-  :-ms-input-placeholder,
-  :-moz-placeholder {
-    /* Chrome/Opera/Safari */
-    color: $text;
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+:-moz-placeholder {
+  /* Chrome/Opera/Safari */
+  color: $text;
+}
+
+form label {
+  font-family: $heading;
+  font-size: rem(18);
+}
+
+.customCheckbox {
+  display: flex;
+
+  input {
+    position: absolute;
+    left: -9999px;
   }
 
-  form label {
-    font-family: $heading;
-    font-size: rem(18);
-  }
-
-  .customCheckbox {
-    display: flex;
-
-    input {
-      position: absolute;
-      left: -9999px;
-    }
-
-    input + span {
-      display: block;
-      width: rem(20);
-      height: rem(20);
-      box-sizing: border-box;
-      border: 1px solid #1040a1;
-      border-radius: 4px;
-      margin-right: rem(16);
-    }
-
-    input:focus + span {
-      border-color: $c2;
-    }
-
-    input:checked + span {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      &:before {
-        @include awesome("\f00c", 0.875rem, 700);
-        display: block;
-      }
-    }
-  }
-
-  .hint{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .checkbox{
-    margin-top: rem(18);
-  }
-
-
-  // ================================================================================================================
-  // BASE
-  // ================================================================================================================
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    scroll-behavior: smooth;
-    height: 100%;
-    width: 100%;
-    font-family: $font;
-    color: $text;
-    font-size: 16px;
-    background-color: #fff;
-  }
-
-  body {
-    position: relative;
-    background-color: #fff;
-    height: 100vh;
-    width: 100%;
-    @include flex(column,nowrap,space-between,flex-start,flex-start);
-  }
-
-  .wrapAll {
-    flex: 1 0 auto;
-    width: 100%;
+  input + span {
+    display: block;
+    width: rem(20);
+    height: rem(20);
     box-sizing: border-box;
-    font-family: $font;
-    color: $text;
+    border: 1px solid #1040a1;
+    border-radius: 4px;
+    margin-right: rem(16);
+  }
 
-    &.loginBody {
-      overflow: hidden;
-      position: relative;
-      padding: 0 rem(36);
+  input:focus + span {
+    border-color: $c2;
+  }
 
-      + footer {
-        position: absolute;
-        bottom: 0;
-      }
+  input:checked + span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-      &:before {
-        content: "";
-        width: 800px;
-        height: 800px;
-        background: $c1;
-        display: block;
-        position: absolute;
-        top: -460px;
-        left: -460px;
-        transform: rotate(25deg);
-        outline: 6px solid $text;
-        outline-offset: 1rem;
-      }
-
-      &:after {
-        content: "";
-        width: 800px;
-        height: 800px;
-        background: $c1;
-        display: block;
-        position: absolute;
-        bottom: -460px;
-        right: -460px;
-        transform: rotate(25deg);
-        outline: 6px solid $text;
-        outline-offset: 1rem;
-      }
+    &:before {
+      @include awesome("\f00c", 0.875rem, 700);
+      display: block;
     }
   }
+}
 
-  .wrapper {
-    max-width: 1024px;
-    padding: 0;
-    margin: 0 auto;
+.hint {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkbox {
+  margin-top: rem(18);
+}
+
+
+// ================================================================================================================
+// BASE
+// ================================================================================================================
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+  font-family: $font;
+  color: $text;
+  font-size: 16px;
+  background-color: #fff;
+}
+
+body {
+  position: relative;
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+  @include flex(column,nowrap,space-between,flex-start,flex-start);
+}
+
+.wrapAll {
+  flex: 1 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: $font;
+  color: $text;
+  height: 100%;
+  overflow: hidden;
+
+  &.loginBody {
+    overflow: hidden;
     position: relative;
-  }
+    padding: 0 rem(36);
 
-  .centered {
+    + footer {
+      position: absolute;
+      bottom: 0;
+    }
+
+    &:before {
+      content: "";
+      width: 800px;
+      height: 800px;
+      background: $c1;
+      display: block;
+      position: absolute;
+      top: -460px;
+      left: -460px;
+      transform: rotate(25deg);
+      outline: 6px solid $text;
+      outline-offset: 1rem;
+    }
+
+    &:after {
+      content: "";
+      width: 800px;
+      height: 800px;
+      background: $c1;
+      display: block;
+      position: absolute;
+      bottom: -460px;
+      right: -460px;
+      transform: rotate(25deg);
+      outline: 6px solid $text;
+      outline-offset: 1rem;
+    }
+  }
+}
+
+.wrapper {
+  max-width: 1024px;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+}
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  .logo {
+    max-width: 600px;
+    margin: 0 auto rem(80);
+  }
+}
+
+.loginChoices {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  font-size: rem(18);
+  text-align: center;
+
+  .btn {
+    margin-bottom: rem(32);
+  }
+}
+
+footer {
+  text-align: center;
+  width: 100%;
+}
+
+// ================================================================================================================
+// TOPBAR
+// ================================================================================================================
+.topBar {
+  height: rem(60);
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .left {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+    width: 50%;
+    flex-shrink: 0;
 
     .logo {
-      max-width: 600px;
-      margin: 0 auto rem(80);
-    }
-  }
-
-  .loginChoices {
-    max-width: 400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    font-size: rem(18);
-    text-align: center;
-
-    .btn {
-      margin-bottom: rem(32);
-    }
-  }
-
-  footer {
-    text-align: center;
-    width: 100%;
-  }
-
-  // ================================================================================================================
-  // TOPBAR
-  // ================================================================================================================
-  .topBar {
-    height: rem(60);
-    border-bottom: 1px solid #ddd;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .left {
-      display: flex;
-      width: 50%;
+      width: 160px;
+      padding: rem(12);
+      box-sizing: border-box;
       flex-shrink: 0;
 
-      .logo {
-        width: 160px;
-        padding: rem(12);
-        box-sizing: border-box;
-        flex-shrink: 0;
+      a {
+        width: auto;
+        padding: 0;
+        border: 0;
+        text-decoration: none;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  .right {
+    display: flex;
+    width: 50%;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    height: 100%;
+
+    .currentGame {
+      border-left: 1px solid #ddd;
+      padding: rem(8);
+      text-align: left;
+
+      .label {
+        color: $text;
+        font-weight: 700;
+        font-size: rem(18);
+        text-align: left;
+        padding: 0;
+      }
+
+      .value {
+        white-space: nowrap;
+        font-weight: 500;
 
         a {
-          width: auto;
-          padding: 0;
+          display: inline;
+          font-size: rem(14);
           border: 0;
+          font-weight: 400;
+          color: $c1;
 
           &:hover {
             background-color: transparent;
@@ -482,56 +523,54 @@ input[type="button"] {
       }
     }
 
-    .right {
+    form {
       display: flex;
-      width: 50%;
-      flex-shrink: 0;
-      justify-content: flex-end;
       height: 100%;
-
-      .currentGame {
-        border-left: 1px solid #ddd;
-        padding: rem(8);
-        text-align: left;
-
-        .label {
-          color: $text;
-          font-weight: 700;
-          font-size: rem(18);
-          text-align: left;
-          padding: 0;
-        }
-
-        .value {
-          white-space: nowrap;
-          font-weight: 500;
-
-          a {
-            display: inline;
-            font-size: rem(14);
-            border: 0;
-            font-weight: 400;
-            color: $c1;
-
-            &:hover {
-              background-color: transparent;
-            }
-          }
-        }
-      }
-
-      form {
-        display: flex;
-        height: 100%;
-      }
     }
+  }
 
-    a, button {
-      width: rem(60);
+  a, button {
+    width: rem(60);
+    border: none;
+    box-sizing: border-box;
+    border-left: 1px solid #ddd;
+    height: 100%;
+    display: flex;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    color: $text;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: rem(24);
+    transition: all $t1;
+    text-decoration: none;
+
+    &:hover, &.active {
       border: none;
-      box-sizing: border-box;
+      background-color: $c1;
+      color: #FFF;
       border-left: 1px solid #ddd;
-      height: 100%;
+    }
+  }
+}
+
+.app {
+  height: calc(100% - #{rem(60)});
+  display: flex;
+
+  .leftBar {
+    width: rem(60);
+    border-right: 1px solid #ddd;
+    height: 100%;
+    flex-direction: column;
+
+    a {
+      width: rem(60);
+      box-sizing: border-box;
+      border-bottom: 1px solid #ddd;
+      height: rem(60);
       display: flex;
       background: transparent;
       padding: 0;
@@ -542,60 +581,44 @@ input[type="button"] {
       justify-content: center;
       font-size: rem(24);
       transition: all $t1;
+      text-decoration: none;
 
-      &:hover {
+      &:hover, &.active {
         background-color: $c1;
         color: #FFF;
       }
     }
   }
 
-  .app {
-    height: calc(100% - #{rem(60)});
-    display: flex;
-
-    .leftBar {
-      width: rem(60);
-      border-right: 1px solid #ddd;
-      height: 100%;
-
-      a {
-        width: rem(60);
-        box-sizing: border-box;
-        border-bottom: 1px solid #ddd;
-        height: rem(60);
-        display: flex;
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
-        color: $text;
-        margin: 0;
-        align-items: center;
-        justify-content: center;
-        font-size: rem(24);
-        transition: all $t1;
-        text-decoration: none;
-
-        &:hover {
-          background-color: $c1;
-          color: #FFF;
-        }
-      }
-    }
-
-    .mainWindow {
-      width: calc(100% - #{rem(60)});
-      box-sizing: border-box;
-    }
+  .mainWindow {
+    width: calc(100% - #{rem(60)});
+    box-sizing: border-box;
+    overflow: auto;
   }
+}
 
 // ================================================================================================================
 // DASHBOARD
 // ================================================================================================================
+section{
+  margin-bottom: rem(60);
+
+  .actions{
+    text-align: center;
+
+    a{
+      color: $c1;
+      font-size: rem(18);
+      font-weight: 700;
+    }
+  }
+}
+
 .dashboard {
   .newsfeed {
     background: $text;
     color: #FFF;
+    margin: 0;
 
     .slide {
       position: relative;
@@ -660,7 +683,7 @@ input[type="button"] {
           font-size: rem(48);
           margin-bottom: rem(16);
 
-          &:after{
+          &:after {
             display: none;
           }
         }
@@ -677,26 +700,50 @@ input[type="button"] {
     }
   }
 
-  .twoCols{
-    padding: rem(32);
+  .twoCols {
     display: flex;
     justify-content: space-between;
 
-    > .left{
+    > .left {
       flex: 1;
       margin-right: rem(32);
+      padding: rem(32);
     }
 
-    > .right{
+    > .right {
       width: 450px;
+      padding: rem(32);
+      background-color: #EFEFEF;
+
+      .title {
+        margin-bottom: rem(22);
+      }
+
+      .activities a {
+        color: $text;
+        text-decoration: none;
+        display: block;
+        margin-bottom: rem(16);
+
+        &:hover {
+          h4 {
+            color: $c1;
+          }
+        }
+
+        h4 {
+          margin: 0;
+          transition: all $t2;
+        }
+      }
     }
 
-    h2{
-      i{
+    h2 {
+      i {
         margin-right: rem(16);
       }
 
-      &:after{
+      &:after {
         margin-top: rem(20);
         width: rem(90);
       }
@@ -719,17 +766,21 @@ input[type="button"] {
       &:last-child {
         margin-right: 0;
       }
+
+      .graph{
+        margin: rem(12) 0;
+      }
     }
 
     i {
       font-size: rem(42);
     }
 
-    h3{
+    h3 {
       margin: 0;
     }
 
-    h4{
+    h4 {
       font-weight: 700;
     }
 
@@ -740,22 +791,35 @@ input[type="button"] {
   }
 }
 
-.infoBlock {
-  background: #FFF;
-  box-shadow: 0 0 20px 7px rgba(0,0,0,0.15);
-  border-radius: rem(12);
-  width: 100%;
-  box-sizing: border-box;
+.title{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 
-  .title{
-    padding: rem(12) rem(24);
+  .btn{
+    margin-top: rem(16);
   }
 }
 
+@media screen and (max-width:1600px) {
+  .dashboard .twoCols > .right{
+    width: 300px;
+  }
 
-
+  .dashboard .newsfeed .slide .left{
+    padding-left: 0;
+  }
+}
 
   @media screen and (max-width:1280px) {
+    html{
+      min-width: 1280px;
+    }
+
+    .dashboard .newsfeed .slide .right {
+      max-width: 300px;
+    }
+
     .wrapAll {
       &.loginBody {
         &:before {
@@ -771,9 +835,35 @@ input[type="button"] {
     }
   }
 
+@media screen and (min-width:768px) {
+  .m {
+    display: none;
+  }
+
+  .d {
+    display: flex;
+  }
+}
+
   @media screen and (max-width:768px) {
+    .m {
+      display: flex;
+    }
+
+    .d{
+      display: none;
+    }
+
+    .btn{
+      height: rem(48);
+      display: inline-flex;
+      align-items: center;
+      padding: 0 rem(24);
+    }
+
     html {
       height: auto;
+      min-width: 320px;
     }
 
     .login.centered {
@@ -798,11 +888,60 @@ input[type="button"] {
       }
     }
 
-    h2{
+    h2 {
       font-size: rem(28);
     }
 
-    .centered .logo{
-      margin-bottom: 3rem;  
+    .centered .logo {
+      margin-bottom: 3rem;
+    }
+
+    .app .mainWindow{
+      width: 100%;
+    }
+
+    .dashboard{
+      .newsfeed{
+        .slide{
+          padding: rem(24);
+
+          .left{
+            max-width: 100%;
+            font-size: rem(16);
+
+            h2{
+              font-size: rem(24);
+            }
+          }
+
+          .right{
+            max-width: 120px;
+          }
+
+          .img{
+            width: 100%;
+          }
+        }
+      }
+
+      .twoCols{
+        flex-direction: column;
+      }
+
+      .resume{
+        flex-direction: column;
+
+        > div{
+          background: transparent;
+          box-shadow: none;
+          padding: 0;
+        }
+      }
+    }
+
+    .title{
+      .btn{
+        display: none;
+      }
     }
   }
