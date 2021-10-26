@@ -10,6 +10,13 @@
 
 <h3><span asp-validation-for="TransactionEntry.Amount" class="text-danger"></span></h3>
 
+
+@*<div class="panel panel-default">
+  <div class="panel-body">*@
+    <div id="portfolio_chart_div"></div>
+  @*</div>
+</div>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -32,8 +39,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Portfolio.Items) {
-            @if(item.Amount <= 0) { continue; }
+        @foreach (var item in Model.Portfolio.Items)
+        {
+            @if (item.Amount <= 0) { continue; }
             <tr>
                 <td>
                     <img src="@Url.Content(item.Equity.ThumbPath)" />
@@ -42,13 +50,16 @@
                     @Html.DisplayFor(modelItem => item.Equity.Name)
                 </td>
                 <td class="text-right">
-                    @if(item.Amount > 0) { @Html.DisplayFor(modelItem => item.Amount); }
+                    @if (item.Amount > 0)
+                    {@Html.DisplayFor(modelItem => item.Amount);
+                }
                 </td>
                 <td class="text-right">
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td class="text-right">
-                    @if(item.Value > 0f) { @Html.DisplayFor(modelItem => item.Value) }
+                    @if (item.Value > 0f)
+                    {@Html.DisplayFor(modelItem => item.Value)}
                 </td>
             </tr>
         }
@@ -118,9 +129,9 @@
 
         function validate(form) {
             var amount = $('#TransactionEntry_Amount')[0].value;
-            if (isNaN(amount) || amount.length == 0) 
-            { 
-                return true; 
+            if (isNaN(amount) || amount.length == 0)
+            {
+                return true;
             }
             var dropList = $('#TransactionEntry_EquityId')[0];
             var idx = dropList.selectedIndex;
@@ -134,5 +145,70 @@
         }
 
     </script>
- 
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+
+        var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+
+        console.log(data);
+
+        var portfolioChartData;
+        var portfolioChart;
+        var portfolioChartOptions;
+
+        google.charts.setOnLoadCallback(LoadChartData);
+
+        function LoadChartData() {
+            LoadChart(data);
+            return false;
+        }
+
+        function LoadChart(data) {
+
+            portfolioChartData = new google.visualization.DataTable();
+            portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
+            portfolioChartOptions = {
+                height: "220",
+                //title: "Valeur des portefeuilles",
+                chartArea: { width: '85%', top: 20, height: '60%' },
+                hAxis: { slantedText: true, slantedTextAngle: 15 },
+                //vAxis: { title: 'Valeur' },
+            };
+
+            var portfolioDataArray = [];
+            $.each(data, function (i, item) {
+                portfolioDataArray.push([item.episodeName, item.totalValue]);
+            });
+
+            portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+            portfolioChartData.addColumn('number', 'Valeur'); // Implicit domain label col.
+            portfolioChartData.addRows(portfolioDataArray);
+
+            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+
+            $("a[href='#graph']").on('shown.bs.tab', function (e) {
+                ResizeCharts();
+            });
+
+            if (document.addEventListener) {
+                window.addEventListener('resize', ResizeCharts);
+            }
+            else if (document.attachEvent) {
+                window.attachEvent('onresize', ResizeCharts);
+            }
+            else {
+                window.resize = ResizeCharts;
+            }
+
+            return false;
+        }
+
+        function ResizeCharts(data) {
+            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+        }
+
+    </script>
 }

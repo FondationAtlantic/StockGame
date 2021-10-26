@@ -42,6 +42,7 @@ namespace StockGame.Pages.Portfolio
         public IEnumerable<PortfolioItem> TradeableEquities { get; set; }
 
         public StockGame.Models.ViewModels.PortfolioHistoryItem Portfolio { get; set; }
+        public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -94,13 +95,14 @@ namespace StockGame.Pages.Portfolio
 
             PortfolioGameHistory pgh = await PortfolioHistories(ActiveGame, Enumerable.Repeat(ActiveTeam, 1), ActiveEpisodeIndex);
 
-            PortfolioTeamHistory pth = pgh.TeamHistories[0];
+            //PortfolioTeamHistory pth = pgh.TeamHistories[0];
+            PortfolioTeamHistory = pgh.TeamHistories[0];
 
-            Portfolio = pth.Items.LastOrDefault();
+            Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
 
             //TODO
             //if (eei.Visible)
         }
-        
+
     }
 }
