@@ -21,10 +21,19 @@
   </environment>
 </head>
 <body>
-    <div class="wrapAll @(!User.Identity.IsAuthenticated ? "loginBody" : null)">
-        @if (User.Identity.IsAuthenticated)
-        {
-            if (User.IsInRole("Student"))
+  <div class="wrapAll @(!User.Identity.IsAuthenticated ? "loginBody" : null)">
+    @if (User.Identity.IsAuthenticated)
+    {
+      if (User.IsInRole("Student"))
+      {
+        <div class="topBar d">
+          <div class="left">
+            <div class="logo">
+              <a asp-page="/Index"><img src="~/images/stockgame.png" /></a>
+            </div>
+          </div>
+          <div class="right">
+            @if (Model.ActiveGame != null && Model.ActiveTeam != null)
             {
                 <div class="topBar">
                     <div class="left">
@@ -154,9 +163,8 @@
         else
         {
             @RenderBody()
+
         }
-
-
     </div>
     @*<footer>
           <p>&copy; 2018 - Jeu Boursier</p>
