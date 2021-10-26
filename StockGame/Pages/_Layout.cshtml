@@ -50,6 +50,7 @@
           <div class="leftBar">
             @if (Model.ActiveGame != null && Model.ActiveTeam != null)
             {
+              <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i></a>
               <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
               <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
               <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
@@ -164,10 +165,6 @@
 
   <div class="container body-content">
     @RenderBody()
-    <hr />
-    <footer>
-      <p>&copy; 2018 - Jeu Boursier</p>
-    </footer>
   </div>
 
 
