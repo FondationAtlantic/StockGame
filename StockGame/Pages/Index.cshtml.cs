@@ -128,6 +128,8 @@ namespace StockGame.Pages
 
         public async Task FetchPortfolio()
         {
+            await FindActiveGameAndTeam();
+
             PortfolioGameHistory PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
             PortfolioTeamHistory = PortfolioGameHistory.TeamHistories.Find(id => id.Team.Id == ActiveTeam.Id);
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
@@ -146,7 +148,7 @@ namespace StockGame.Pages
             {
                 HasJoinedTeam = Context.TeamMembers.Where(tm => tm.UserId == CurrentUser.Id).FirstOrDefault() != null;
 
-                if (HasJoinedTeam)
+                if (HasJoinedTeam && ActiveGame != null)
                 {
                     await FetchPortfolio();
                     await FetchMarketAnalysis();

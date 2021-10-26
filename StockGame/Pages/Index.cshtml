@@ -26,7 +26,7 @@ else if (User.IsInRole("Student"))
   {
     <p>Les étudiants sont invités à commencer par <a asp-page="./Teams/Join">joindre une équipe</a>.</p>
   }
-  else
+  else if (Model.ActiveGame != null && Model.ActiveTeam != null)
   {
     <div class="dashboard">
       <section class="newsfeed">
