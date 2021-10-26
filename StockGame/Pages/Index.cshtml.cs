@@ -128,8 +128,6 @@ namespace StockGame.Pages
 
         public async Task FetchPortfolio()
         {
-            await FindActiveGameAndTeam();
-
             PortfolioGameHistory PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
             PortfolioTeamHistory = PortfolioGameHistory.TeamHistories.Find(id => id.Team.Id == ActiveTeam.Id);
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
