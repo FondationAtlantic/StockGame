@@ -17,6 +17,7 @@ namespace StockGame.Models.ViewModels
         public float TotalValue { get { return Cash + InvestmentsValue; } }
 
         public List<PortfolioItem> Items { get; set; } = new List<PortfolioItem>();
+        public string EpisodeName { get { return Episode.Name; } }
 
         [JsonIgnore]
         public Episode Episode { get; set; }
