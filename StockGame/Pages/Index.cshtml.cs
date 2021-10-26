@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using StockGame.Data;
 using StockGame.Models;
 using StockGame.Models.ViewModels;
-using StockGame.Pages.Games;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -34,10 +29,105 @@ namespace StockGame.Pages
         IList<AnalysisIndexItem> SortedYield { get; set; }
 
 
-        public async Task FetchPortfolios()
+        public async Task FetchMarketAnalysis()
         {
-            await FindActiveGameAndTeam();
+            await FindActiveEpisodeEquityInfos();
 
+            var items = new List<AnalysisIndexItem>();
+
+            var iterPastEquityInfos = ActiveAndPastEpisodeEquityInfos.GetEnumerator();
+            iterPastEquityInfos.MoveNext();
+            foreach (EpisodeEquityInfo eei in ActiveEpisodeEquityInfos)
+            {
+                while (iterPastEquityInfos.Current != null
+                        && iterPastEquityInfos.Current.EquityId == eei.EquityId
+                        && iterPastEquityInfos.Current.Episode.EpisodeIndex != ActiveEpisodeIndex - 1)
+                {
+                    iterPastEquityInfos.MoveNext();
+                }
+
+                if (eei.Visible)
+                {
+                    items.Add(new AnalysisIndexItem
+                    {
+                        EpisodeEquityInfo = eei,
+                        Trend = (iterPastEquityInfos.Current == null
+                                || iterPastEquityInfos.Current.EquityId != eei.EquityId
+                                || iterPastEquityInfos.Current.Price == eei.Price)
+                                ? AnalysisIndexItem.PriceTrend.Unchanged
+                                : (iterPastEquityInfos.Current.Price < eei.Price
+                                ? AnalysisIndexItem.PriceTrend.Up
+                                : AnalysisIndexItem.PriceTrend.Down)
+                    });
+                }
+                iterPastEquityInfos.MoveNext();
+                iterPastEquityInfos.MoveNext();
+            }
+            foreach (AnalysisIndexItem analysisItem in items)
+            {
+                iterPastEquityInfos = ActiveAndPastEpisodeEquityInfos.GetEnumerator();
+                iterPastEquityInfos.MoveNext();
+                while (iterPastEquityInfos.Current != null)
+                {
+                    while (iterPastEquityInfos.Current != null
+                          && iterPastEquityInfos.Current.EquityId != analysisItem.EpisodeEquityInfo.EquityId)
+                        iterPastEquityInfos.MoveNext();
+
+                    EpisodeEquityInfo eei = iterPastEquityInfos.Current;
+                    if (eei == null)
+                        break;
+
+                    if (eei.Dividend.HasValue
+                        && eei.Dividend.Value != 0.0f
+                        && eei.Episode.EpisodeIndex < ActiveEpisodeIndex
+                        && (analysisItem.PrevDividendEpisode == null || eei.Episode.EpisodeIndex > analysisItem.PrevDividendEpisode.Episode.EpisodeIndex))
+                    {
+                        analysisItem.PrevDividendEpisode = eei;
+                    }
+
+                    if (eei.AnnounceFinancialResults
+                        && eei.Episode.EpisodeIndex < ActiveEpisodeIndex
+                        && (analysisItem.PrevResultsEpisode == null || eei.Episode.EpisodeIndex > analysisItem.PrevResultsEpisode.Episode.EpisodeIndex))
+                    {
+                        analysisItem.PrevResultsEpisode = eei;
+                    }
+
+                    iterPastEquityInfos.MoveNext();
+                }
+
+                var iterFutureEquityInfos = FutureEpisodeEquityInfos.GetEnumerator();
+                iterFutureEquityInfos.MoveNext();
+                while (iterFutureEquityInfos.Current != null)
+                {
+                    while (iterFutureEquityInfos.Current != null
+                           && iterFutureEquityInfos.Current.EquityId != analysisItem.EpisodeEquityInfo.EquityId)
+                        iterFutureEquityInfos.MoveNext();
+
+                    EpisodeEquityInfo eei = iterFutureEquityInfos.Current;
+                    if (eei == null)
+                        break;
+
+                    if (eei.Dividend.HasValue
+                        && (analysisItem.NextDividendEpisode == null || eei.Episode.EpisodeIndex < analysisItem.NextDividendEpisode.Episode.EpisodeIndex))
+                    {
+                        analysisItem.NextDividendEpisode = eei;
+                    }
+
+                    iterFutureEquityInfos.MoveNext();
+                }
+            }
+            IndexItems = items.OrderBy(item => item.EpisodeEquityInfo.Equity.Industry.Name)
+                               .ThenBy(item => item.EpisodeEquityInfo.Equity.Name)
+                               .ToList();
+
+            SortedYield = items.Where(items => items.DividendYield != null)
+                               .OrderByDescending(item => item.DividendYield.HasValue)
+                               .ThenByDescending(items => items.DividendYield)
+                               .ToList();
+        }
+
+        public async Task FetchPortfolio()
+        {
             PortfolioGameHistory PortfolioGameHistory = await PortfolioHistories(ActiveGame, null, ActiveEpisodeIndex);
             PortfolioTeamHistory = PortfolioGameHistory.TeamHistories.Find(id => id.Team.Id == ActiveTeam.Id);
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
@@ -47,7 +137,6 @@ namespace StockGame.Pages
                                                                     : th2.Items.Last().TotalValue.CompareTo(th1.Items.Last().TotalValue));
             CurrentRank = PortfolioGameHistory.TeamHistories.FindIndex(t => t.Team.Id == ActiveTeam.Id) + 1;
         }
-
 
         public async Task OnGetAsync()
         {
@@ -59,46 +148,8 @@ namespace StockGame.Pages
 
                 if (HasJoinedTeam)
                 {
-                    await FetchPortfolios();
-                    await FindActiveEpisodeEquityInfos();
-
-                    var items = new List<AnalysisIndexItem>();
-
-                    var iterPastEquityInfos = ActiveAndPastEpisodeEquityInfos.GetEnumerator();
-                    iterPastEquityInfos.MoveNext();
-                    foreach (EpisodeEquityInfo eei in ActiveEpisodeEquityInfos)
-                    {
-                        while (iterPastEquityInfos.Current != null
-                                && iterPastEquityInfos.Current.EquityId == eei.EquityId
-                                && iterPastEquityInfos.Current.Episode.EpisodeIndex != ActiveEpisodeIndex - 1)
-                        {
-                            iterPastEquityInfos.MoveNext();
-                        }
-
-                        if (eei.Visible)
-                        {
-                            items.Add(new AnalysisIndexItem
-                            {
-                                EpisodeEquityInfo = eei,
-                                Trend = (iterPastEquityInfos.Current == null
-                                        || iterPastEquityInfos.Current.EquityId != eei.EquityId
-                                        || iterPastEquityInfos.Current.Price == eei.Price)
-                                        ? AnalysisIndexItem.PriceTrend.Unchanged
-                                        : (iterPastEquityInfos.Current.Price < eei.Price
-                                        ? AnalysisIndexItem.PriceTrend.Up
-                                        : AnalysisIndexItem.PriceTrend.Down)
-                            });
-                        }
-                        iterPastEquityInfos.MoveNext();
-                        iterPastEquityInfos.MoveNext();
-                    }
-
-                    IndexItems = items.OrderBy(item => item.EpisodeEquityInfo.Equity.Industry.Name).ThenBy(item => item.EpisodeEquityInfo.Equity.Name).ToList();
-
-                    SortedYield = items.Where(items => items.DividendYield != null)
-                                       .OrderByDescending(item => item.DividendYield.HasValue)
-                                       .ThenByDescending(items => items.DividendYield)
-                                       .ToList();
+                    await FetchPortfolio();
+                    await FetchMarketAnalysis();
                 }
             }
         }

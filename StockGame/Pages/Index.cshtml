@@ -142,6 +142,55 @@ else if (User.IsInRole("Student"))
               <a class="btn" asp-page="/Portfolio/Trade">Acheter / vendre des actions</a>
             </div>
             <div class="resume">
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">
+                                    @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Equity.Name)
+                                </th>
+                                <th style="text-align: center">
+                                    @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)
+                                </th>
+                                   <th style="text-align: center">
+                                       @*@Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)*@
+                                       Bénéfice/Action
+                                   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.IndexItems)
+                            {
+                                <tr>
+                                    <td style="text-align:left">
+                                        <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id" style="text-decoration: none; font-weight: bold; color: black"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
+                                    </td>
+                                    <td class="nowrap-right" style="text-align: right">
+                                        @switch (item.Trend)
+                                        {
+                                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
+                                                <strong style="color: green">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                                break;
+                                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
+                                                <strong style="color: red">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                                break;
+                                        }
+                                    </td>
+                                    <td style="text-align:right">
+                                        @if (item.LastKnownEarningsPerShare < 0.0f)
+                                        {
+                                            <span style="color: red">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: green">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
               <div>
                 <h3>Meilleur rendement</h3>
                 @Model.HighestYield.EpisodeEquityInfo.Equity.Name
@@ -152,31 +201,6 @@ else if (User.IsInRole("Student"))
                 @Model.LowestYield.EpisodeEquityInfo.Equity.Name
                 @Html.DisplayFor(modelItem => modelItem.LowestYield.DividendYield)
               </div>
-                <div>
-                  <table>
-                  <tbody>
-                    @foreach (var item in Model.IndexItems)
-                    {
-                      <tr>
-                          <td class="activities">
-                              <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
-                          </td>
-                          <td class="nowrap-right">
-                              @switch (item.Trend)
-                              {
-                                  case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
-                                      <strong style="color: green">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                                      break;
-                                  case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
-                                      <strong style="color: red">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                                      break;
-                              }
-                          </td>
-                      </tr>
-                    }
-                  </tbody>
-                  </table>
-                </div>
             </div>
             <div class="actions">
               <a asp-page="/Analysis/Index">Analyse complète du marché</a>
