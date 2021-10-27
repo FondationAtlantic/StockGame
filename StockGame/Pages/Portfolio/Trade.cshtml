@@ -8,7 +8,7 @@
 <h2>Portefeuille</h2>
 <hr />
 
-<h3><span asp-validation-for="TransactionEntry.Amount" class="text-danger"></span></h3>
+@*<h3><span asp-validation-for="TransactionEntry.Amount" class="text-danger"></span></h3>*@
 
 
 @*<div class="panel panel-default">
@@ -100,10 +100,10 @@
                 <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
                 <select asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="TransactionEntry.Type" class="control-label"></label>
                 <select asp-for="TransactionEntry.Type" class="form-control" asp-items="Html.GetEnumSelectList<StockGame.Models.ViewModels.TransactionEntry.TradeType>()"></select>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="TransactionEntry.Amount" class="control-label"></label>
                 <input asp-for="TransactionEntry.Amount" class="form-control" />
@@ -114,7 +114,10 @@
                 <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Confirmer" class="btn btn-default" />
+                @*<input type="submit" value="Confirmer" class="btn btn-default" />*@
+                @*TODO find a way to make the value remain Buy/Sell, but display their displaynames*@
+                <input asp-for="TransactionEntry.Type" type="submit" value="Sell" class="btn" style="background-color:red" />
+                <input asp-for="TransactionEntry.Type" type="submit" value="Buy" class="btn" style="background-color:green" />
             </div>
         </form>
     </div>
@@ -152,8 +155,6 @@
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
-
-        console.log(data);
 
         var portfolioChartData;
         var portfolioChart;
