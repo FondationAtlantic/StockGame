@@ -639,3 +639,9 @@ section {
       padding: 0; }
   .title .btn {
     display: none; } }
+
+.modal-open .modal {
+  display: block;
+  width: 600px;
+  height: 600px;
+  opacity: 1; }
