@@ -1,38 +1,60 @@
 ﻿@model StockGame.Pages.Portfolio.TradeModel
 
+@*<div class="modal fade" tabindex="-1" role="dialog" id="transaction-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>*@
+<a class="btn btn-primary btn-sm" data-target="#transaction-modal" data-toggle="modal"><i class="fal fa-plus"></i></a>
+
 <div class="modal fade" id="transaction-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>Transaction</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Transaction</h4>
             </div>
-           
-                    <form method="post" onsubmit="return validate(this);">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
-                            <select asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
-                        </div>
-                        @*<div class="form-group">
-                                <label asp-for="TransactionEntry.Type" class="control-label"></label>
-                                <select asp-for="TransactionEntry.Type" class="form-control" asp-items="Html.GetEnumSelectList<StockGame.Models.ViewModels.TransactionEntry.TradeType>()"></select>
-                            </div>*@
-                        <div class="form-group">
-                            <label asp-for="TransactionEntry.Amount" class="control-label"></label>
-                            <input asp-for="TransactionEntry.Amount" class="form-control" />
-                            <span asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="TransactionEntry.Reason" class="control-label"></label>
-                            <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
-                        </div>
-                        <div class="form-group">
-                            @*<input type="submit" value="Confirmer" class="btn btn-default" />*@
-                            @*TODO find a way to make the value remain Buy/Sell, but display their displaynames*@
-                            <input asp-for="TransactionEntry.Type" type="submit" value="Sell" class="btn" style="background-color:red" />
-                            <input asp-for="TransactionEntry.Type" type="submit" value="Buy" class="btn" style="background-color:green" />
-                        </div>
-                    </form>
+            <div class="modal-body">
+                <form method="post" onsubmit="return validate(this);">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
+                        <select asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+                    </div>
+                    @*<div class="form-group">
+            <label asp-for="TransactionEntry.Type" class="control-label"></label>
+            <select asp-for="TransactionEntry.Type" class="form-control" asp-items="Html.GetEnumSelectList<StockGame.Models.ViewModels.TransactionEntry.TradeType>()"></select>
+        </div>*@
+                    <div class="form-group">
+                        <label asp-for="TransactionEntry.Amount" class="control-label"></label>
+                        <input asp-for="TransactionEntry.Amount" class="form-control" />
+                        <span asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TransactionEntry.Reason" class="control-label"></label>
+                        <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
+                    </div>
+                    <div class="form-group">
+                        @*<input type="submit" value="Confirmer" class="btn btn-default" />
+            TODO find a way to make the value remain Buy/Sell, but display their displaynames*@
+                        <input asp-for="TransactionEntry.Type" type="submit" value="Sell" class="btn"  data-dismiss="modal" style="background-color:red" />
+                        <input asp-for="TransactionEntry.Type" type="submit" value="Buy" class="btn"  data-dismiss="modal" style="background-color:green" />
+                    </div>
+                </form>
+            </div>
+            @*<div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>*@ 
         </div>
     </div>
 </div>
