@@ -55,13 +55,6 @@
                     <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
                     <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
                     <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
-                    @*<a class="btn btn-primary popup"
-                       data-url="Portfolio/Trade"
-                       data-toggle="modal"
-                       data-target="#transaction-modal"
-                       id="transaction-modal">Trade</a>
-                    <partial name="_TransactionModal" model="new StockGame.Pages.Portfolio.TradeModel(Model.UserManager, Model.Context)" />*@
-                    @*<a href="#transaction-modal" class="btn btn-primary" data-toggle="modal" data-target="#transaction-modal" id="transaction-modal"><i class="fa fa-plus"></i></a>*@
                     <partial name="_TransactionModal" model="new StockGame.Pages.Portfolio.TradeModel(Model.UserManager, Model.Context)" />
 
                 }
@@ -71,7 +64,6 @@
                 @RenderBody()
 
             </div>
-            @*<partial name="_TransactionModal" model="new StockGame.Pages.Portfolio.TradeModel(Model.UserManager, Model.Context)" />*@
         </div>
       }
       else
