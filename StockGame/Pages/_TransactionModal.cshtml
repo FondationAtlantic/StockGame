@@ -1,0 +1,129 @@
+﻿@model StockGame.Pages.Portfolio.TradeModel
+
+<div class="modal fade" id="transaction-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Transaction</h4>
+            </div>
+           
+                    <form method="post" onsubmit="return validate(this);">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
+                            <select asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+                        </div>
+                        @*<div class="form-group">
+                                <label asp-for="TransactionEntry.Type" class="control-label"></label>
+                                <select asp-for="TransactionEntry.Type" class="form-control" asp-items="Html.GetEnumSelectList<StockGame.Models.ViewModels.TransactionEntry.TradeType>()"></select>
+                            </div>*@
+                        <div class="form-group">
+                            <label asp-for="TransactionEntry.Amount" class="control-label"></label>
+                            <input asp-for="TransactionEntry.Amount" class="form-control" />
+                            <span asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TransactionEntry.Reason" class="control-label"></label>
+                            <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
+                        </div>
+                        <div class="form-group">
+                            @*<input type="submit" value="Confirmer" class="btn btn-default" />*@
+                            @*TODO find a way to make the value remain Buy/Sell, but display their displaynames*@
+                            <input asp-for="TransactionEntry.Type" type="submit" value="Sell" class="btn" style="background-color:red" />
+                            <input asp-for="TransactionEntry.Type" type="submit" value="Buy" class="btn" style="background-color:green" />
+                        </div>
+                    </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        var tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+
+        function validate(form) {
+            var amount = $('#TransactionEntry_Amount')[0].value;
+            if (isNaN(amount) || amount.length == 0)
+            {
+                return true;
+            }
+            var dropList = $('#TransactionEntry_EquityId')[0];
+            var idx = dropList.selectedIndex;
+            var side = $('#TransactionEntry_Type')[0].selectedIndex == 0 ? "Acheter" : "Vendre";
+            var price = tradeableEquities[idx].price;
+            var name = tradeableEquities[idx].name;
+            var totalValue = price * amount;
+            var strValue = Number(totalValue).toLocaleString ('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?" );
+        }
+
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+
+        var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+
+        var portfolioChartData;
+        var portfolioChart;
+        var portfolioChartOptions;
+
+        google.charts.setOnLoadCallback(LoadChartData);
+
+        function LoadChartData() {
+            LoadChart(data);
+            return false;
+        }
+
+        function LoadChart(data) {
+
+            portfolioChartData = new google.visualization.DataTable();
+            portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
+            portfolioChartOptions = {
+                height: "220",
+                //title: "Valeur des portefeuilles",
+                chartArea: { width: '85%', top: 20, height: '60%' },
+                hAxis: { slantedText: true, slantedTextAngle: 15 },
+                //vAxis: { title: 'Valeur' },
+            };
+
+            var portfolioDataArray = [];
+            $.each(data, function (i, item) {
+                portfolioDataArray.push([item.episodeName, item.totalValue]);
+            });
+
+            portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+            portfolioChartData.addColumn('number', 'Valeur'); // Implicit domain label col.
+            portfolioChartData.addRows(portfolioDataArray);
+
+            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+
+            $("a[href='#graph']").on('shown.bs.tab', function (e) {
+                ResizeCharts();
+            });
+
+            if (document.addEventListener) {
+                window.addEventListener('resize', ResizeCharts);
+            }
+            else if (document.attachEvent) {
+                window.attachEvent('onresize', ResizeCharts);
+            }
+            else {
+                window.resize = ResizeCharts;
+            }
+
+            return false;
+        }
+
+        function ResizeCharts(data) {
+            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+        }
+
+    </script>
+}
