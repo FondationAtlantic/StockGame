@@ -67,7 +67,7 @@ else if (User.IsInRole("Student"))
           <section class="wallet">
             <div class="title">
               <h2><i class="fal fa-wallet" aria-hidden="true"></i> Mon porte-feuille</h2>
-              <a class="btn" asp-page="/Portfolio/Trade">Acheter / vendre des actions</a>
+              <a id="transaction" class="btn" href="/Portfolio/Trade">Acheter / vendre des actions</a>
             </div>
             <div class="resume">
               <div>
@@ -139,7 +139,7 @@ else if (User.IsInRole("Student"))
           <section class="market">
             <div class="title">
               <h2><i class="fal fa-chart-line"></i> Marché actuel</h2>
-              <a class="btn" asp-page="/Portfolio/Trade">Acheter / vendre des actions</a>
+              <a id="transaction" class="btn" href="/Portfolio/Trade">Acheter / vendre des actions</a>
             </div>
             <div class="resume">
                 <div>
@@ -318,6 +318,11 @@ else if (User.IsInRole("Student"))
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
+        $('#transaction').on('click', function (e) {
+            event.preventDefault();
+            window.location.href = '/Portfolio/Trade?showModal=1';
+        });
+
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
