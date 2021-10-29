@@ -10,10 +10,10 @@ namespace StockGame.Models.ViewModels
     {
         public enum TradeType
         {
-            [Display(Name = "Achat")]
-            Buy,
-            [Display(Name = "Vente")]
-            Sell
+            //[Display(Name = "Achat")]
+            Achat,
+            //[Display(Name = "Vente")]
+            Vente
         };
 
         public int TradingSessionId { get; set; }

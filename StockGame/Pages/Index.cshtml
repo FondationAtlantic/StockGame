@@ -320,7 +320,7 @@ else if (User.IsInRole("Student"))
     <script>
         $('#transaction').on('click', function (e) {
             event.preventDefault();
-            window.location.href = '/Portfolio/Trade?showModal=1';
+            window.location.href = event.srcElement.href + '?showModal=1';
         });
 
         google.charts.load('current', { packages: ['corechart'] });
