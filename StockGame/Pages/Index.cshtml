@@ -67,36 +67,38 @@ else if (User.IsInRole("Student"))
           <section class="wallet">
             <div class="title">
               <h2><i class="fal fa-wallet" aria-hidden="true"></i> Mon porte-feuille</h2>
-              <a class="btn" asp-page="/Portfolio/Trade">Acheter / vendre des actions</a>
+              <a id="transaction" class="btn" href="/Portfolio/Trade">Acheter / vendre des actions</a>
             </div>
             <div class="resume">
-              <div>
-                <i class="fal fa-analytics"></i>
-                <h4>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h4>
-                <div class="value">
-                  @Html.DisplayFor(model => model.Portfolio.TotalValue)
+                <div>
+                    <i class="fal fa-analytics"></i>
+                    <h4>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h4>
+                    <div class="value">
+                        @Html.DisplayFor(model => model.Portfolio.TotalValue)
+                    </div>
                 </div>
-              </div>
-              <div>
-                <i class="fal fa-hand-holding-usd"></i>
-                <h4>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h4>
-                <div class="value">
-                  @Html.DisplayFor(model => model.Portfolio.Cash)
+                <div>
+                    <i class="fal fa-hand-holding-usd"></i>
+                    <h4>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h4>
+                    <div class="value">
+                        @Html.DisplayFor(model => model.Portfolio.Cash)
+                    </div>
                 </div>
-              </div>
-              <div>
-                <i class="fal fa-arrow-alt-up"></i>
-                <h4>@Html.DisplayFor(model => model.CurrentRank)ème Position</h4>
-                <div class="value">
-                  @Html.DisplayFor(model => model.ActiveTeam.Name)
+                @if (Model.PortfolioTeamHistory.Items.Count > 1)
+                {
+                    <div>
+                        <i class="fal fa-arrow-alt-up"></i>
+                        <h4>@Html.DisplayFor(model => model.CurrentRank)ème Position</h4>
+                        <div class="value">
+                            @Html.DisplayFor(model => model.ActiveTeam.Name)
+                        </div>
+                    </div>
+                }
                 </div>
-              </div>
-            </div>
             <div class="resume">
               <div>
                 <h4>Profits et Pertes</h4>
                 <div class="graph">
-
                 </div>
                 @if (Model.ProfitLosses > 0.0f)
                 {
@@ -121,6 +123,8 @@ else if (User.IsInRole("Student"))
                 }
 
               </div>
+              @if (Model.PortfolioTeamHistory.Items.Count > 1)
+              {
               <div>
                   <h4>Valeur du Portefeuille</h4>
                   <div class="graph">
@@ -131,6 +135,7 @@ else if (User.IsInRole("Student"))
                       </div>
                   </div>
               </div>
+              }
             </div>
             <div class="actions">
               <a asp-page="/Portfolio/Trade">Afficher le porte-feuille complet</a>
@@ -139,7 +144,7 @@ else if (User.IsInRole("Student"))
           <section class="market">
             <div class="title">
               <h2><i class="fal fa-chart-line"></i> Marché actuel</h2>
-              <a class="btn" asp-page="/Portfolio/Trade">Acheter / vendre des actions</a>
+              <a id="transaction" class="btn" href="/Portfolio/Trade">Acheter / vendre des actions</a>
             </div>
             <div class="resume">
                 <div>
@@ -318,6 +323,11 @@ else if (User.IsInRole("Student"))
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
+        $('#transaction').on('click', function (e) {
+            event.preventDefault();
+            window.location.href = event.srcElement.href + '?showModal=1';
+        });
+
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));

@@ -17,6 +17,7 @@
 <h2>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Name)</h2>
 <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath)" />
 
+<a id="transaction" class="btn" href="/Portfolio/Trade">Acheter</a>
 
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Info</a></li>
@@ -46,52 +47,53 @@
             </div>
         </div>
 
-        @if(Model.DetailsItem.EpisodeEquityInfo.NewsTitle != null) {
-        <div class="panel panel-default">
-            <div class="panel-heading"><img src="~/images/newspaper_small.png" title="Nouvelles" /> Nouvelles</div>
-            <div class="panel-body">
-                <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.NewsImgPath)" style="max-width:100%;" />
-                <br />
-                <h3>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsTitle)</h3>
-                @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsDetail)
+        @if (Model.DetailsItem.EpisodeEquityInfo.NewsTitle != null)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading"><img src="~/images/newspaper_small.png" title="Nouvelles" /> Nouvelles</div>
+                <div class="panel-body">
+                    <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.NewsImgPath)" style="max-width:100%;" />
+                    <br />
+                    <h3>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsTitle)</h3>
+                    @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsDetail)
+                </div>
             </div>
-        </div>
         }
 
         <div class="panel panel-default">
             <div class="panel-heading"><img src="~/images/dividend_small.png" title="Dividende" /> Dividende</div>
             <div class="panel-body">
                 <dl class="dl-horizontal">
-                    @if(Model.DetailsItem.PrevDividendEpisode != null) 
+                    @if (Model.DetailsItem.PrevDividendEpisode != null)
                     {
                         <dt>Précédent</dt>
                         <dd>
                             @Html.DisplayFor(model => model.DetailsItem.PrevDividendEpisode.Dividend) [@Html.DisplayFor(model => model.DetailsItem.PrevDividendEpisode.Episode.Name)]
                         </dd>
                     }
-                    @if(!Model.DetailsItem.HasNextKnownDividend) 
+                    @if (!Model.DetailsItem.HasNextKnownDividend)
                     {
                         <dt>Prochain</dt>
                         <dd>Aucun dividende à venir</dd>
                     }
                     else
                     {
-                        @if(Model.DetailsItem.EpisodeEquityInfo.Dividend != null) 
+                        @if (Model.DetailsItem.EpisodeEquityInfo.Dividend != null)
                         {
                             <dt>Dividende Imminent!</dt>
                             <dd>
                                 @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Dividend) [@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]
                             </dd>
                         }
-                        else if(Model.DetailsItem.NextDividendEpisode != null) 
+                        else if (Model.DetailsItem.NextDividendEpisode != null)
                         {
                             <dt>Prochain</dt>
                             <dd>
                                 [@Html.DisplayFor(model => model.DetailsItem.NextDividendEpisode.Episode.Name)]
                             </dd>
                         }
-                        @if(Model.DetailsItem.DividendYield != null) 
-                        { 
+                        @if (Model.DetailsItem.DividendYield != null)
+                        {
                             <dt>Rendement Dividende</dt>
                             <dd>
                                 @Html.DisplayFor(model => model.DetailsItem.DividendYield)
@@ -106,23 +108,27 @@
             <div class="panel-heading"><img src="~/images/results_small.png" title="Résultats Financiers" />Publication du Bénéfice par Action</div>
             <div class="panel-body">
                 <dl class="dl-horizontal">
-                    @if(Model.DetailsItem.PrevResultsEpisode != null) {
-                    <dt>Précédent</dt>
-                    <dd>
-                        <span class="@(Model.DetailsItem.PrevResultsEpisode.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.EarningPerShare)</span> [@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.Episode.Name)]
-                    </dd>                     
+                    @if (Model.DetailsItem.PrevResultsEpisode != null)
+                    {
+                        <dt>Précédent</dt>
+                        <dd>
+                            <span class="@(Model.DetailsItem.PrevResultsEpisode.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.EarningPerShare)</span> [@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.Episode.Name)]
+                        </dd>
+
                     }
-                    @if(Model.DetailsItem.EpisodeEquityInfo.AnnounceFinancialResults) {
-                    <dt>Nouveau Bénéfice!</dt>
-                    <dd>
-                        <span class="@(Model.DetailsItem.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.EarningPerShare)</span> [@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]
-                    </dd>
+                    @if (Model.DetailsItem.EpisodeEquityInfo.AnnounceFinancialResults)
+                    {
+                        <dt>Nouveau Bénéfice!</dt>
+                        <dd>
+                            <span class="@(Model.DetailsItem.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.EarningPerShare)</span> [@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]
+                        </dd>
                     }
-                    @if(Model.DetailsItem.NextResultsEpisode != null) {
-                    <dt>Prochain</dt>
-                    <dd>
-                        [@Html.DisplayFor(model => model.DetailsItem.NextResultsEpisode.Episode.Name)]
-                    </dd>
+                    @if (Model.DetailsItem.NextResultsEpisode != null)
+                    {
+                        <dt>Prochain</dt>
+                        <dd>
+                            [@Html.DisplayFor(model => model.DetailsItem.NextResultsEpisode.Episode.Name)]
+                        </dd>
                     }
                 </dl>
             </div>
@@ -219,6 +225,14 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
+        $('#transaction').on('click', function (e) {
+            event.preventDefault();
+            window.location.href = event.srcElement.href +
+                '?showModal=1' +
+                '&equity=' +
+                @Model.DetailsItem.EpisodeEquityInfo.Equity.Id;
+        });
+
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PerShareChartItems));

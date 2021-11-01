@@ -42,6 +42,7 @@ namespace StockGame.Pages.Portfolio
         public IEnumerable<PortfolioItem> TradeableEquities { get; set; }
 
         public StockGame.Models.ViewModels.PortfolioHistoryItem Portfolio { get; set; }
+        public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -62,7 +63,7 @@ namespace StockGame.Pages.Portfolio
             PortfolioItem item = Portfolio.Items.Where(i => i.EquityId == TransactionEntry.EquityId).SingleOrDefault();
             if (item == null)
                 ModelState.AddModelError("TransactionEntry.EquityId", "Compagnie inexistante!");
-            else if (TransactionEntry.Type == TransactionEntry.TradeType.Buy)
+            else if (TransactionEntry.Type == TransactionEntry.TradeType.Achat)
             {
                 if (item.Price * TransactionEntry.Amount > Portfolio.Cash)
                     ModelState.AddModelError("TransactionEntry.Amount", "Argent disponible insuffisant pour l'achat!");
@@ -75,7 +76,7 @@ namespace StockGame.Pages.Portfolio
 
             Transaction t = new Transaction
             {
-                Amount = TransactionEntry.Type == TransactionEntry.TradeType.Buy ? (int)TransactionEntry.Amount : -(int)TransactionEntry.Amount,
+                Amount = TransactionEntry.Type == TransactionEntry.TradeType.Achat ? (int)TransactionEntry.Amount : -(int)TransactionEntry.Amount,
                 EquityId = TransactionEntry.EquityId,
                 TransactionReasonId = TransactionEntry.TransactionReasonId,
                 TeamMemberId = ActiveTeamMember.Id,
@@ -94,13 +95,14 @@ namespace StockGame.Pages.Portfolio
 
             PortfolioGameHistory pgh = await PortfolioHistories(ActiveGame, Enumerable.Repeat(ActiveTeam, 1), ActiveEpisodeIndex);
 
-            PortfolioTeamHistory pth = pgh.TeamHistories[0];
+            //PortfolioTeamHistory pth = pgh.TeamHistories[0];
+            PortfolioTeamHistory = pgh.TeamHistories[0];
 
-            Portfolio = pth.Items.LastOrDefault();
+            Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
 
             //TODO
             //if (eei.Visible)
         }
-        
+
     }
 }

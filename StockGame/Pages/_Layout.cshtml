@@ -1,4 +1,5 @@
 ﻿@model StockGame.Pages.StockPageModel
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,19 +48,20 @@
           </div>
         </div>
         <div class="app">
-          <div class="leftBar">
-            @if (Model.ActiveGame != null && Model.ActiveTeam != null)
-            {
-              <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i></a>
-              <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
-              <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
-              <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
-            }
-            <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users-medical"></i></a>
-          </div>
-          <div class="mainWindow">
-            @RenderBody()
-          </div>
+            <div class="leftBar">
+                @if (Model.ActiveGame != null && Model.ActiveTeam != null)
+                {
+                    <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i></a>
+                    <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
+                    <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
+                    <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
+                }
+                <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users-medical"></i></a>
+            </div>
+            <div class="mainWindow">
+                @RenderBody()
+
+            </div>
         </div>
       }
       else
@@ -159,36 +161,34 @@
 
 
   </div>
-  @*<footer>
-      <p>&copy; 2018 - Jeu Boursier</p>
-    </footer>*@
+    @*<footer>
+          <p>&copy; 2018 - Jeu Boursier</p>
+        </footer>*@
 
-  <div class="container body-content">
-    @RenderBody()
-  </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
 
-
-  <environment include="Development">
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-  </environment>
-  <environment exclude="Development">
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-            asp-fallback-test="window.jQuery"
-            crossorigin="anonymous"
-            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-    </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-            crossorigin="anonymous"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-    </script>
-    <script src="~/js/site.min.js" asp-append-version="true"></script>
-  </environment>
-
-  @RenderSection("Scripts", required: false)
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
