@@ -100,7 +100,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
-                        <select asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+                        <select id="equity-select" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
                     </div>
                     <div class="form-group">
                         <label asp-for="TransactionEntry.Amount" class="control-label"></label>
@@ -128,8 +128,7 @@
 <script>
     $(document).ready(function () {
         getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
-        getParameter($('#TransactionEntry_EquityId')[0]) &&
-            selectElement($('#TransactionEntry_EquityId')[0], getParameter($('#TransactionEntry_EquityId')[0]));
+        getParameter('equity') && selectElement(getParameter('equity'));
         document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
     });
 
@@ -138,8 +137,8 @@
         return parameters.get(parameterName);
     }
 
-    function selectElement(id, valueToSelect) {
-        let element = document.getElementById(id);
+    function selectElement(valueToSelect) {
+        let element = document.getElementById('equity-select');
         element.value = valueToSelect;
     }
 
@@ -151,10 +150,9 @@
             return true;
         }
         let side = type == 'buy' ? 'Acheter' : 'Vendre'
-        let dropList = $('#TransactionEntry_EquityId')[0];
-        let idx = dropList.selectedIndex;
-        let name = tradeableEquities[idx].name;
-        let strValue = Number(tradeableEquities[idx].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        let index = document.getElementById('equity-select').selectedIndex
+        let name = tradeableEquities[index].name;
+        let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?");
     }
 </script>
