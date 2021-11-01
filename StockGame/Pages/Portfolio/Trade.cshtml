@@ -112,8 +112,8 @@
                         <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
                     </div>
                     <div class="form-group">
-                        <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="validate('sell')" class="btn" style="background-color:red" />
-                        <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="validate('buy')" class="btn" style="background-color:green" />
+                        <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color:red" />
+                        <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color:green" />
                     </div>
                 </form>
             </div>
