@@ -9,11 +9,12 @@
 
 <a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat/Vente</a>
 
-
-<div class="panel-body">
-    <div id="portfolio_chart_div"></div>
-</div>
-
+@if (Model.PortfolioTeamHistory.Items.Count > 1)
+{
+    <div class="panel-body">
+        <div id="portfolio_chart_div"></div>
+    </div>
+}
 
 <table class="table">
     <thead>
@@ -119,48 +120,44 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
-    $(document).ready(function () {
-        getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
-        getParameter('equity') && selectElement(getParameter('equity'));
-        document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
-    });
-
-    function getParameter(parameterName) {
-        let parameters = new URLSearchParams(window.location.search);
-        return parameters.get(parameterName);
-    }
-
-    function selectElement(valueToSelect) {
-        let element = document.getElementById('equity-select');
-        element.value = valueToSelect;
-    }
-
-    var tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
-
-    function validate(type) {
-        var amount = $('#TransactionEntry_Amount')[0].value;
-        if (amount.length == 0) {
-            return true;
-        }
-        let side = type == 'buy' ? 'Acheter' : 'Vendre'
-        let index = document.getElementById('equity-select').selectedIndex
-        let name = tradeableEquities[index].name;
-        let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?");
-    }
-</script>
-
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
     <script>
+        $(document).ready(function () {
+            getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
+            getParameter('equity') && selectElement(getParameter('equity'));
+            document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
+        });
 
+        function getParameter(parameterName) {
+            let parameters = new URLSearchParams(window.location.search);
+            return parameters.get(parameterName);
+        }
+
+        function selectElement(valueToSelect) {
+            let element = document.getElementById('equity-select');
+            element.value = valueToSelect;
+        }
+
+        var tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+
+        function validate(type) {
+            var amount = $('#TransactionEntry_Amount')[0].value;
+            if (amount.length == 0) {
+                return true;
+            }
+            let side = type == 'buy' ? 'Acheter' : 'Vendre'
+            let index = document.getElementById('equity-select').selectedIndex
+            let name = tradeableEquities[index].name;
+            let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?");
+        }
+ 
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
@@ -212,7 +209,6 @@
             else {
                 window.resize = ResizeCharts;
             }
-
             return false;
         }
 
