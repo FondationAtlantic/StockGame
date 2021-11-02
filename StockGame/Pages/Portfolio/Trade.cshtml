@@ -5,90 +5,142 @@
     ViewData["Title"] = "Portefeuille";
 }
 
-<h2>Portefeuille</h2>
+@*/////// TEST ///////*@
+<style type="text/css">
+    @@keyframes transitionIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
 
-<a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat/Vente</a>
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-@if (Model.PortfolioTeamHistory.Items.Count > 1)
-{
-    <div class="panel-body">
-        <div id="portfolio_chart_div"></div>
-    </div>
-}
+    .transition {
+        animation: transitionIn .4s ease-out;
+    }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.ThumbPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.Name)
-            </th>
-            <th class="text-right">
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Amount)
-            </th>
-            <th class="text-right">
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Price)
-            </th>
-            <th class="text-right">
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Value)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Portfolio.Items)
-        {
-            @if (item.Amount <= 0) { continue; }
+    @@keyframes transitionY {
+        from {
+            opacity: 0;
+            transform: rotateX(90deg)
+        }
+
+        to {
+            opacity: 1;
+            transform: rotateX(0deg)
+        }
+    }
+
+    .graph-transition {
+        animation: transitionY 1s ease;
+    }
+
+    .posXY {
+        margin: 2%;
+    }
+
+    .modal-mob {
+        max-width: calc(100vh - 48%);
+        overflow-y: auto;
+    }
+</style>
+@*//// ^^ TEST ^^ ////*@
+
+<div class="transition posXY">
+
+    <h2>Portefeuille</h2>
+    @* //TODO idéalement le bouton et le titre devraient être sur la même ligne avec de l'espace entre... *@
+    <a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat / Vente</a>
+
+    @if (Model.PortfolioTeamHistory.Items.Count > 1)
+    {
+        <div class="panel-body graph-transition" style="height: 240px">
+            <div class="" id="portfolio_chart_div"></div>
+        </div>
+    }
+
+    <table class="table">
+        <thead>
             <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.ThumbPath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.Name)
+                </th>
+                <th class="text-right">
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Amount)
+                </th>
+                <th class="text-right">
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Price)
+                </th>
+                <th class="text-right">
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Value)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Portfolio.Items)
+            {
+                @if (item.Amount <= 0) { continue; }
+                <tr>
+                    <td>
+                        <a href="#" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+                            <img style="height: 2rem" src="@Url.Content(item.Equity.ThumbPath)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal" style="text-decoration: none; color: black">
+                            @Html.DisplayFor(modelItem => item.Equity.Name)
+                        </a>
+                    </td>
+                    <td class="text-right">
+                        @if (item.Amount > 0)
+                        {@Html.DisplayFor(modelItem => item.Amount);
+                    }
+                    </td>
+                    <td class="text-right">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="text-right">
+                        @if (item.Value > 0f)
+                        {@Html.DisplayFor(modelItem => item.Value)}
+                    </td>
+                </tr>
+            }
+            <tr class="success">
                 <td>
-                    <img src="@Url.Content(item.Equity.ThumbPath)" />
+                    @Html.DisplayNameFor(model => model.Portfolio.Cash)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Equity.Name)
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td class="text-right">
-                    @if (item.Amount > 0)
-                    {@Html.DisplayFor(modelItem => item.Amount);
-                }
-                </td>
-                <td class="text-right">
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td class="text-right">
-                    @if (item.Value > 0f)
-                    {@Html.DisplayFor(modelItem => item.Value)}
+                    @Html.DisplayFor(model => model.Portfolio.Cash)
                 </td>
             </tr>
-        }
-        <tr class="success">
-            <td>
-                @Html.DisplayNameFor(model => model.Portfolio.Cash)
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-                @Html.DisplayFor(model => model.Portfolio.Cash)
-            </td>
-        </tr>
-        <tr style="border-bottom: 1px solid;border-bottom-color: lightgray;">
-            <td>
-                @Html.DisplayNameFor(model => model.Portfolio.TotalValue)
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-                @Html.DisplayFor(model => model.Portfolio.TotalValue)
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <tr style="border-bottom: 1px solid;border-bottom-color: lightgray;">
+                <td>
+                    @Html.DisplayNameFor(model => model.Portfolio.TotalValue)
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Portfolio.TotalValue)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-<div class="modal fade" id="transaction-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+<div class="modal fade  " id="transaction-modal" tabindex="-1" role="dialog" style="margin:0 auto">
+    <div class="modal-dialog modal-mob">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -121,7 +173,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -157,7 +208,7 @@
             let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?");
         }
- 
+
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
