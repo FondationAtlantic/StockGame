@@ -12,7 +12,6 @@
             opacity: 0;
             transform: translateY(-10px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
@@ -28,19 +27,17 @@
             opacity: 0;
             transform: rotateX(90deg)
         }
-
         to {
             opacity: 1;
             transform: rotateX(0deg)
         }
     }
-
     .graph-transition {
         animation: transitionY 1s ease;
     }
 
     .posXY {
-        margin: 2%;
+        margin: 1% 10% 0 2%;
     }
 
     .modal-mob {
@@ -52,14 +49,15 @@
 
 <div class="transition posXY">
 
-    <h2>Portefeuille</h2>
-    @* //TODO idéalement le bouton et le titre devraient être sur la même ligne avec de l'espace entre... *@
-    <a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat / Vente</a>
+    <div class="title">
+        <h2>Portefeuille</h2>
+        <a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat / Vente</a>
+    </div>
 
     @if (Model.PortfolioTeamHistory.Items.Count > 1)
     {
         <div class="panel-body graph-transition" style="height: 240px">
-            <div class="" id="portfolio_chart_div"></div>
+            <div id="portfolio_chart_div"></div>
         </div>
     }
 
@@ -216,6 +214,7 @@
         var portfolioChartData;
         var portfolioChart;
         var portfolioChartOptions;
+        var lineColor;
 
         google.charts.setOnLoadCallback(LoadChartData);
 
@@ -225,7 +224,7 @@
         }
 
         function LoadChart(data) {
-
+            @Model.ActiveGame.InitialCash < @Model.Portfolio.TotalValue ? lineColor = '#097138' : lineColor = '#a52714';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
             portfolioChartOptions = {
@@ -234,6 +233,12 @@
                 chartArea: { width: '85%', top: 10, height: '60%' },
                 hAxis: { slantedText: true, slantedTextAngle: 15 },
                 //vAxis: { title: 'Valeur' },
+                colors: [lineColor],
+                animation: {
+                    'startup': true,
+                    duration: 400,
+                    easing: 'inAndOut'
+                }
             };
 
             var portfolioDataArray = [];

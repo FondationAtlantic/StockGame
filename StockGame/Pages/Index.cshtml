@@ -353,6 +353,7 @@ else if (User.IsInRole("Student"))
         var portfolioChartData;
         var portfolioChart;
         var portfolioChartOptions;
+        var lineColor;
 
         google.charts.setOnLoadCallback(LoadChartData);
 
@@ -362,7 +363,7 @@ else if (User.IsInRole("Student"))
         }
 
         function LoadChart(data) {
-
+            @Model.ProfitLosses > 0 ? lineColor = '#097138' : lineColor = '#a52714';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             portfolioChartOptions = {
@@ -371,6 +372,12 @@ else if (User.IsInRole("Student"))
                 chartArea: { width: '100%', top: 20, height: '60%' },
                 hAxis: { slantedText: true, slantedTextAngle: 30 },
                 //vAxis: { title: 'Valeur' },
+                colors: [lineColor],
+                animation: {
+                    startup: true,
+                    duration: 250,
+                    easing: 'inAndOut'
+                }
             };
 
             var portfolioDataArray = [];
