@@ -342,8 +342,8 @@ else if (User.IsInRole("Student"))
 
     <script>
         $('#transaction').on('click', function (e) {
-            event.preventDefault();
-            window.location.href = event.srcElement.href + '?showModal=1';
+        event.preventDefault();
+        window.location.href = event.srcElement.href + '?showModal=1';
         });
 
         google.charts.load('current', { packages: ['corechart'] });
@@ -355,7 +355,12 @@ else if (User.IsInRole("Student"))
         var portfolioChartOptions;
         var lineColor;
 
-        google.charts.setOnLoadCallback(LoadChartData);
+        if (data != null && document.getElementById('price_chart_div') != null) {
+            data[data.length - 1].totalValue > data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714'
+            google.charts.setOnLoadCallback(LoadChartData);
+        }
+
+        //google.charts.setOnLoadCallback(LoadChartData);
 
         function LoadChartData() {
             LoadChart(data);
@@ -363,7 +368,6 @@ else if (User.IsInRole("Student"))
         }
 
         function LoadChart(data) {
-            data[data.length -1].totalValue > data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             portfolioChartOptions = {
@@ -376,7 +380,7 @@ else if (User.IsInRole("Student"))
                 animation: {
                     startup: true,
                     duration: 250,
-                    easing: 'inAndOut'
+                    easing: 'out'
                 }
             };
 
@@ -411,7 +415,6 @@ else if (User.IsInRole("Student"))
         function ResizeCharts(data) {
             portfolioChart.draw(portfolioChartData, portfolioChartOptions);
         }
-
     </script>
 }
 
