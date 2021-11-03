@@ -363,7 +363,7 @@ else if (User.IsInRole("Student"))
         }
 
         function LoadChart(data) {
-            @Model.ProfitLosses > 0 ? lineColor = '#097138' : lineColor = '#a52714';
+            data[data.length -1].totalValue > data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             portfolioChartOptions = {
