@@ -88,7 +88,7 @@
                 @if (item.Amount <= 0) { continue; }
                 <tr>
                     <td>
-                        <a href="#" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+                        <a href="#" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal" style="text-decoration: none; color: black">
                             <img style="height: 2rem" src="@Url.Content(item.Equity.ThumbPath)" />
                         </a>
                     </td>
@@ -235,7 +235,7 @@
                 //vAxis: { title: 'Valeur' },
                 colors: [lineColor],
                 animation: {
-                    'startup': true,
+                    //startup: true,
                     duration: 400,
                     easing: 'inAndOut'
                 }
