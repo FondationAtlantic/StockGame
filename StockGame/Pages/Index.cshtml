@@ -122,21 +122,21 @@ else if (User.IsInRole("Student"))
                                 @if (Model.ProfitLosses > 0.0f)
                                 {
                                     <div class="value" style="color: darkgreen">
-                                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses)
+                                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
                                         @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                                     </div>
                                 }
                                 else if (Model.ProfitLosses < 0.0f)
                                 {
                                     <div class="value" style="color: darkred">
-                                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses)
+                                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
                                         @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="value">
-                                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses)
+                                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
                                         @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                                     </div>
                                 }
@@ -147,11 +147,11 @@ else if (User.IsInRole("Student"))
                                 <div>
                                     <h4>Valeur du Portefeuille</h4>
                                     <div class="graph">
-                                        <div class="panel panel-default">
+                                        @*<div class="panel panel-default">*@
                                             <div class="panel-body">
                                                 <div id="price_chart_div"></div>
                                             </div>
-                                        </div>
+                                        @*</div>*@
                                     </div>
                                 </div>
                             }
@@ -360,8 +360,6 @@ else if (User.IsInRole("Student"))
             google.charts.setOnLoadCallback(LoadChartData);
         }
 
-        //google.charts.setOnLoadCallback(LoadChartData);
-
         function LoadChartData() {
             LoadChart(data);
             return false;
@@ -371,11 +369,9 @@ else if (User.IsInRole("Student"))
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             portfolioChartOptions = {
-                //title: "Valeur du Portefeuille",
-                //chartArea: { width: '50%', top: 55, height: '40%' },
-                chartArea: { width: '100%', top: 20, height: '60%' },
+                height: 180,
+                chartArea: { width: '100%', top: 0, height: '75%' },
                 hAxis: { slantedText: true, slantedTextAngle: 30 },
-                //vAxis: { title: 'Valeur' },
                 colors: [lineColor],
                 animation: {
                     startup: true,

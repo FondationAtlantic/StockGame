@@ -274,10 +274,11 @@
             priceChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             priceChartOptions = {
                 title: "Prix Historiques",
-                chartArea: { width: '50%', top: 55, height: '40%' },
+                chartArea: { width: '80%', top: 25, height: '60%' },
                 hAxis: { slantedText: true, slantedTextAngle: 15 },
                 vAxis: { title: 'Prix' },
                 animation: {
+                    startup: true,
                     duration: 500,
                     easing: 'out'
                 },
@@ -285,13 +286,14 @@
 
             epsChartOptions = {
                 title: "Bénéfices et Dividendes par Action",
-                chartArea: { width: '50%', top: 55, height: '40%' },
+                chartArea: { width: '80%', top: 25, height: '60%' },
                 hAxis: { slantedText: true, slantedTextAngle: 15 },
                 vAxis: { title: 'Montant', minValue: 0 },
                 series: {
                     1: { pointShape: 'diamond', pointSize: 8, lineWidth: 0 }
                 },
                 animation: {
+                    startup: true,
                     duration: 500,
                     easing: 'out'
                 },
