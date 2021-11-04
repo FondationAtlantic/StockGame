@@ -148,9 +148,9 @@ else if (User.IsInRole("Student"))
                                     <h4>Valeur du Portefeuille</h4>
                                     <div class="graph">
                                         @*<div class="panel panel-default">*@
-                                            <div class="panel-body">
+                                            @*<div class="panel-body">*@
                                                 <div id="price_chart_div"></div>
-                                            </div>
+                                            @*</div>*@
                                         @*</div>*@
                                     </div>
                                 </div>
@@ -356,7 +356,7 @@ else if (User.IsInRole("Student"))
         var lineColor;
 
         if (data != null && document.getElementById('price_chart_div') != null) {
-            data[data.length - 1].totalValue > data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714'
+            data[data.length - 1].totalValue >= data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714'
             google.charts.setOnLoadCallback(LoadChartData);
         }
 
@@ -369,15 +369,15 @@ else if (User.IsInRole("Student"))
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             portfolioChartOptions = {
-                height: 180,
-                chartArea: { width: '100%', top: 0, height: '75%' },
-                hAxis: { slantedText: true, slantedTextAngle: 30 },
-                colors: [lineColor],
                 animation: {
                     startup: true,
                     duration: 250,
                     easing: 'out'
-                }
+                },
+                chartArea: { width: '100%', top: 5, height: '60%' },
+                colors: [lineColor],
+                hAxis: { slantedText: true, slantedTextAngle: 15 },
+                height: 130,
             };
 
             var portfolioDataArray = [];
