@@ -140,18 +140,13 @@ else if (User.IsInRole("Student"))
                                         @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                                     </div>
                                 }
-
                             </div>
                             @if (Model.PortfolioTeamHistory.Items.Count > 1)
                             {
                                 <div>
                                     <h4>Valeur du Portefeuille</h4>
                                     <div class="graph">
-                                        @*<div class="panel panel-default">*@
-                                            @*<div class="panel-body">*@
-                                                <div id="price_chart_div"></div>
-                                            @*</div>*@
-                                        @*</div>*@
+                                        <div id="price_chart_div"></div>
                                     </div>
                                 </div>
                             }
@@ -163,7 +158,7 @@ else if (User.IsInRole("Student"))
                     <section class="market">
                         <div class="title">
                             <h2><i class="fal fa-chart-line"></i> Marché actuel</h2>
-                            <a id="transaction" class="btn" href="/Portfolio/Trade">Acheter / vendre des actions</a>
+                            <a id="transaction2" class="btn" href="/Portfolio/Trade">Acheter / vendre des actions</a>
                         </div>
                         <div class="resume">
                             <div>
@@ -341,9 +336,9 @@ else if (User.IsInRole("Student"))
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
-        $('#transaction').on('click', function (e) {
-        event.preventDefault();
-        window.location.href = event.srcElement.href + '?showModal=1';
+        $('#transaction, #transaction2').on('click', function (e) {
+            event.preventDefault();
+            window.location.href = event.srcElement.href + '?showModal=1';
         });
 
         google.charts.load('current', { packages: ['corechart'] });
