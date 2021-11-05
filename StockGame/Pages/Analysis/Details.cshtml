@@ -250,14 +250,14 @@
 
         google.charts.load('current', { packages: ['corechart'] });
 
-        var data = @Html.Raw(Json.Serialize(Model.PerShareChartItems));
+        const data = @Html.Raw(Json.Serialize(Model.PerShareChartItems));
 
-        var priceChartData;
-        var priceChart;
-        var priceChartOptions;
-        var epsChartData;
-        var epsChart;
-        var epsChartOptions;
+        let priceChartData;
+        let priceChart;
+        let priceChartOptions;
+        let epsChartData;
+        let epsChart;
+        let epsChartOptions;
 
         google.charts.setOnLoadCallback(LoadChartData);
 
@@ -268,7 +268,7 @@
 
         function LoadChart(data) {
 
-            var current = 0;
+            let current = 0;
 
             priceChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
             priceChartOptions = {
@@ -288,7 +288,7 @@
                 vAxis: { title: 'Montant', minValue: 0 },
             };
 
-            var priceDataArray = [];
+            let priceDataArray = [];
             $.each(data, function (i, item) {
                 priceDataArray.push([item.episodeName, item.price]);
             });
@@ -298,7 +298,7 @@
             priceChartData.addColumn('number', 'Prix'); // Implicit domain label col.
             priceChartData.addRows(priceDataArray);
 
-            var epsDataArray = [];
+            let epsDataArray = [];
             $.each(data, function (i, item) {
                 if (item.earnings != null)
                     epsDataArray.push([item.episodeName, item.earnings, item.dividend, 'div', 'Dividende']);
@@ -312,11 +312,11 @@
             epsChartData.addColumn({ type: 'string', role: 'annotationText' });
             epsChartData.addRows(epsDataArray);
 
-            var dataTable = [];
+            let dataTable = [];
             dataTable[0] = priceChartData;
             dataTable[1] = epsChartData;
-            var options = [priceChartOptions, epsChartOptions];
-            var button = document.getElementById('button');
+            let options = [priceChartOptions, epsChartOptions];
+            let button = document.getElementById('button');
             function drawChart() {
                 priceChart.draw(dataTable[current], options[current]);
             }

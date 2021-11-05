@@ -10,7 +10,7 @@
     @@keyframes transitionIn {
         from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-5px);
         }
         to {
             opacity: 1;
@@ -178,7 +178,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         $(document).ready(function () {
-            getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
+            getParameter('showModal') === 1 && $('#transaction-modal').modal('show');
             getParameter('equity') && selectElement(getParameter('equity'));
             document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
         });
@@ -193,10 +193,10 @@
             element.value = valueToSelect;
         }
 
-        var tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+        const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
         function validate(type) {
-            var amount = $('#TransactionEntry_Amount')[0].value;
+            let amount = $('#TransactionEntry_Amount')[0].value;
             if (amount.length == 0) {
                 return true;
             }
@@ -209,12 +209,12 @@
 
         google.charts.load('current', { packages: ['corechart'] });
 
-        var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+        const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 
-        var portfolioChartData;
-        var portfolioChart;
-        var portfolioChartOptions;
-        var lineColor;
+        let portfolioChartData;
+        let portfolioChart;
+        let portfolioChartOptions;
+        let lineColor;
 
         google.charts.setOnLoadCallback(LoadChartData);
 
@@ -246,7 +246,7 @@
                 vAxis: { baseline: getBaseline() }
             };
 
-            var portfolioDataArray = [];
+            let portfolioDataArray = [];
             $.each(data, function (i, item) {
                 portfolioDataArray.push([item.episodeName, item.totalValue]);
             });

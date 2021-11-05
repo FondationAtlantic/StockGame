@@ -10,9 +10,7 @@ namespace StockGame.Models.ViewModels
     {
         public enum TradeType
         {
-            //[Display(Name = "Achat")]
             Achat,
-            //[Display(Name = "Vente")]
             Vente
         };
 

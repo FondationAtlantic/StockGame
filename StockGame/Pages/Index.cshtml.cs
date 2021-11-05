@@ -17,15 +17,15 @@ namespace StockGame.Pages
 
         public int CurrentRank { get; set; }
         public bool HasJoinedTeam { get; set; }
-        public AnalysisIndexItem HighestYield { get { return SortedYield.FirstOrDefault(); } }
-        public AnalysisIndexItem LowestYield { get { return SortedYield.LastOrDefault(); } }
+        public AnalysisIndexItem HighestYield => SortedYield.FirstOrDefault();
+        public AnalysisIndexItem LowestYield => SortedYield.LastOrDefault();
         public IList<AnalysisIndexItem> IndexItems { get; set; }
         public PortfolioHistoryItem Portfolio { get; set; }
         public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
         [DataType(DataType.Currency)]
-        public float ProfitLosses { get { return Portfolio.TotalValue - ActiveGame.InitialCash; } }
+        public float ProfitLosses => Portfolio.TotalValue - ActiveGame.InitialCash;
         [DisplayFormat(DataFormatString = "{0:0.00} %")]
-        public float? ProfitLossesPct { get { return (ProfitLosses / ActiveGame.InitialCash) * 100; } }
+        public float? ProfitLossesPct => (ProfitLosses / ActiveGame.InitialCash) * 100;
         IList<AnalysisIndexItem> SortedYield { get; set; }
 
 

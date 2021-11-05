@@ -10,7 +10,7 @@
     @@keyframes transitionIn {
         from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-5px);
         }
 
         to {
@@ -348,12 +348,12 @@ else if (User.IsInRole("Student"))
 
         google.charts.load('current', { packages: ['corechart'] });
 
-        var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+        const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 
-        var portfolioChartData;
-        var portfolioChart;
-        var portfolioChartOptions;
-        var lineColor;
+        let portfolioChartData;
+        let portfolioChart;
+        let portfolioChartOptions;
+        let lineColor;
 
         if (data != null && document.getElementById('price_chart_div') != null) {
             data[data.length - 1].totalValue >= data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714'
@@ -376,7 +376,7 @@ else if (User.IsInRole("Student"))
                 height: 110,
             };
 
-            var portfolioDataArray = [];
+            let portfolioDataArray = [];
             $.each(data, function (i, item) {
                 portfolioDataArray.push([item.episodeName, item.totalValue]);
             });
