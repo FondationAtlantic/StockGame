@@ -5,90 +5,140 @@
     ViewData["Title"] = "Portefeuille";
 }
 
-<h2>Portefeuille</h2>
+@*/////// TEST ///////*@
+<style type="text/css">
+    @@keyframes transitionIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-<a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat/Vente</a>
+    .transition {
+        animation: transitionIn .4s ease-out;
+    }
 
-@if (Model.PortfolioTeamHistory.Items.Count > 1)
-{
-    <div class="panel-body">
-        <div id="portfolio_chart_div"></div>
+    @@keyframes transitionY {
+        from {
+            opacity: 0;
+            transform: rotateX(90deg)
+        }
+        to {
+            opacity: 1;
+            transform: rotateX(0deg)
+        }
+    }
+    .graph-transition {
+        animation: transitionY 1s ease;
+    }
+
+    .posXY {
+        margin: 1% 10% 0 2%;
+    }
+
+    .modal-mob {
+        max-width: calc(100vh - 48%);
+        overflow-y: auto;
+    }
+</style>
+@*//// ^^ TEST ^^ ////*@
+
+<div class="transition posXY">
+
+    <div class="title">
+        <h2>Portefeuille</h2>
+        <a class="btn btn-sm" data-target="#transaction-modal" data-toggle="modal">Achat / Vente</a>
     </div>
-}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.ThumbPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.Name)
-            </th>
-            <th class="text-right">
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Amount)
-            </th>
-            <th class="text-right">
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Price)
-            </th>
-            <th class="text-right">
-                @Html.DisplayNameFor(model => model.Portfolio.Items[0].Value)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Portfolio.Items)
-        {
-            @if (item.Amount <= 0) { continue; }
+    @if (Model.PortfolioTeamHistory.Items.Count > 1)
+    {
+        <div class="panel-body graph-transition" style="height: 240px">
+            <div id="portfolio_chart_div"></div>
+        </div>
+    }
+
+    <table class="table">
+        <thead>
             <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.ThumbPath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Equity.Name)
+                </th>
+                <th class="text-right">
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Amount)
+                </th>
+                <th class="text-right">
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Price)
+                </th>
+                <th class="text-right">
+                    @Html.DisplayNameFor(model => model.Portfolio.Items[0].Value)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Portfolio.Items)
+            {
+                @if (item.Amount <= 0) { continue; }
+                <tr>
+                    <td>
+                        <a href="#" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal" style="text-decoration: none; color: black">
+                            <img style="height: 2rem" src="@Url.Content(item.Equity.ThumbPath)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal" style="text-decoration: none; color: black">
+                            @Html.DisplayFor(modelItem => item.Equity.Name)
+                        </a>
+                    </td>
+                    <td class="text-right">
+                        @if (item.Amount > 0)
+                        {@Html.DisplayFor(modelItem => item.Amount);
+                    }
+                    </td>
+                    <td class="text-right">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="text-right">
+                        @if (item.Value > 0f)
+                        {@Html.DisplayFor(modelItem => item.Value)}
+                    </td>
+                </tr>
+            }
+            <tr class="success">
                 <td>
-                    <img src="@Url.Content(item.Equity.ThumbPath)" />
+                    @Html.DisplayNameFor(model => model.Portfolio.Cash)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Equity.Name)
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td class="text-right">
-                    @if (item.Amount > 0)
-                    {@Html.DisplayFor(modelItem => item.Amount);
-                }
-                </td>
-                <td class="text-right">
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td class="text-right">
-                    @if (item.Value > 0f)
-                    {@Html.DisplayFor(modelItem => item.Value)}
+                    @Html.DisplayFor(model => model.Portfolio.Cash)
                 </td>
             </tr>
-        }
-        <tr class="success">
-            <td>
-                @Html.DisplayNameFor(model => model.Portfolio.Cash)
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-                @Html.DisplayFor(model => model.Portfolio.Cash)
-            </td>
-        </tr>
-        <tr style="border-bottom: 1px solid;border-bottom-color: lightgray;">
-            <td>
-                @Html.DisplayNameFor(model => model.Portfolio.TotalValue)
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-                @Html.DisplayFor(model => model.Portfolio.TotalValue)
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <tr style="border-bottom: 1px solid;border-bottom-color: lightgray;">
+                <td>
+                    @Html.DisplayNameFor(model => model.Portfolio.TotalValue)
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right">
+                    @Html.DisplayFor(model => model.Portfolio.TotalValue)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-<div class="modal fade" id="transaction-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+<div class="modal fade  " id="transaction-modal" tabindex="-1" role="dialog" style="margin:0 auto">
+    <div class="modal-dialog modal-mob">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -122,7 +172,6 @@
     </div>
 </div>
 
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
@@ -135,6 +184,7 @@
         });
 
         function getParameter(parameterName) {
+            console.log(parameterName)
             let parameters = new URLSearchParams(window.location.search);
             return parameters.get(parameterName);
         }
@@ -144,10 +194,10 @@
             element.value = valueToSelect;
         }
 
-        var tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+        const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
         function validate(type) {
-            var amount = $('#TransactionEntry_Amount')[0].value;
+            let amount = $('#TransactionEntry_Amount')[0].value;
             if (amount.length == 0) {
                 return true;
             }
@@ -157,16 +207,27 @@
             let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?");
         }
- 
+
         google.charts.load('current', { packages: ['corechart'] });
 
-        var data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+        const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 
-        var portfolioChartData;
-        var portfolioChart;
-        var portfolioChartOptions;
+        let portfolioChartData;
+        let portfolioChart;
+        let portfolioChartOptions;
+        let lineColor;
 
         google.charts.setOnLoadCallback(LoadChartData);
+
+        function getBaseline() {
+            let vBaseline;
+            for (var v of data) {
+                if (vBaseline == null || v.totalValue < vBaseline) {
+                    vBaseline = v.totalValue
+                }
+            }
+            return vBaseline/2;
+        }
 
         function LoadChartData() {
             LoadChart(data);
@@ -174,18 +235,19 @@
         }
 
         function LoadChart(data) {
-
+            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#097138' : lineColor = '#a52714';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
             portfolioChartOptions = {
-                height: "220",
-                //title: "Valeur des portefeuilles",
-                chartArea: { width: '85%', top: 10, height: '60%' },
+                animation: { startup: true, duration: 250, easing: 'out' },
+                chartArea: { width: '85%', height: '60%', bottom: '35%' },
+                colors: [lineColor],
                 hAxis: { slantedText: true, slantedTextAngle: 15 },
-                //vAxis: { title: 'Valeur' },
+                height: 220,
+                vAxis: { baseline: getBaseline() }
             };
 
-            var portfolioDataArray = [];
+            let portfolioDataArray = [];
             $.each(data, function (i, item) {
                 portfolioDataArray.push([item.episodeName, item.totalValue]);
             });
