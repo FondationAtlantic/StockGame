@@ -64,10 +64,15 @@ $fab: "FontAwesomeBrands";
 
 h1 {
   font-family: $heading;
-  font-size: rem(60);
-  color: $label;
+  font-size: rem(52);
+  color: #FFF;
   line-height: 105%;
   letter-spacing: -0.01em;
+  margin-bottom: rem(48);
+
+  i{
+    margin-right: rem(24);
+  }
 }
 
 h2 {
@@ -175,8 +180,9 @@ img {
 // BOUTONS
 // ================================================================================================================
 .btn {
-  display: inline-block;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   text-decoration: none !important;
   padding: rem(14) rem(32);
@@ -193,10 +199,22 @@ img {
   }
 
   &.alt {
+    background: transparent;
+    border: 2px solid $c1;
+    color: $c1;
+
+    &:hover{
+      color: #FFF;
+    }
   }
 
   &.big {
     font-size: rem(22);
+  }
+
+  i{
+    margin-right: rem(12);
+    font-size: rem(18);
   }
 }
 
@@ -216,6 +234,21 @@ img {
         margin-right: 0;
       }
     }
+  }
+}
+
+select.form-control {
+  color: $text;
+  height: rem(48);
+  padding: 0 rem(12);
+  font-size: rem(18);
+  width: 100%;
+  border: 1px solid $text;
+  transition: border-color $t2;
+
+  &:focus {
+    border-color: $c1;
+    box-shadow: none;
   }
 }
 
@@ -339,6 +372,13 @@ form label {
   margin-top: rem(18);
 }
 
+.trendUp {
+  color: $valid;
+}
+
+.trendDown {
+  color: $error;
+}
 
 // ================================================================================================================
 // BASE
@@ -600,13 +640,13 @@ footer {
 // ================================================================================================================
 // DASHBOARD
 // ================================================================================================================
-section{
+section {
   margin-bottom: rem(60);
 
-  .actions{
+  .actions {
     text-align: center;
 
-    a{
+    a {
       color: $c1;
       font-size: rem(18);
       font-weight: 700;
@@ -755,20 +795,52 @@ section{
     margin-bottom: rem(32);
 
     > div {
-      text-align: center;
-      background: #FFF;
-      box-shadow: 0 0 20px 7px rgba(0,0,0,0.15);
-      padding: rem(24);
-      margin-right: rem(32);
       flex: 1;
-      border-radius: rem(12);
+      margin-right: rem(32);
+
+      &.noPadding {
+        padding: 0;
+      }
 
       &:last-child {
         margin-right: 0;
       }
 
-      .graph{
+      .whiteBlock + .whiteBlock {
+        margin-top: rem(32);
+      }
+    }
+
+    .whiteBlock {
+      text-align: center;
+      background: #FFF;
+      box-shadow: 0 0 20px 7px rgba(0,0,0,0.15);
+      padding: rem(24);
+      border-radius: rem(12);
+
+      .graph {
         margin: rem(12) 0;
+      }
+
+      .wealth {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-top: rem(24);
+        text-align: left;
+
+        .img {
+          height: 160px;
+          margin-right: rem(24);
+          text-align: center;
+          width: 50%;
+
+          img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+          }
+        }
       }
     }
 
@@ -788,56 +860,304 @@ section{
       font-size: rem(32);
       font-weight: 700;
     }
-  }
-}
 
-.title{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+    .table {
+      width: 100%;
+      margin-bottom: rem(8);
 
-  .btn{
-    margin-top: rem(16);
-  }
-}
+      .head, .data > a {
+        display: flex;
+        width: 100%;
+        text-decoration: none;
+        color: $text;
+        transition: all $t2;
 
-@media screen and (max-width:1600px) {
-  .dashboard .twoCols > .right{
-    width: 300px;
-  }
-
-  .dashboard .newsfeed .slide .left{
-    padding-left: 0;
-  }
-}
-
-  @media screen and (max-width:1280px) {
-    html{
-      min-width: 1280px;
-    }
-
-    .dashboard .newsfeed .slide .right {
-      max-width: 300px;
-    }
-
-    .wrapAll {
-      &.loginBody {
-        &:before {
-          top: rem(-820);
-          left: rem(-400);
+        > div {
+          flex: 1;
+          text-align: right;
         }
 
-        &:after {
-          bottom: rem(-820);
-          right: rem(-400);
+        > :first-child {
+          flex: 2;
+          text-align: left;
+        }
+      }
+
+      .head > div {
+        padding: rem(12) rem(12);
+        font-weight: bold;
+      }
+
+      .data > a {
+        &:nth-child(odd) {
+          background: rgba(0,0,0,0.1);
+        }
+
+        .trendUp, .trendDown {
+          transition: all $t2;
+        }
+
+        &:hover {
+          background: $c1;
+          color: #fff;
+
+          .trendUp, .trendDown {
+            color: #FFF;
+          }
+        }
+
+        > div {
+          padding: rem(6) rem(12);
+
+          + div {
+            white-space: nowrap;
+          }
+        }
+
+        i {
+          font-size: rem(14);
+          margin-right: rem(8);
         }
       }
     }
   }
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  h2 {
+    margin-top: 0;
+
+    &:after {
+      margin-top: 1.25rem;
+      width: 5.625rem;
+    }
+
+    i {
+      margin-right: 1rem;
+    }
+  }
+
+  .btn {
+    margin-top: rem(16);
+  }
+}
+
+.modal-content {
+  min-width: 800px;
+  border-radius: rem(12);
+  overflow: hidden;
+  border: none;
+}
+
+.modal-header{
+  background-color: $text;
+  color: #FFF;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: rem(16) rem(24);
+
+  &:before, &:after{
+    display: none;
+  }
+
+  h4{
+    font-size: rem(26);
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    i{
+      margin-right: rem(24);
+    }
+  }
+
+  button{
+    color: #FFF;
+    position: static;
+    font-size: rem(28);
+    margin: 0;
+    opacity: 1;
+
+    &:hover{
+      color: #FFF;
+      opacity: 0.7;
+    }
+  }
+}
+
+.modal-body {
+  padding: rem(24);
+}
+
+.modal-actions {
+  display: flex;
+  border-top: 1px solid $text;
+  padding: rem(24);
+
+  button{
+    flex: 1;
+    margin-right: rem(24);
+    font-size: rem(20);
+    padding: rem(16) rem(20);
+    height: auto;
+
+    &:last-child{
+      margin-right: 0;
+    }
+
+    i{
+      font-size: rem(22);
+      margin-right: rem(12);
+    }
+  }
+}
+
+.walletHero {
+  padding: 4rem 3rem;
+  background-color: #172A3A;
+  min-height: 300px;
+  color: #FFF;
+  position: relative;
+
+  .img {
+    background-image: url(/images/hero-wallet.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #172A3A;
+    background-blend-mode: multiply;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+
+    &:before {
+      content: "";
+      width: 35%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: -moz-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
+      background: -webkit-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
+      background: linear-gradient(to right, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 );
+    }
+  }
+}
+
+.mywallet {
+  .twoCols {
+    display: flex;
+
+    > .left {
+      width: 100%;
+      padding: 2rem;
+    }
+  }
+
+  .wrapActions {
+    > div {
+      display: flex;
+      padding: rem(18) 0;
+      font-size: rem(16);
+      align-items: center;
+
+      &:nth-child(odd) {
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      > div{
+        padding: 0 rem(12);
+      }
+
+      .logo {
+        width: 120px;
+        height: 60px;
+
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      .name{
+        width: 30%;
+      }
+
+      b{
+        font-weight: 700;
+        font-size: rem(20);
+      }
+
+      .actions{
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+
+        button{
+          background: none;
+          border: none;
+          font-size: rem(28);
+          margin-left: rem(12);
+          transition: color $t2;
+
+          &:hover{
+            color: $c1;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width:1600px) {
+  .dashboard .twoCols > .right {
+    width: 300px;
+  }
+
+  .dashboard .newsfeed .slide .left {
+    padding-left: 0;
+  }
+}
+
+@media screen and (max-width:1280px) {
+  html {
+    min-width: 1280px;
+  }
+
+  .dashboard .newsfeed .slide .right {
+    max-width: 300px;
+  }
+
+  .wrapAll {
+    &.loginBody {
+      &:before {
+        top: rem(-820);
+        left: rem(-400);
+      }
+
+      &:after {
+        bottom: rem(-820);
+        right: rem(-400);
+      }
+    }
+  }
+}
 
 @media screen and (min-width:768px) {
   .m {
-    display: none;
+    display: none !important;
   }
 
   .d {
@@ -845,114 +1165,154 @@ section{
   }
 }
 
-  @media screen and (max-width:768px) {
-    .m {
-      display: flex;
+@media screen and (max-width:768px) {
+  .m {
+    display: flex;
+  }
+
+  .d {
+    display: none !important;
+  }
+
+  .btn {
+    height: rem(48);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 rem(24);
+  }
+
+  html {
+    height: auto;
+    min-width: 320px;
+  }
+
+  .login.centered {
+    padding: 0 rem(24);
+
+    .loginChoices {
+      padding: 0 rem(48);
+    }
+  }
+
+  .wrapAll {
+    &.loginBody {
+      &:before {
+        top: rem(-820);
+        left: rem(-580);
+      }
+
+      &:after {
+        bottom: rem(-820);
+        right: rem(-580);
+      }
+    }
+  }
+
+  h2 {
+    font-size: rem(28);
+  }
+
+  .centered .logo {
+    margin-bottom: 3rem;
+  }
+
+  .app .mainWindow {
+    width: 100%;
+  }
+
+  .dashboard {
+    .newsfeed {
+      .slide {
+        padding: rem(24);
+
+        .left {
+          max-width: 100%;
+          font-size: rem(16);
+
+          h2 {
+            font-size: rem(24);
+          }
+        }
+
+        .right {
+          max-width: 120px;
+        }
+
+        .img {
+          width: 100%;
+        }
+      }
     }
 
-    .d{
+    .twoCols {
+      flex-direction: column;
+
+      > .left {
+        margin-right: 0;
+      }
+
+      > .right {
+        width: 100%;
+      }
+    }
+
+    .resume {
+      flex-direction: column;
+
+      > div {
+        margin-right: 0;
+      }
+
+      .whiteBlock {
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        text-align: left;
+        margin-bottom: rem(24);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        i {
+          font-size: rem(28);
+          margin-right: rem(24);
+          width: rem(30);
+        }
+
+        h4 {
+          font-size: rem(20);
+          margin: 0 0 rem(4);
+          font-weight: 400;
+        }
+
+        .value {
+          font-size: rem(24);
+        }
+
+        .wealth {
+          .img {
+            width: 40%;
+          }
+        }
+      }
+    }
+
+    .wallet {
+      .whiteBlock {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .title {
+    .btn {
       display: none;
     }
-
-    .btn{
-      height: rem(48);
-      display: inline-flex;
-      align-items: center;
-      padding: 0 rem(24);
-    }
-
-    html {
-      height: auto;
-      min-width: 320px;
-    }
-
-    .login.centered {
-      padding: 0 rem(24);
-
-      .loginChoices {
-        padding: 0 rem(48);
-      }
-    }
-
-    .wrapAll {
-      &.loginBody {
-        &:before {
-          top: rem(-820);
-          left: rem(-580);
-        }
-
-        &:after {
-          bottom: rem(-820);
-          right: rem(-580);
-        }
-      }
-    }
-
-    h2 {
-      font-size: rem(28);
-    }
-
-    .centered .logo {
-      margin-bottom: 3rem;
-    }
-
-    .app .mainWindow{
-      width: 100%;
-    }
-
-    .dashboard{
-      .newsfeed{
-        .slide{
-          padding: rem(24);
-
-          .left{
-            max-width: 100%;
-            font-size: rem(16);
-
-            h2{
-              font-size: rem(24);
-            }
-          }
-
-          .right{
-            max-width: 120px;
-          }
-
-          .img{
-            width: 100%;
-          }
-        }
-      }
-
-      .twoCols{
-        flex-direction: column;
-      }
-
-      .resume{
-        flex-direction: column;
-
-        > div{
-          background: transparent;
-          box-shadow: none;
-          padding: 0;
-        }
-      }
-    }
-
-    .title{
-      .btn{
-        display: none;
-      }
-    }
   }
 
-
-
-
-  //////TEMP
-  .modal-open .modal{
-    display: block;
-    width: 600px;
-    height: 600px;
-    opacity: 1;
+  section .actions {
+    text-align: left;
   }
+}

@@ -47,21 +47,38 @@
             </form>
           </div>
         </div>
+        <div class="topBar m">
+          <div class="left">
+            <div class="logo">
+              <a asp-page="/Index"><img src="~/images/stockgame.png" /></a>
+            </div>
+          </div>
+          <div class="right">
+            <a onclick="toggleMenu()">
+              <i class="fal fa-bars"></i>
+            </a>
+          </div>
+        </div>
         <div class="app">
-            <div class="leftBar">
-                @if (Model.ActiveGame != null && Model.ActiveTeam != null)
-                {
-                    <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i></a>
-                    <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
-                    <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
-                    <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
-                }
-                <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users-medical"></i></a>
-            </div>
-            <div class="mainWindow">
-                @RenderBody()
-
-            </div>
+          <div class="leftBar d">
+            @if (Model.ActiveGame != null && Model.ActiveTeam != null)
+            {
+              <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i></a>
+              <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i></a>
+              <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i></a>
+              <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i></a>
+            }
+            <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users-medical"></i></a>
+          </div>
+          <div class="mainWindow">
+            @RenderBody()
+          </div>
+        </div>
+        <div class="menuMobile m">
+          <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i> Tableau de bord</a>
+          <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i> Analyse du marché</a>
+          <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i> Porte-feuille</a>
+          <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i> Classement</a>
         </div>
       }
       else
