@@ -51,14 +51,18 @@ else if (User.IsInRole("Student"))
       <section class="newsfeed">
         @if (Model.ActiveTradingSession.Episode.NewsTitle != null)
         {
-          <h1>Dernière heure</h1>
-          <div class="panel panel-default">
-            <div class="panel-heading"><img src="~/images/newspaper_small.png" title="Nouvelles" /> Nouvelles</div>
-            <div class="panel-body">
-              <img src="@Url.Content(Model.ActiveTradingSession.Episode.NewsImgPath)" style="max-width:100%;" />
-              <br />
-              <h3>@Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsTitle)</h3>
-              @Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsDetail)
+          <div class="slide">
+            <div>
+              <div class="left">
+                <div class="tag">Dernière heure</div>
+                <h2>@Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsTitle)</h2>
+                <p>@Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsDetail)</p>
+              </div>
+              <div class="right">
+                <div class="image">
+                  <img src="@Url.Content(Model.ActiveTradingSession.Episode.NewsImgPath)" />
+                </div>
+              </div>
             </div>
           </div>
         }
@@ -67,15 +71,17 @@ else if (User.IsInRole("Student"))
           @if (item.EpisodeEquityInfo.NewsTitle != null)
           {
             <div class="slide">
-              <div class="img" style="background-image: url(@Url.Content(item.EpisodeEquityInfo.NewsImgPath))">
-              </div>
-              <div class="left">
-                <h2>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</h2>
-                <p>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsDetail)</p>
-                <a class="btn" asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">Plus d'informations</a>
-              </div>
-              <div class="right">
-                <img style="margin: 0px 8px" src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+              <div>
+                <div class="img" style="background-image: url(@Url.Content(item.EpisodeEquityInfo.NewsImgPath))">
+                </div>
+                <div class="left">
+                  <h2>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</h2>
+                  <p>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsDetail)</p>
+                  <a class="btn" asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">Plus d'informations</a>
+                </div>
+                <div class="right">
+                  <img style="margin: 0px 8px" src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+                </div>
               </div>
             </div>
           }
@@ -420,7 +426,16 @@ else if (User.IsInRole("Student"))
 
         function ResizeCharts(data) {
             portfolioChart.draw(portfolioChartData, portfolioChartOptions);
-        }
+    }
+
+    var slider = tns({
+      container: '.newsfeed',
+      items: 1,
+      slideBy: 'page',
+      autoplay: true,
+      controls: false,
+      autoplayTimeout: 7000
+    });
   </script>
 }
 
