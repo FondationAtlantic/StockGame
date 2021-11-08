@@ -78,11 +78,11 @@ namespace StockGame.Pages.Account
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(Input.Email, callbackUrl);
 
-                    //TODO YLA : wait for email confirmation to add Student role ?
-                    await _userManager.AddToRoleAsync(user, "Student");
-                    //await _userManager.AddToRoleAsync(user, "Admin");
-                    //await _userManager.AddToRoleAsync(user, "Teacher");
-                    await _context.SaveChangesAsync();
+          //TODO YLA : wait for email confirmation to add Student role ?
+          await _userManager.AddToRoleAsync(user, "Student");
+          //await _userManager.AddToRoleAsync(user, "Admin");
+          //await _userManager.AddToRoleAsync(user, "Teacher");
+          await _context.SaveChangesAsync();
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(Url.GetLocalUrl(returnUrl));

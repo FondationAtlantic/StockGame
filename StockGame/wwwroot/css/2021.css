@@ -461,6 +461,27 @@ section {
       font-size: 1.125rem;
       font-weight: 700; }
 
+.dashboard .tns-outer {
+  position: relative; }
+  .dashboard .tns-outer > button {
+    display: none; }
+  .dashboard .tns-outer .tns-nav {
+    position: absolute;
+    bottom: 1rem;
+    right: 3rem;
+    z-index: 2; }
+    .dashboard .tns-outer .tns-nav > button {
+      background: transparent;
+      width: 0.875rem;
+      height: 0.875rem;
+      border: 1px solid #81C14B;
+      box-sizing: border-box;
+      padding: 0;
+      margin-left: 0.3125rem;
+      border-radius: 9999px; }
+      .dashboard .tns-outer .tns-nav > button.tns-nav-active {
+        background: #81C14B; }
+
 .dashboard .newsfeed {
   background: #172A3A;
   color: #FFF;
@@ -469,10 +490,26 @@ section {
     position: relative;
     padding: 3rem;
     background-color: #172A3A;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; }
+    min-height: 400px; }
+    .dashboard .newsfeed .slide > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
+    .dashboard .newsfeed .slide .tag {
+      background: #e10a00;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      display: inline-block;
+      font-size: 0.875rem; }
+    .dashboard .newsfeed .slide .image {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      max-height: 250px;
+      max-width: 600px; }
+      .dashboard .newsfeed .slide .image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; }
     .dashboard .newsfeed .slide .img {
       position: absolute;
       top: 0;
@@ -556,7 +593,7 @@ section {
       .dashboard .twoCols > .right .activities a:hover h4 {
         color: #81C14B; }
       .dashboard .twoCols > .right .activities a h4 {
-        margin: 0;
+        margin: 0 0 0.25rem;
         transition: all 0.5s; }
   .dashboard .twoCols h2 i {
     margin-right: 1rem; }
@@ -583,7 +620,7 @@ section {
     padding: 1.5rem;
     border-radius: 0.75rem; }
     .dashboard .resume .whiteBlock .graph {
-      margin: 0.75rem 0; }
+      margin: 2rem 0 0; }
     .dashboard .resume .whiteBlock .wealth {
       display: flex;
       align-items: center;
@@ -740,44 +777,102 @@ section {
       background: linear-gradient(to right, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 ); }
 
-.mywallet .twoCols {
+.mywallet .twoCols, .myanalysis .twoCols {
   display: flex; }
-  .mywallet .twoCols > .left {
+  .mywallet .twoCols > .left, .myanalysis .twoCols > .left {
     width: 100%;
     padding: 2rem; }
 
-.mywallet .wrapActions > div {
+.wrapActions > div {
   display: flex;
   padding: 1.125rem 0;
   font-size: 1rem;
   align-items: center; }
-  .mywallet .wrapActions > div:nth-child(odd) {
+  .wrapActions > div:nth-child(odd) {
     background: rgba(0, 0, 0, 0.1); }
-  .mywallet .wrapActions > div > div {
+  .wrapActions > div > div {
     padding: 0 0.75rem; }
-  .mywallet .wrapActions > div .logo {
+  .wrapActions > div .logo {
     width: 120px;
     height: 60px; }
-    .mywallet .wrapActions > div .logo img {
+    .wrapActions > div .logo img {
       width: 100%;
       height: 100%;
       object-fit: contain; }
-  .mywallet .wrapActions > div .name {
-    width: 30%; }
-  .mywallet .wrapActions > div b {
+  .wrapActions > div .name {
+    width: 25%; }
+  .wrapActions > div b {
     font-weight: 700;
     font-size: 1.25rem; }
-  .mywallet .wrapActions > div .actions {
+  .wrapActions > div .actions {
     flex: 1;
     display: flex;
     justify-content: flex-end; }
-    .mywallet .wrapActions > div .actions button {
+    .wrapActions > div .actions button {
       background: none;
       border: none;
       font-size: 1.75rem;
       margin-left: 0.75rem;
       transition: color 0.5s; }
-      .mywallet .wrapActions > div .actions button:hover {
+      .wrapActions > div .actions button:hover {
+        color: #81C14B; }
+
+.wrapAnalysis > div {
+  display: flex;
+  padding: 1.125rem 0;
+  font-size: 1rem;
+  align-items: center; }
+  .wrapAnalysis > div.sector {
+    border-bottom: 2px solid #81C14B;
+    font-weight: bold;
+    margin-top: 2.25rem;
+    padding: 0.5rem 0;
+    align-items: flex-end; }
+    .wrapAnalysis > div.sector + div {
+      background: transparent; }
+      .wrapAnalysis > div.sector + div + div:not(.sector) {
+        background: rgba(0, 0, 0, 0.1); }
+    .wrapAnalysis > div.sector > .logoName {
+      padding: 0; }
+  .wrapAnalysis > div > div {
+    padding: 0 0.75rem; }
+  .wrapAnalysis > div .logoName {
+    width: calc(120px + 25%);
+    font-size: 1.25rem; }
+  .wrapAnalysis > div .logo {
+    width: 120px;
+    height: 60px; }
+    .wrapAnalysis > div .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; }
+  .wrapAnalysis > div .name {
+    width: 25%; }
+  .wrapAnalysis > div .events {
+    width: 10%; }
+    .wrapAnalysis > div .events i {
+      font-size: 1.75rem;
+      margin-right: 0.625rem; }
+  .wrapAnalysis > div .benefice {
+    width: 10%; }
+  .wrapAnalysis > div .price {
+    width: 10%; }
+    .wrapAnalysis > div .price i {
+      margin-right: 0.5rem; }
+  .wrapAnalysis > div b {
+    font-weight: 700;
+    font-size: 1.25rem; }
+  .wrapAnalysis > div .actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; }
+    .wrapAnalysis > div .actions a {
+      background: none;
+      border: none;
+      font-size: 1.75rem;
+      margin-left: 0.75rem;
+      transition: color 0.5s; }
+      .wrapAnalysis > div .actions a:hover {
         color: #81C14B; }
 
 @media screen and (max-width: 1600px) {
