@@ -111,9 +111,8 @@
               <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
                 <i class="far fa-exchange"></i>
               </button>
-              <button title="Fiche complète">
-                <i class="fal fa-passport"></i>
-              </button>
+                  <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                      <i class="fal fa-passport"></i></a>
             </div>
           </div>
         }
@@ -169,7 +168,6 @@
         });
 
         function getParameter(parameterName) {
-            console.log(parameterName)
             let parameters = new URLSearchParams(window.location.search);
             return parameters.get(parameterName);
         }

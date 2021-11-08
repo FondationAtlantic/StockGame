@@ -9,6 +9,7 @@ namespace StockGame.Models.ViewModels
 {
     public class PortfolioItem
     {
+        public int EpisodeEquityId { get; set; }
         public int EquityId { get; set; }
         [Display(Name = "Quantité")]
         public int Amount { get; set; }

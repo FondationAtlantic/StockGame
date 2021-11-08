@@ -302,6 +302,7 @@ namespace StockGame.Pages
 
                         PortfolioItem item = new PortfolioItem
                         {
+                            EpisodeEquityId = iterPastEquityInfos.Current.Id,
                             Equity = equity,
                             EquityId = equity.Id,
                             AllowTransactions = episode.AllowTransactions && eei.AllowTransactions,
