@@ -63,8 +63,9 @@
         </div>
         @if (Model.PortfolioTeamHistory.Items.Count > 1)
         {
-            <div class="right wrapGraph">
-                <div class="panel-body graph-transition" style="height: 240px">
+            <div class="right" style="flex:1; overflow:hidden">
+                @*<div class="panel-body graph-transition" style="height: 240px">*@
+                <div class="graph-transition" style="height: 240px">
                     <div id="portfolio_chart_div"></div>
                 </div>
             </div>
@@ -224,15 +225,44 @@
         }
 
         function LoadChart(data) {
-            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#a52714';
+            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
             portfolioChartData = new google.visualization.DataTable();
-            portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
+            portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
             portfolioChartOptions = {
-                animation: { startup: true, duration: 250, easing: 'out' },
-                chartArea: { width: '85%', height: '60%', bottom: '35%' },
+                areaOpacity: 0.1,
+                animation: {
+                    startup: true,
+                    duration: 250,
+                    easing: 'out'
+                },
+                backgroundColor: '#172A3A',
+                chartArea: {
+                    width: '75%',
+                    height: '60%',
+                    bottom: '35%'
+                },
                 colors: [lineColor],
-                hAxis: { slantedText: true, slantedTextAngle: 15 },
+                hAxis: {
+                    slantedText: true,
+                    slantedTextAngle: 15,
+                    textStyle: {
+                        color: '#ffffff',
+                        bold: true
+                    }
+                },
                 height: 220,
+                lineWidth: 3,
+                vAxis: {
+                    textStyle: {
+                        color: '#c8dae9',
+                    },
+                    gridlines: {
+                        color: '#315a7c',
+                    },
+                    minorGridlines: {
+                        count: 0,
+                    }
+                }
             };
 
             let portfolioDataArray = [];
