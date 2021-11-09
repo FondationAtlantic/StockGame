@@ -100,13 +100,18 @@ namespace StockGame.Pages.Portfolio
 
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
 
-            PriceDifference = new Dictionary<int, float>();
-            PortfolioHistoryItem previousPortfolio = PortfolioTeamHistory.Items[^2];
             
-            foreach ((PortfolioItem item, PortfolioItem i) in Portfolio.Items.SelectMany(item => previousPortfolio.Items.Where(i => item.Equity.Id == i.Equity.Id).Select(i => (item, i))))
+            if (PortfolioTeamHistory.Items.Count > 1)
             {
-                PriceDifference.Add(item.EquityId, item.Price - i.Price);
+                PriceDifference = new Dictionary<int, float>();
+                PortfolioHistoryItem previousPortfolio = PortfolioTeamHistory.Items[^2];
+
+                foreach ((PortfolioItem item, PortfolioItem i) in Portfolio.Items.SelectMany(item => previousPortfolio.Items.Where(i => item.Equity.Id == i.Equity.Id).Select(i => (item, i))))
+                {
+                    PriceDifference.Add(item.EquityId, item.Price - i.Price);
+                }
             }
+            
         }
     }
 }

@@ -45,30 +45,30 @@
   <div class="walletHero">
     <h1><i class="fal fa-wallet" aria-hidden="true"></i> Mon porte-feuille</h1>
     <div class="flex">
-      <div class="left">
-        <div class="walletInfo">
-          <div>
-            <h3>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h3>
-            <div class="value">
-              @Html.DisplayFor(model => model.Portfolio.TotalValue)
+        <div class="left">
+            <div class="walletInfo">
+                <div>
+                    <h3>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h3>
+                    <div class="value">
+                        @Html.DisplayFor(model => model.Portfolio.TotalValue)
+                    </div>
+                </div>
+                <div>
+                    <h3>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h3>
+                    <div class="value">
+                        @Html.DisplayFor(model => model.Portfolio.Cash)
+                    </div>
+                </div>
             </div>
-          </div>
-          <div>
-            <h3>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h3>
-            <div class="value">
-              @Html.DisplayFor(model => model.Portfolio.Cash)
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="right wrapGraph">
         @if (Model.PortfolioTeamHistory.Items.Count > 1)
         {
-          <div class="panel-body graph-transition" style="height: 240px">
-            <div id="portfolio_chart_div"></div>
-          </div>
+            <div class="right wrapGraph">
+                <div class="panel-body graph-transition" style="height: 240px">
+                    <div id="portfolio_chart_div"></div>
+                </div>
+            </div>
         }
-      </div>
     </div>
   </div>
   <div class="twoCols">
@@ -102,18 +102,22 @@
               </div>
             </div>
             <div class="variant">
-              @if (Model.MyList[@item.EquityId] < 0)
-              {
-              <strong class="trendDown">
-                <i class="far fa-arrow-down"></i>@Model.MyList[@item.EquityId].ToString("0.00") $
-              </strong>
-              }
-              else
-              {
-                <strong class="trendUp">
-                  <i class="far fa-arrow-up"></i>@Model.MyList[@item.EquityId].ToString("0.00") $
-                </strong>
-              }
+                @if (Model.PriceDifference != null)
+                {
+                    @if (Model.PriceDifference[@item.EquityId] < 0)
+                    {
+                        <strong class="trendDown">
+                            <i class="far fa-arrow-down"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                        </strong>
+                    }
+                    else
+                    {
+                        <strong class="trendUp">
+                            <i class="far fa-arrow-up"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                        </strong>
+                    }
+                }
+
             </div>
             <div class="actions">
               <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
@@ -149,7 +153,7 @@
           </div>
           <div class="form-group">
             <label asp-for="TransactionEntry.Amount" class="control-label"></label>
-            <input asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
+            <input asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10"/>
             <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
           </div>
           <div class="form-group">
@@ -157,9 +161,11 @@
             <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
           </div>
         </div>
-        <div class="modal-actions">
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn red"><i class="fal fa-inbox-out"></i>Vente</button>
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>
+        <div class="modal-actions form-group">
+            @*<button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn red"><i class="fal fa-inbox-out"></i>Vente</button>*@
+            @*<button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>*@
+            <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color:red" />
+            <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color:green" />
         </div>
       </form>
     </div>
@@ -212,23 +218,13 @@
 
         google.charts.setOnLoadCallback(LoadChartData);
 
-        function getBaseline() {
-            let vBaseline;
-            for (var v of data) {
-                if (vBaseline == null || v.totalValue < vBaseline) {
-                    vBaseline = v.totalValue
-                }
-            }
-            return vBaseline/2;
-        }
-
         function LoadChartData() {
             LoadChart(data);
             return false;
         }
 
         function LoadChart(data) {
-            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#097138' : lineColor = '#a52714';
+            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#a52714';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
             portfolioChartOptions = {
@@ -237,7 +233,6 @@
                 colors: [lineColor],
                 hAxis: { slantedText: true, slantedTextAngle: 15 },
                 height: 220,
-                //vAxis: { baseline: getBaseline() }
             };
 
             let portfolioDataArray = [];
