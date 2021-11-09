@@ -105,7 +105,7 @@
                   </div>
               </div>
               <div class="variant">
-                  <b>@Model.MyList[@item.EquityId]</b>
+                  <b>@Model.PriceDifference[@item.EquityId]</b>
               </div>
               <div class="actions">
                   <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
@@ -149,9 +149,11 @@
             <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
           </div>
         </div>
-        <div class="modal-actions">
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn alt"><i class="fal fa-inbox-out"></i>Vente</button>
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>
+        <div class="form-group modal-actions">
+            @*<button asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn alt"><i class="fal fa-inbox-out"></i>Vente</button>*@
+            @*<button asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>*@
+            <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color:red" />
+            <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color:green" />
         </div>
       </form>
     </div>

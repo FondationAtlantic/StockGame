@@ -36,7 +36,6 @@ namespace StockGame.Pages.Portfolio
             return Page();
         }
 
-        public Dictionary<int, float> MyList { get; set; }
         [BindProperty]
         public TransactionEntry TransactionEntry { get; set; }
 
@@ -44,6 +43,7 @@ namespace StockGame.Pages.Portfolio
 
         public StockGame.Models.ViewModels.PortfolioHistoryItem Portfolio { get; set; }
         public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
+        public Dictionary<int, float> PriceDifference { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -96,22 +96,16 @@ namespace StockGame.Pages.Portfolio
 
             PortfolioGameHistory pgh = await PortfolioHistories(ActiveGame, Enumerable.Repeat(ActiveTeam, 1), ActiveEpisodeIndex);
 
-            //PortfolioTeamHistory pth = pgh.TeamHistories[0];
             PortfolioTeamHistory = pgh.TeamHistories[0];
 
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
 
+            PriceDifference = new Dictionary<int, float>();
             PortfolioHistoryItem previousPortfolio = PortfolioTeamHistory.Items[^2];
-            MyList = new Dictionary<int, float>();
-            foreach(var item in Portfolio.Items)
+            
+            foreach ((PortfolioItem item, PortfolioItem i) in Portfolio.Items.SelectMany(item => previousPortfolio.Items.Where(i => item.Equity.Id == i.Equity.Id).Select(i => (item, i))))
             {
-                foreach(var i in previousPortfolio.Items)
-                {
-                    if (item.Equity.Id == i.Equity.Id)
-                    {
-                        MyList.Add(item.EquityId, item.Price - i.Price);
-                    }
-                }
+                PriceDifference.Add(item.EquityId, item.Price - i.Price);
             }
         }
     }
