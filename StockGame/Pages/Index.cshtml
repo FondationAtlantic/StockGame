@@ -203,7 +203,7 @@ else if (User.IsInRole("Student"))
                                     <strong class="trendDown"><i class="far fa-arrow-down"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
                                     break;
                                 case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
-                                    <strong class="">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                    <strong style="color: #808080 ">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
                                     break;
                             }
                         </div>
@@ -379,7 +379,7 @@ else if (User.IsInRole("Student"))
         let lineColor;
 
         if (data != null && document.getElementById('price_chart_div') != null) {
-            data[data.length - 1].totalValue >= data[0].totalValue ? lineColor = '#097138' : lineColor = '#a52714'
+            data[data.length - 1].totalValue >= data[0].totalValue ? lineColor = '#00c609' : lineColor = '#a52714'
             google.charts.setOnLoadCallback(LoadChartData);
         }
 
