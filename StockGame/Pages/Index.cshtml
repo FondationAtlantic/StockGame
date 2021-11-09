@@ -80,7 +80,7 @@ else if (User.IsInRole("Student"))
                   <a class="btn" asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">Plus d'informations</a>
                 </div>
                 <div class="right">
-                  <img style="margin: 0px 8px" src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+                  <img src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
                 </div>
               </div>
             </div>
@@ -135,14 +135,14 @@ else if (User.IsInRole("Student"))
                   </div>
                   @if (Model.ProfitLosses > 0.0f)
                   {
-                    <div class="value" style="color: darkgreen">
+                    <div class="value win">
                       @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
                       @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                     </div>
                   }
                   else if (Model.ProfitLosses < 0.0f)
                   {
-                    <div class="value" style="color: darkred">
+                    <div class="value loss">
                       @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
                       @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
                     </div>
