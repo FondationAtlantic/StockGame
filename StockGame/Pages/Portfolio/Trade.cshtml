@@ -85,35 +85,37 @@
         {
           @if (item.Amount <= 0) { continue; }
           <div>
-            <div class="logo">
-              <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
-            </div>
-            <div class="name">
-              <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
-              <div class="qty">
-                @Html.DisplayFor(modelItem => item.Amount) actions
+              <div class="logo">
+                  <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
               </div>
-            </div>
-            <div class="totalValue">
-              <b></b>
-              @if (item.Value > 0f)
-              {
-                <b>@Html.DisplayFor(modelItem => item.Value)</b>
-              }
-              <div class="unit">
-                @Html.DisplayFor(modelItem => item.Price) / action
+              <div class="name">
+                  <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+                  <div class="qty">
+                      @Html.DisplayFor(modelItem => item.Amount) actions
+                  </div>
               </div>
-            </div>
-            <div class="variant">
-              <b></b>
-            </div>
-            <div class="actions">
-              <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
-                <i class="far fa-exchange"></i>
-              </button>
+              <div class="totalValue">
+                  <b></b>
+                  @if (item.Value > 0f)
+                  {
+                      <b>@Html.DisplayFor(modelItem => item.Value)</b>
+                  }
+                  <div class="unit">
+                      @Html.DisplayFor(modelItem => item.Price) / action
+                  </div>
+              </div>
+              <div class="variant">
+                  <b>@Model.MyList[@item.EquityId]</b>
+              </div>
+              <div class="actions">
+                  <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+                      <i class="far fa-exchange"></i>
+                  </button>
                   <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
-                      <i class="fal fa-passport"></i></a>
-            </div>
+                      <i class="fal fa-passport"></i>
+                  </a>
+              </div>
+              
           </div>
         }
       </div>

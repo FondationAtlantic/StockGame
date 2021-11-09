@@ -36,6 +36,7 @@ namespace StockGame.Pages.Portfolio
             return Page();
         }
 
+        public Dictionary<int, float> MyList { get; set; }
         [BindProperty]
         public TransactionEntry TransactionEntry { get; set; }
 
@@ -100,9 +101,18 @@ namespace StockGame.Pages.Portfolio
 
             Portfolio = PortfolioTeamHistory.Items.LastOrDefault();
 
-            //TODO
-            //if (eei.Visible)
+            PortfolioHistoryItem previousPortfolio = PortfolioTeamHistory.Items[^2];
+            MyList = new Dictionary<int, float>();
+            foreach(var item in Portfolio.Items)
+            {
+                foreach(var i in previousPortfolio.Items)
+                {
+                    if (item.Equity.Id == i.Equity.Id)
+                    {
+                        MyList.Add(item.EquityId, item.Price - i.Price);
+                    }
+                }
+            }
         }
-
     }
 }
