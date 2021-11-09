@@ -194,15 +194,18 @@ else if (User.IsInRole("Student"))
                           @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)
                         </div>
                         <div>
-                          @switch (item.Trend)
-                          {
-                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
-                              <strong class="trendUp"><i class="far fa-arrow-up"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                              break;
-                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
-                              <strong class="trendDown"><i class="far fa-arrow-down"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                              break;
-                          }
+                            @switch (item.Trend)
+                            {
+                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
+                                    <strong class="trendUp"><i class="far fa-arrow-up"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                    break;
+                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
+                                    <strong class="trendDown"><i class="far fa-arrow-down"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                    break;
+                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
+                                    <strong class="">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                    break;
+                            }
                         </div>
                         <div>
                           @if (item.LastKnownEarningsPerShare < 0.0f)

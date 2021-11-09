@@ -102,16 +102,16 @@
               </div>
             </div>
             <div class="variant">
-              @if (Model.MyList[@item.EquityId] < 0)
+              @if (Model.PriceDifference[@item.EquityId] < 0)
               {
               <strong class="trendDown">
-                <i class="far fa-arrow-down"></i>@Model.MyList[@item.EquityId].ToString("0.00") $
+                <i class="far fa-arrow-down"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
               </strong>
               }
               else
               {
                 <strong class="trendUp">
-                  <i class="far fa-arrow-up"></i>@Model.MyList[@item.EquityId].ToString("0.00") $
+                  <i class="far fa-arrow-up"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
                 </strong>
               }
             </div>
@@ -157,9 +157,11 @@
             <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
           </div>
         </div>
-        <div class="modal-actions">
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn red"><i class="fal fa-inbox-out"></i>Vente</button>
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>
+        <div class="modal-actions form-group">
+            @*<button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn red"><i class="fal fa-inbox-out"></i>Vente</button>*@
+            @*<button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>*@
+            <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color:red" />
+            <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color:green" />
         </div>
       </form>
     </div>
