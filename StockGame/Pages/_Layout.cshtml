@@ -76,7 +76,7 @@
             @RenderBody()
           </div>
         </div>
-        <div class="menuMobile m">
+        <div class="menuMobile m hidden">
           <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i> Tableau de bord</a>
           <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i> Analyse du marché</a>
           <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i> Porte-feuille</a>
@@ -208,6 +208,16 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    <script>
+      function toggleMenu() {
+        if (document.querySelector(".menuMobile").classList.contains("hidden")) {
+          document.querySelector(".menuMobile").classList.remove("hidden");
+        } else {
+          document.querySelector(".menuMobile").classList.add("hidden");
+        }
+        
+      }
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
