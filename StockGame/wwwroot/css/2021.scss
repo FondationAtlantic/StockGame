@@ -216,6 +216,16 @@ img {
     margin-right: rem(12);
     font-size: rem(18);
   }
+
+  &.red {
+    background-color: $error;
+    border-color: $error;
+
+    &:hover {
+      background-color: #8C0700;
+      border-color: #8C0700;
+    }
+  }
 }
 
 // ================================================================================================================
@@ -1089,7 +1099,7 @@ section {
   .img {
     background-image: url(/images/hero-wallet.jpg);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% auto;
     background-color: #172A3A;
     background-blend-mode: multiply;
     position: absolute;
@@ -1109,6 +1119,48 @@ section {
       background: -webkit-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       background: linear-gradient(to right, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 );
+    }
+  }
+
+  .date {
+    font-size: rem(24);
+
+    i {
+      margin-right: rem(16);
+      font-size: rem(28);
+    }
+  }
+
+  .flex {
+    display: flex;
+
+    .left {
+      width: 40%;
+
+      .walletInfo {
+        > div {
+          margin-bottom: rem(32);
+        }
+
+        h3 {
+          font-weight: normal;
+          font-size: rem(24);
+          font-family: $font;
+        }
+
+        .value {
+          font-weight: bold;
+          font-size: rem(32);
+        }
+      }
+    }
+
+    .wrapGraph {
+      background: #FFF;
+      padding: rem(32);
+      flex: 1;
+      border-radius: rem(12);
+      overflow: hidden;
     }
   }
 }
@@ -1159,17 +1211,41 @@ section {
       font-size: rem(20);
     }
 
+    .totalValue {
+      width: 10%;
+    }
+
+    .variant{
+      i{
+        margin-right: 0.5rem;
+      }
+    } 
+    
     .actions {
       flex: 1;
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column;
+      align-items: flex-end;
 
-      button {
+      a, button {
         background: none;
         border: none;
-        font-size: rem(28);
-        margin-left: rem(12);
         transition: color $t2;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        margin-bottom: rem(12);
+        text-align: right;
+        color: $c2;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        i {
+          font-size: rem(28);
+          margin-right: rem(16);
+        }
 
         &:hover {
           color: $c1;
@@ -1192,6 +1268,10 @@ section {
       margin-top: rem(36);
       padding: rem(8) 0;
       align-items: flex-end;
+
+      &:first-child {
+        margin-top: 0;
+      }
 
       + div {
         background: transparent;
@@ -1243,6 +1323,10 @@ section {
       width: 10%;
     }
 
+    .dividend {
+      width: 15%;
+    }
+
     .price {
       width: 10%;
 
@@ -1259,14 +1343,27 @@ section {
     .actions {
       flex: 1;
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column;
+      align-items: flex-end;
 
       a {
         background: none;
         border: none;
-        font-size: rem(28);
-        margin-left: rem(12);
         transition: color $t2;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        margin-bottom: rem(12);
+        text-align: right;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        i {
+          font-size: rem(28);
+          margin-right: rem(16);
+        }
 
         &:hover {
           color: $c1;
