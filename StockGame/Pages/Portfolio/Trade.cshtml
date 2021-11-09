@@ -218,16 +218,6 @@
 
         google.charts.setOnLoadCallback(LoadChartData);
 
-        function getBaseline() {
-            let vBaseline;
-            for (var v of data) {
-                if (vBaseline == null || v.totalValue < vBaseline) {
-                    vBaseline = v.totalValue
-                }
-            }
-            return vBaseline/2;
-        }
-
         function LoadChartData() {
             LoadChart(data);
             return false;
@@ -243,7 +233,6 @@
                 colors: [lineColor],
                 hAxis: { slantedText: true, slantedTextAngle: 15 },
                 height: 220,
-                //vAxis: { baseline: getBaseline() }
             };
 
             let portfolioDataArray = [];
