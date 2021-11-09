@@ -112,6 +112,12 @@ img {
   .btn i {
     margin-right: 0.75rem;
     font-size: 1.125rem; }
+  .btn.red {
+    background-color: #e10a00;
+    border-color: #e10a00; }
+    .btn.red:hover {
+      background-color: #8C0700;
+      border-color: #8C0700; }
 
 .form-group.flex {
   display: flex;
@@ -760,7 +766,7 @@ section {
   .walletHero .img {
     background-image: url(/images/hero-wallet.jpg);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% auto;
     background-color: #172A3A;
     background-blend-mode: multiply;
     position: absolute;
@@ -779,6 +785,30 @@ section {
       background: -webkit-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       background: linear-gradient(to right, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 ); }
+  .walletHero .date {
+    font-size: 1.5rem; }
+    .walletHero .date i {
+      margin-right: 1rem;
+      font-size: 1.75rem; }
+  .walletHero .flex {
+    display: flex; }
+    .walletHero .flex .left {
+      width: 40%; }
+      .walletHero .flex .left .walletInfo > div {
+        margin-bottom: 2rem; }
+      .walletHero .flex .left .walletInfo h3 {
+        font-weight: normal;
+        font-size: 1.5rem;
+        font-family: "Roboto", sans-serif; }
+      .walletHero .flex .left .walletInfo .value {
+        font-weight: bold;
+        font-size: 2rem; }
+    .walletHero .flex .wrapGraph {
+      background: #FFF;
+      padding: 2rem;
+      flex: 1;
+      border-radius: 0.75rem;
+      overflow: hidden; }
 
 .mywallet .twoCols, .myanalysis .twoCols {
   display: flex; }
@@ -807,17 +837,31 @@ section {
   .wrapActions > div b {
     font-weight: 700;
     font-size: 1.25rem; }
+  .wrapActions > div .totalValue {
+    width: 10%; }
+  .wrapActions > div .variant i {
+    margin-right: 0.5rem; }
   .wrapActions > div .actions {
     flex: 1;
     display: flex;
-    justify-content: flex-end; }
-    .wrapActions > div .actions button {
+    flex-direction: column;
+    align-items: flex-end; }
+    .wrapActions > div .actions a, .wrapActions > div .actions button {
       background: none;
       border: none;
-      font-size: 1.75rem;
-      margin-left: 0.75rem;
-      transition: color 0.5s; }
-      .wrapActions > div .actions button:hover {
+      transition: color 0.5s;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+      text-align: right;
+      color: #74B3CE; }
+      .wrapActions > div .actions a:last-child, .wrapActions > div .actions button:last-child {
+        margin-bottom: 0; }
+      .wrapActions > div .actions a i, .wrapActions > div .actions button i {
+        font-size: 1.75rem;
+        margin-right: 1rem; }
+      .wrapActions > div .actions a:hover, .wrapActions > div .actions button:hover {
         color: #81C14B; }
 
 .wrapAnalysis > div {
@@ -831,6 +875,8 @@ section {
     margin-top: 2.25rem;
     padding: 0.5rem 0;
     align-items: flex-end; }
+    .wrapAnalysis > div.sector:first-child {
+      margin-top: 0; }
     .wrapAnalysis > div.sector + div {
       background: transparent; }
       .wrapAnalysis > div.sector + div + div:not(.sector) {
@@ -858,6 +904,8 @@ section {
       margin-right: 0.625rem; }
   .wrapAnalysis > div .benefice {
     width: 10%; }
+  .wrapAnalysis > div .dividend {
+    width: 15%; }
   .wrapAnalysis > div .price {
     width: 10%; }
     .wrapAnalysis > div .price i {
@@ -868,13 +916,22 @@ section {
   .wrapAnalysis > div .actions {
     flex: 1;
     display: flex;
-    justify-content: flex-end; }
+    flex-direction: column;
+    align-items: flex-end; }
     .wrapAnalysis > div .actions a {
       background: none;
       border: none;
-      font-size: 1.75rem;
-      margin-left: 0.75rem;
-      transition: color 0.5s; }
+      transition: color 0.5s;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+      text-align: right; }
+      .wrapAnalysis > div .actions a:last-child {
+        margin-bottom: 0; }
+      .wrapAnalysis > div .actions a i {
+        font-size: 1.75rem;
+        margin-right: 1rem; }
       .wrapAnalysis > div .actions a:hover {
         color: #81C14B; }
 

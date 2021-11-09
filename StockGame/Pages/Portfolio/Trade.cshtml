@@ -46,14 +46,6 @@
     <h1><i class="fal fa-wallet" aria-hidden="true"></i> Mon porte-feuille</h1>
     <div class="flex">
       <div class="left">
-        @if (Model.PortfolioTeamHistory.Items.Count > 1)
-        {
-          <div class="panel-body graph-transition" style="height: 240px">
-            <div id="portfolio_chart_div"></div>
-          </div>
-        }
-      </div>
-      <div class="right">
         <div class="walletInfo">
           <div>
             <h3>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h3>
@@ -69,8 +61,13 @@
           </div>
         </div>
       </div>
-      <div class="img">
-
+      <div class="right wrapGraph">
+        @if (Model.PortfolioTeamHistory.Items.Count > 1)
+        {
+          <div class="panel-body graph-transition" style="height: 240px">
+            <div id="portfolio_chart_div"></div>
+          </div>
+        }
       </div>
     </div>
   </div>
@@ -85,37 +82,48 @@
         {
           @if (item.Amount <= 0) { continue; }
           <div>
-              <div class="logo">
-                  <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+            <div class="logo">
+              <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+            </div>
+            <div class="name">
+              <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+              <div class="qty">
+                @Html.DisplayFor(modelItem => item.Amount) actions
               </div>
-              <div class="name">
-                  <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
-                  <div class="qty">
-                      @Html.DisplayFor(modelItem => item.Amount) actions
-                  </div>
+            </div>
+            <div class="totalValue">
+              <b></b>
+              @if (item.Value > 0f)
+              {
+                <b>@Html.DisplayFor(modelItem => item.Value)</b>
+              }
+              <div class="unit">
+                @Html.DisplayFor(modelItem => item.Price) / action
               </div>
-              <div class="totalValue">
-                  <b></b>
-                  @if (item.Value > 0f)
-                  {
-                      <b>@Html.DisplayFor(modelItem => item.Value)</b>
-                  }
-                  <div class="unit">
-                      @Html.DisplayFor(modelItem => item.Price) / action
-                  </div>
-              </div>
-              <div class="variant">
-                  <b>@Model.MyList[@item.EquityId]</b>
-              </div>
-              <div class="actions">
-                  <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
-                      <i class="far fa-exchange"></i>
-                  </button>
-                  <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
-                      <i class="fal fa-passport"></i>
-                  </a>
-              </div>
-              
+            </div>
+            <div class="variant">
+              @if (Model.MyList[@item.EquityId] < 0)
+              {
+              <strong class="trendDown">
+                <i class="far fa-arrow-down"></i>@Model.MyList[@item.EquityId].ToString("0.00") $
+              </strong>
+              }
+              else
+              {
+                <strong class="trendUp">
+                  <i class="far fa-arrow-up"></i>@Model.MyList[@item.EquityId].ToString("0.00") $
+                </strong>
+              }
+            </div>
+            <div class="actions">
+              <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+                <i class="far fa-exchange"></i>Acheter / vendre
+              </button>
+              <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <i class="fal fa-passport"></i>Fiche complète
+              </a>
+            </div>
+
           </div>
         }
       </div>
@@ -150,7 +158,7 @@
           </div>
         </div>
         <div class="modal-actions">
-          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn alt"><i class="fal fa-inbox-out"></i>Vente</button>
+          <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn red"><i class="fal fa-inbox-out"></i>Vente</button>
           <button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>
         </div>
       </form>
@@ -238,7 +246,7 @@
             });
 
             portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
-            portfolioChartData.addColumn('number', 'Valeur'); // Implicit domain label col.
+            portfolioChartData.addColumn('number'); // Implicit domain label col.
             portfolioChartData.addRows(portfolioDataArray);
 
             portfolioChart.draw(portfolioChartData, portfolioChartOptions);
