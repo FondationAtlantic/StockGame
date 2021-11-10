@@ -59,6 +59,16 @@
                         @Html.DisplayFor(model => model.Portfolio.Cash)
                     </div>
                 </div>
+                <div>
+                    @if (Model.PreviousEpisodePortfolio != null)
+                    {
+                        <h3>Depuis @Html.DisplayFor(model => model.PreviousEpisodePortfolio.EpisodeName)</h3>
+                        <h5>Dividendes reçus</h5>
+                        <div class="value">$@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
+                        <h5>Changement de la valeur totale</h5>
+                        <div class="value">@Html.DisplayFor(model => model.ValueDifference)</div>
+                    }
+                </div>
             </div>
         </div>
         @if (Model.PortfolioTeamHistory.Items.Count > 1)
