@@ -34,19 +34,23 @@
       </div>
       <a id="transaction" class="btn" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Acheter / vendre des actions</a>
     </div>
-    <div class="right">
-      <img src="@Url.Content(string.Concat(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+    <div class="right"  style="flex:1; overflow:hidden">
+        <div style="height: 240px">
+            <div id="price_chart_div"></div>    
+        </div>
+        <button class="btn" id="button">Historique des dividendes</button>
+        @*<img src="@Url.Content(string.Concat(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />*@
     </div>
   </div>
   <div class="twoCols">
     <div class="left">
-      <div class="title">
-        <h2><i class="fal fa-history"></i> Historique</h2>
-        <button class="btn" id="button">Historique des dividendes</button>
-      </div>
+      <!--<div class="title">
+        <h2><i class="fal fa-history"></i> Historique</h2>-->
+        @*<button class="btn" id="button">Historique des dividendes</button>*@
+      <!--</div>
       <div class="wrapChart panel-body" style="height: 240px">
         <div id="price_chart_div"></div>
-      </div>
+      </div>-->
       <div class="title">
         <h2><i class="fal fa-file-chart-line"></i> Bilan</h2>
       </div>
@@ -332,17 +336,6 @@
 
     <div id="menu1" class="tab-pane fade">
       <br />
-      @*<div class="panel panel-default">
-            <div class="panel-body">
-                <div id="price_chart_div"></div>
-            </div>
-        </div>
-        <button id="button">Button</button>*@
-      @*<div class="panel panel-default">
-            <div class="panel-body">
-                <div id="eps_chart_div"></div>
-            </div>
-        </div>*@
     </div>
     <div id="menu2" class="tab-pane fade">
       <table class="table">
@@ -453,23 +446,80 @@
         }
 
         function LoadChart(data) {
-
+            let backgroundColorDark = '#172A3A'
             let current = 0;
+            data[0].price <= data[data.length - 1].price ? lineColor = '#00c609' : lineColor = '#e10a00'
 
-            priceChart = new google.visualization.LineChart(document.getElementById('price_chart_div'));
+            priceChart = new google.visualization.AreaChart(document.getElementById('price_chart_div'));
             priceChartOptions = {
-                animation: { startup: true, duration: 500, easing: 'out' },
-                chartArea: { width: '80%', top: 25, height: '60%' },
-                hAxis: { slantedText: true, slantedTextAngle: 15 },
-                vAxis: { title: 'Prix' },
+                animation: {
+                    startup: true,
+                    duration: 500,
+                    easing: 'out'
+                },
+                areaOpacity: 0.1,
+                backgroundColor: backgroundColorDark,
+                chartArea: {
+                    width: '100%',
+                    height: '100%'
+                },
+                colors: [lineColor],
+                hAxis: {
+                    slantedText: false,
+                    slantedTextAngle: 15,
+                    textPosition: 'in',
+                    textStyle: {
+                        color: '#ffffff',
+                        bold: true
+                    }
+                },
+                lineWidth: 3,
+                vAxis: {
+                    textPosition: 'in',
+                    textStyle: {
+                        color: '#c8dae9',
+                    },
+                    gridlines: {
+                        color: '#315a7c',
+                    },
+                    minorGridlines: {
+                        count: 0,
+                    }
+                }
             };
 
             epsChartOptions = {
-                animation: { startup: true, duration: 500, easing: 'out' },
-                chartArea: { width: '80%', height: '60%', bottom: '35%' },
-                hAxis: { slantedText: true, slantedTextAngle: 15 },
+                animation: {
+                    startup: true,
+                    duration: 500,
+                    easing: 'out'
+                },
+                backgroundColor: backgroundColorDark,
+                chartArea: {
+                    width: '100%',
+                    height: '100%'
+                },
+                hAxis: {
+                    textPosition: 'in',
+                    textStyle: {
+                        color: '#ffffff',
+                        bold: true
+                    }
+                },
                 series: { 1: { pointShape: 'diamond', pointSize: 8, lineWidth: 0 } },
-                vAxis: { title: 'Montant', minValue: 0 },
+                lineWidth: 3,
+                vAxis: {
+                    textPosition: 'in',
+                    textStyle: {
+                        color: '#c8dae9',
+                    },
+                    gridlines: {
+                        color: '#315a7c',
+                    },
+                    minorGridlines: {
+                        count: 0,
+                    }
+                }
             };
 
             let priceDataArray = [];
@@ -506,37 +556,27 @@
             }
             drawChart();
 
-          button.onclick = function () {
-            if (button.textContent == "Historique de prix") {
-              button.textContent = "Historique des dividendes";
-            } else {
-              button.textContent = "Historique de prix";
-            }
-            
+            button.onclick = function () {
+                if (button.textContent == "Historique de prix") {
+                    button.textContent = "Historique des dividendes";
+                } else {
+                    button.textContent = "Historique de prix";
+                }
+
                 current = 1 - current;
                 drawChart();
             }
 
-            $("a[href='#menu1']").on('shown.bs.tab', function (e) {
-                ResizeCharts();
-            });
-
             if (document.addEventListener) {
-                window.addEventListener('resize', ResizeCharts);
+                window.addEventListener('resize', drawChart);
             }
             else if (document.attachEvent) {
-                window.attachEvent('onresize', ResizeCharts);
+                window.attachEvent('onresize', drawChart);
             }
             else {
-                window.resize = ResizeCharts;
+                window.resize = drawChart;
             }
-
             return false;
-        }
-
-        function ResizeCharts(data) {
-            priceChart.draw(priceChartData, priceChartOptions);
-            epsChart.draw(epsChartData, epsChartOptions);
         }
 
     </script>
