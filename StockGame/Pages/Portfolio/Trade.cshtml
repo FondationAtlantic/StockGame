@@ -163,10 +163,8 @@
           </div>
         </div>
         <div class="modal-actions form-group">
-            @*<button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('sell');" class="btn red"><i class="fal fa-inbox-out"></i>Vente</button>*@
-            @*<button asp-for="TransactionEntry.Type" type="submit" onclick="return validate('buy');" class="btn"><i class="fas fa-inbox-in"></i>Achat</button>*@
-            <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color:red" />
-            <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color:green" />
+            <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color: #00c609" />
+            <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color: #e10a00" />
         </div>
       </form>
     </div>
@@ -225,45 +223,47 @@
         }
 
         function LoadChart(data) {
+            let backgroundColorDark = '#172A3A'
             @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
             portfolioChartData = new google.visualization.DataTable();
             portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
             portfolioChartOptions = {
-                areaOpacity: 0.1,
-                animation: {
-                    startup: true,
-                    duration: 350,
-                    easing: 'out'
-                },
-                backgroundColor: '#172A3A',
-                chartArea: {
-                    width: '75%',
-                    height: '60%',
-                    bottom: '35%',
-                    right: 1
-                },
-                colors: [lineColor],
-                hAxis: {
-                    slantedText: true,
-                    slantedTextAngle: 15,
-                    textStyle: {
-                        color: '#ffffff',
-                        bold: true
-                    }
-                },
-                height: 220,
-                lineWidth: 3,
-                vAxis: {
-                    textStyle: {
-                        color: '#c8dae9',
-                    },
-                    gridlines: {
-                        color: '#315a7c',
-                    },
-                    minorGridlines: {
-                        count: 0,
-                    }
+            animation: {
+                startup: true,
+                duration: 350,
+                easing: 'out'
+            },
+            areaOpacity: 0.1,
+            backgroundColor: backgroundColorDark,
+            chartArea: {
+                width: '75%',
+                height: '60%',
+                bottom: '35%',
+                right: 1
+            },
+            colors: [lineColor],
+            hAxis: {
+                slantedText: true,
+                slantedTextAngle: 15,
+                textStyle: {
+                    color: '#ffffff',
+                    bold: true
                 }
+            },
+            height: 220,
+            lineWidth: 3,
+            vAxis: {
+                textPosition: 'out',
+                textStyle: {
+                    color: '#c8dae9',
+                },
+                gridlines: {
+                    color: '#315a7c',
+                },
+                minorGridlines: {
+                    count: 0,
+                }
+            }
             };
 
             let portfolioDataArray = [];
