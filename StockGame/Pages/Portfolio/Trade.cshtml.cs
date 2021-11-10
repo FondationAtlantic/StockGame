@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -41,9 +42,12 @@ namespace StockGame.Pages.Portfolio
 
         public IEnumerable<PortfolioItem> TradeableEquities { get; set; }
 
-        public StockGame.Models.ViewModels.PortfolioHistoryItem Portfolio { get; set; }
+        public PortfolioHistoryItem Portfolio { get; set; }
         public PortfolioTeamHistory PortfolioTeamHistory { get; set; }
+        public PortfolioHistoryItem PreviousEpisodePortfolio { get; set; }
         public Dictionary<int, float> PriceDifference { get; set; }
+        [DataType(DataType.Currency)]
+        public float? ValueDifference => Portfolio.TotalValue - PreviousEpisodePortfolio.TotalValue;
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -104,9 +108,9 @@ namespace StockGame.Pages.Portfolio
             if (PortfolioTeamHistory.Items.Count > 1)
             {
                 PriceDifference = new Dictionary<int, float>();
-                PortfolioHistoryItem previousPortfolio = PortfolioTeamHistory.Items[^2];
+                PreviousEpisodePortfolio = PortfolioTeamHistory.Items[^2];
 
-                foreach ((PortfolioItem item, PortfolioItem i) in Portfolio.Items.SelectMany(item => previousPortfolio.Items.Where(i => item.Equity.Id == i.Equity.Id).Select(i => (item, i))))
+                foreach ((PortfolioItem item, PortfolioItem i) in Portfolio.Items.SelectMany(item => PreviousEpisodePortfolio.Items.Where(i => item.Equity.Id == i.Equity.Id).Select(i => (item, i))))
                 {
                     PriceDifference.Add(item.EquityId, item.Price - i.Price);
                 }
