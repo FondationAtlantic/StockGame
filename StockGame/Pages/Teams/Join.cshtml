@@ -5,67 +5,36 @@
     ViewData["Title"] = "Joindre";
 }
 
-<br />
-<div class="title">
-    <h2>Joindre une équipe</h2>
-    <a class="btn btn-sm" data-target="#join-modal" data-toggle="modal">Nouvelle équipe</a>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">Équipes dont je suis membre</div>
-    <div class="panel-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Équipe
-                    </th>
-                    <th>
-                        Groupe
-                    </th>
-                    <th>
-                        Enseignant
-                    </th>
-                    <th>
-                        École
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Team)
-                {
-                    <tr class=@(ViewData["AddedTeamId"] != null && ViewData["AddedTeamId"].ToString() == item.Id.ToString() ? "success" : "none")>
-                        <td>
-                            @if (Model.CurrentUser.Id == item.OwnerUser.Id)
-                            {
-                                <a asp-page="./Edit" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.Name);
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Group.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Group.TeacherUser.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Group.School.Name)
-                        </td>
-                    </tr>
-                }
-                @if (Model.Team.Count == 0)
-                {
-                    <tr>
-                        <td colspan="6">
-                            Aucune équipe pour l'instant!
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="wrapContent">
+  <div class="title">
+    <h2><i class="fal fa-users" aria-hidden="true"></i>Mes équipes</h2>
+    <a class="btn btn-sm" data-target="#join-modal" data-toggle="modal">Joindre une équipe</a>
+  </div>
+  @if (Model.Team.Count == 0)
+  {
+    <div>
+      Aucune équipe pour l'instant!
     </div>
+  }
+  <div class="wrapTeams">
+    @foreach (var item in Model.Team)
+    {
+      <div class=@(ViewData["AddedTeamId"] != null && ViewData["AddedTeamId"].ToString() == item.Id.ToString() ? "team success" : "team")>
+        @if (Model.CurrentUser.Id == item.OwnerUser.Id)
+        {
+          <h4><a asp-page="./Edit" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h4>
+        }
+        else
+        {
+          <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
+        }
+        <p><b>Groupe:</b> @Html.DisplayFor(modelItem => item.Group.Name)</p>
+        <p><b>Enseignant:</b> @Html.DisplayFor(modelItem => item.Group.TeacherUser.FullName)</p>
+        <p><b>École:</b> @Html.DisplayFor(modelItem => item.Group.School.Name)</p>
+      </div>
+    }
+  </div>
+  <a class="btn btn-sm m" data-target="#join-modal" data-toggle="modal">Joindre une équipe</a>
 </div>
 
 <div class="modal fade  " id="join-modal" tabindex="-1" role="dialog" style="margin:0 auto">
@@ -105,7 +74,7 @@
                         <input asp-for="TeamSelector.JoinPassword" class="form-control" />
                         <span asp-validation-for="TeamSelector.JoinPassword" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-submit">
                         <input type="submit" value="Joindre" class="btn btn-default" />
                     </div>
                 </form>

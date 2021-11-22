@@ -185,7 +185,7 @@ img {
   justify-content: center;
   box-sizing: border-box;
   text-decoration: none !important;
-  padding: rem(14) rem(32);
+  padding: rem(16) rem(32);
   border-radius: 9999px;
   background: $c1;
   color: #fff;
@@ -196,6 +196,25 @@ img {
   &:hover {
     background: $c1h;
     color: #fff;
+  }
+
+  &.buySell {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#81c14b+0,81c14b+50,e10a00+51,e10a00+100 */
+    background: rgb(129,193,75); /* Old browsers */
+    background: -moz-linear-gradient(-45deg, rgba(129,193,75,1) 0%, rgba(129,193,75,1) 50%, rgba(225,10,0,1) 51%, rgba(225,10,0,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, rgba(129,193,75,1) 0%,rgba(129,193,75,1) 50%,rgba(225,10,0,1) 51%,rgba(225,10,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, rgba(129,193,75,1) 0%,rgba(129,193,75,1) 50%,rgba(225,10,0,1) 51%,rgba(225,10,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#81c14b', endColorstr='#e10a00',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    border: none !important;
+
+    &:hover {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e10a00+0,e10a00+49,81c14b+50,81c14b+100 */
+      background: rgb(225,10,0); /* Old browsers */
+      background: -moz-linear-gradient(-45deg, rgba(225,10,0,1) 0%, rgba(225,10,0,1) 49%, rgba(129,193,75,1) 50%, rgba(129,193,75,1) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(-45deg, rgba(225,10,0,1) 0%,rgba(225,10,0,1) 49%,rgba(129,193,75,1) 50%,rgba(129,193,75,1) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(135deg, rgba(225,10,0,1) 0%,rgba(225,10,0,1) 49%,rgba(129,193,75,1) 50%,rgba(129,193,75,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e10a00', endColorstr='#81c14b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    }
   }
 
   &.alt {
@@ -244,6 +263,11 @@ img {
         margin-right: 0;
       }
     }
+  }
+
+  &.form-submit{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -1071,12 +1095,17 @@ section {
   border-top: 1px solid $text;
   padding: rem(24);
 
-  button {
+  input, buton {
     flex: 1;
     margin-right: rem(24);
     font-size: rem(20);
     padding: rem(16) rem(20);
     height: auto;
+    border: none;
+
+    &:hover{
+      border: none;
+    }
 
     &:last-child {
       margin-right: 0;
@@ -1138,8 +1167,13 @@ section {
       width: 40%;
 
       .walletInfo {
-        > div {
+        .row {
           margin-bottom: rem(32);
+          display: flex;
+
+          > div{
+            margin-right: rem(60);
+          }
         }
 
         h3 {
@@ -1226,31 +1260,6 @@ section {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-
-      a, button {
-        background: none;
-        border: none;
-        transition: color $t2;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        margin-bottom: rem(12);
-        text-align: right;
-        color: $c2;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        i {
-          font-size: rem(28);
-          margin-right: rem(16);
-        }
-
-        &:hover {
-          color: $c1;
-        }
-      }
     }
   }
 }
@@ -1308,6 +1317,15 @@ section {
 
     .name {
       width: 25%;
+
+      a{
+        color: $text;
+        text-decoration: none;
+
+        &:hover{
+          color: $c2;
+        }
+      }
     }
 
     .events {
@@ -1345,30 +1363,6 @@ section {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-
-      a {
-        background: none;
-        border: none;
-        transition: color $t2;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        margin-bottom: rem(12);
-        text-align: right;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        i {
-          font-size: rem(28);
-          margin-right: rem(16);
-        }
-
-        &:hover {
-          color: $c1;
-        }
-      }
     }
   }
 }
@@ -1382,12 +1376,29 @@ section {
   justify-content: space-between;
   background-image: url(/images/hero-detail.jpg);
   background-size: cover;
+  position: relative;
+  z-index: 1;
+
+  &:after {
+    content: "";
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: 0;
+    display: block;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,172a3a+11,172a3a+100&0+0,1+11,1+100 */
+    background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(23,42,58,1) 11%, rgba(23,42,58,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(23,42,58,1) 11%,rgba(23,42,58,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(23,42,58,1) 11%,rgba(23,42,58,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#172a3a',GradientType=1 ); /* IE6-9 */
+  }
 
   .left {
-    max-width: 50%;
+    width: 55%;
     font-size: rem(20);
     position: relative;
-    padding-left: rem(60);
 
     .back {
       margin-bottom: rem(60);
@@ -1399,6 +1410,20 @@ section {
         i {
           margin-right: rem(12);
         }
+      }
+    }
+
+    .logoAndName {
+      display: flex;
+
+      .logo {
+        max-width: 150px;
+        text-align: left;
+        margin-right: rem(48);
+      }
+
+      h1 {
+        margin-top: 0;
       }
     }
 
@@ -1424,7 +1449,26 @@ section {
 
   .right {
     position: relative;
-    max-width: 400px;
+    flex: 1;
+    padding-right: rem(60);
+
+    .nav-tabs {
+      float: right;
+      border: none;
+
+      li {
+        background: #FFF;
+
+        a {
+          cursor: pointer;
+        }
+
+        &.active {
+          background: $c1;
+          pointer-events: none;
+        }
+      }
+    }
   }
 }
 
@@ -1501,10 +1545,225 @@ section {
   }
 }
 
-.highlight{
+.wrapContent{
+  padding: rem(48);
+}
+
+.newMember {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  font-size: rem(24);
+  font-weight: bold;
+
+  i {
+    font-size: rem(120);
+    margin-bottom: rem(24);
+  }
+
+  .btn {
+    margin-top: rem(42);
+  }
+}
+
+.highlight {
   background-color: $c2;
   color: #FFF;
   font-weight: 700;
+}
+
+.wrapTeams{
+  display: flex;
+
+  + a{
+    margin-top: rem(24);
+    width: 100%;
+  }
+  
+  > div{
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.25);
+    padding: rem(24);
+    width: calc((100% - #{rem(40)}) / 4);
+    box-sizing: border-box;
+    margin: 0 rem(20) rem(20) 0;
+
+    &:nth-child(4n){
+      margin-right: 0;
+    }
+
+    h4{
+      margin: 0 0 rem(10);
+
+      a{
+        color: $text;
+      }
+    }
+
+    p{
+      margin-bottom: 0;
+    }
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: rem(32);
+
+  h3{
+    margin: 0;
+  }
+
+  .orderBy {
+    margin-left: rem(80);
+  }
+
+  .fakeSelect {
+    position: relative;
+
+    ul {
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 0;
+
+        a {
+          color: $text;
+          text-decoration: none;
+        }
+      }
+    }
+
+    &:hover{
+      .values{
+        display: block;
+      }
+    }
+
+    .currentValue {
+      border: 1px solid $text;
+      padding: rem(8) rem(12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 200px;
+
+      i {
+        margin-left: rem(8);
+      }
+
+      li {
+        display: none;
+
+        &.active {
+          display: block;
+        }
+
+        a {
+          pointer-events: none;
+        }
+      }
+    }
+
+    .values {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      border: 1px solid $text;
+      width: 100%;
+      background: #FFF;
+      display: none;
+
+      li {
+        list-style: none;
+
+        a {
+          background: #FFF;
+          padding: rem(8) rem(12);
+          display: block;
+          transition: all 0.5s;
+
+          &:hover {
+            cursor: pointer;
+            background: rgba(0,0,0,0.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+.wrapRanking {
+  th{
+    text-align: right;
+  }
+  
+  .position {
+    width: 50px;
+    font-weight: bold;
+    font-size: rem(18);
+  }
+
+  .nameAndTotal{
+    display: flex;
+    flex-direction: column;
+
+    b{
+      font-size: rem(18);
+    }
+  }
+
+  .table > tbody tr > td{
+    vertical-align: middle;
+  }
+}
+
+.flex{
+  display: flex;
+  width: 100%;
+
+  .right{
+    flex: 1;
+  }
+}
+
+.nav-tabs {
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid $border;
+
+  li {
+    border: none!important;
+
+    &.active {
+      background: $c1;
+      pointer-events: none;
+
+      a {
+        color: #FFF!important;
+      }
+    }
+
+    a {
+      border: none !important;
+      background: transparent !important;
+      text-decoration: none;
+      font-weight: bold;
+      color: $text;
+      margin: 0;
+      transition: all $t1;
+
+      &:hover{
+        background: rgba(0,0,0,0.075)!important;
+      }
+    }
+  }
 }
 
 @media screen and (max-width:1600px) {
@@ -1746,5 +2005,14 @@ section {
         margin-right: rem(10);
       }
     }
+  }
+
+  .wrapContent{
+    padding: rem(24);
+  }
+
+  .wrapTeams > div{
+    width: 100%;
+    margin: 0 0 rem(12);
   }
 }

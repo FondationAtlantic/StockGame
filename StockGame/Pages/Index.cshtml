@@ -43,7 +43,13 @@ else if (User.IsInRole("Student"))
 {
   @if (!Model.HasJoinedTeam)
   {
-    <p>Les étudiants sont invités à commencer par <a asp-page="./Teams/Join">joindre une équipe</a>.</p>
+    <div class="newMember">
+      <div>
+        <i class="fal fa-users" aria-hidden="true"></i>
+        <p>Les étudiants sont invités à commencer par joindre une équipe.</p>
+        <a asp-page="./Teams/Join" class="btn">Joindre une équipe</a>
+      </div>
+     </div>
   }
   else if (Model.ActiveGame != null && Model.ActiveTeam != null)
   {
@@ -91,8 +97,8 @@ else if (User.IsInRole("Student"))
         <div class="left">
           <section class="wallet">
             <div class="title">
-              <h2><i class="fal fa-wallet" aria-hidden="true"></i> Mon porte-feuille</h2>
-              <a id="transaction" class="btn" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
+              <h2><i class="fal fa-wallet" aria-hidden="true"></i> Mon portefeuille</h2>
+              <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
             </div>
             <div class="resume">
               <div class="whiteBlock">
@@ -116,7 +122,7 @@ else if (User.IsInRole("Student"))
               @if (Model.PortfolioTeamHistory.Items.Count > 1)
               {
                 <div class="whiteBlock">
-                  <i class="fal fa-arrow-alt-up"></i>
+                  <i class="fal fa-list-ol"></i>
                   <div>
                     <h4>@Html.DisplayFor(model => model.CurrentRank)ème Position</h4>
                     <div class="value">
@@ -156,7 +162,7 @@ else if (User.IsInRole("Student"))
                   }
                 </div>
                 <div class="whiteBlock">
-                  <h4>Valeur du Portefeuille</h4>
+                  <h4>Valeur du portefeuille</h4>
                   <div class="graph">
                     <div id="price_chart_div"></div>
                   </div>
@@ -164,13 +170,13 @@ else if (User.IsInRole("Student"))
               }
             </div>
             <div class="actions">
-              <a asp-page="/Portfolio/Trade">Afficher le porte-feuille complet</a>
+              <a asp-page="/Portfolio/Trade">Afficher le portefeuille complet</a>
             </div>
           </section>
           <section class="market">
             <div class="title">
               <h2><i class="fal fa-chart-line"></i> Marché actuel</h2>
-              <a id="transaction2" class="btn" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
+              <a id="transaction2" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
             </div>
             <div class="resume">
               <div class="whiteBlock noPadding">

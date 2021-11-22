@@ -2,17 +2,17 @@
 @model StockGame.Pages.Analysis.DetailsModel
 
 @{
-    ViewData["Title"] = "Détails";
+  ViewData["Title"] = "Détails";
 }
 
 <style type="text/css">
-    .second {
-        text-align: right;
-    }
+  .second {
+    text-align: right;
+  }
 
-    .negative {
-        color: red;
-    }
+  .negative {
+    color: red;
+  }
 </style>
 
 <div class="detailsPage">
@@ -21,36 +21,38 @@
       <div class="back">
         <a asp-page="./Index"><i class="fal fa-long-arrow-left"></i>Retour à la liste</a>
       </div>
-      <h1>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Name)</h1>
-      <div class="infos">
-        <div>
-          <div class="label">@Html.DisplayNameFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Industry)</div>
-          <div class="value">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Industry.Name)</div>
+      <div class="logoAndName">
+        <div class="logo">
+          <img src="@Url.Content(string.Concat(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
         </div>
         <div>
-          <div class="label">@Html.DisplayNameFor(model => model.DetailsItem.EpisodeEquityInfo.Price)</div>
-          <div class="value">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Price)</div>
+          <h1>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Name)</h1>
+          <div class="infos">
+            <div>
+              <div class="label">@Html.DisplayNameFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Industry)</div>
+              <div class="value">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Industry.Name)</div>
+            </div>
+            <div>
+              <div class="label">@Html.DisplayNameFor(model => model.DetailsItem.EpisodeEquityInfo.Price)</div>
+              <div class="value">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Price)</div>
+            </div>
+          </div>
+          <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Acheter / vendre des actions</a>
         </div>
       </div>
-      <a id="transaction" class="btn" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Acheter / vendre des actions</a>
     </div>
-    <div class="right"  style="flex:1; overflow:hidden">
-        <div style="height: 240px">
-            <div id="price_chart_div"></div>    
-        </div>
-        <button class="btn" id="button">Historique des dividendes</button>
-        @*<img src="@Url.Content(string.Concat(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />*@
+    <div class="right">
+      <div style="height: 240px">
+        <div id="price_chart_div"></div>
+      </div>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" id="btnPrice">Historique de prix</a></li>
+        <li><a data-toggle="tab" id="btnDividend">Historique des dividendes</a></li>
+      </ul>
     </div>
   </div>
   <div class="twoCols">
     <div class="left">
-      <!--<div class="title">
-        <h2><i class="fal fa-history"></i> Historique</h2>-->
-        @*<button class="btn" id="button">Historique des dividendes</button>*@
-      <!--</div>
-      <div class="wrapChart panel-body" style="height: 240px">
-        <div id="price_chart_div"></div>
-      </div>-->
       <div class="title">
         <h2><i class="fal fa-file-chart-line"></i> Bilan</h2>
       </div>
@@ -416,9 +418,9 @@
 
 @section Scripts {
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script>
+  <script>
         $('#transaction').on('click', function (e) {
             event.preventDefault();
             window.location.href = event.srcElement.href +
@@ -550,21 +552,19 @@
             dataTable[0] = priceChartData;
             dataTable[1] = epsChartData;
             let options = [priceChartOptions, epsChartOptions];
-            let button = document.getElementById('button');
             function drawChart() {
                 priceChart.draw(dataTable[current], options[current]);
             }
             drawChart();
 
-            button.onclick = function () {
-                if (button.textContent == "Historique de prix") {
-                    button.textContent = "Historique des dividendes";
-                } else {
-                    button.textContent = "Historique de prix";
-                }
-
-                current = 1 - current;
+            document.getElementById('btnPrice').onclick = function () {
+                current = 0;
                 drawChart();
+            }
+
+            document.getElementById('btnDividend').onclick = function () {
+              current = 1;
+              drawChart();
             }
 
             if (document.addEventListener) {
@@ -579,6 +579,6 @@
             return false;
         }
 
-    </script>
+  </script>
 }
 
