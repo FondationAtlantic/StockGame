@@ -2,7 +2,7 @@
 @model StockGame.Pages.Analysis.IndexModel
 
 @{
-    ViewData["Title"] = "Analyse";
+  ViewData["Title"] = "Analyse";
 }
 
 <style type="text/css">
@@ -44,101 +44,100 @@
 </style>
 
 <div class="transition myanalysis">
-    <div class="walletHero">
-        <h1><i class="fal fa-chart-line" aria-hidden="true"></i>Analyse</h1>
-        <div class="date"><i class="fal fa-calendar-alt"></i>Session <strong>@Model.ActiveTradingSession.Episode.Name</strong></div>
-        <div class="img"></div>
-    </div>
-    <div class="twoCols">
-        <div class="left">
-            <div class="wrapAnalysis">
-                @{var lastIndustry = "";}
-                @foreach (var item in Model.IndexItems)
-                {
-                    @if (item.EpisodeEquityInfo.Equity.Industry.Name != lastIndustry)
-                    {
-                        lastIndustry = item.EpisodeEquityInfo.Equity.Industry.Name;
-                        <div class="sector">
-                            <div class="logoName"><h3>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Industry.Name)</h3></div>
-                            <div class="events">Événements</div>
-                            <div class="benefice">@Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)</div>
-                            <div class="price">@Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)</div>
-                            <div class="dividend">@Html.DisplayNameFor(model => model.IndexItems[0].DividendYield)</div>
-                            @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-                            {
-                                <div class="extra">
-                                    @Html.DisplayNameFor(model => model.IndexItems[0].PriceEarningsRatio)
-                                </div>
-                            }
-                            @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-                            {
-                                <div class="extra">
-                                    @Html.DisplayNameFor(model => model.IndexItems[0].LeverageRatio)
-                                </div>
-                            }
-                            <div class="actions"></div>
-                        </div>
-                    }
-                    <div>
-                        <div class="logo">
-                            <img src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
-                        </div>
-                        <div class="name">
-                            <b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b>
-                        </div>
-                        <div class="events">
-                            @if (item.EpisodeEquityInfo.NewsTitle != null)
-                            {
-                                <i class="fal fa-newspaper"></i>
-                            }
-                            @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
-                            {
-                                <i class="fal fa-file-invoice-dollar"></i>
-                            }
-                            @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
-                            {
-                                <i class="fal fa-hand-holding-usd"></i>
-                            }
-                        </div>
-                        <div class="benefice">
-                            <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
-                        </div>
-                        <div class="price">
-                            @switch (item.Trend)
-                            {
-                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
-                                    <strong class="trendUp"><i class="far fa-arrow-up"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                                    break;
-                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
-                                    <strong class="trendDown"><i class="far fa-arrow-down"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                                    break;
-                            }
-                        </div>
-                        <div class="dividend">
-                            @Html.DisplayFor(modelItem => item.DividendYield)
-                        </div>
-                        @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-                        {
-                            <div class="extra">
-                                @Html.DisplayFor(modelItem => item.PriceEarningsRatio)
-                            </div>
-                        }
-                        @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-                        {
-                            <div class="extra">
-                                @Html.DisplayFor(modelItem => item.LeverageRatio)
-                            </div>
-                        }
-                        <div class="actions">
-                            <a asp-page="../Portfolio/Trade" onclick="selectById(@item.EpisodeEquityInfo.EquityId)"><i class="far fa-exchange"></i>Acheter / vendre</a>
-                            <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><i class="fal fa-passport"></i>Fiche complète</a>
-                        </div>
-                    </div>
-                }
+  <div class="walletHero">
+    <h1><i class="fal fa-chart-line" aria-hidden="true"></i>Analyse</h1>
+    <div class="date"><i class="fal fa-calendar-alt"></i>Session <strong>@Model.ActiveTradingSession.Episode.Name</strong></div>
+    <div class="img"></div>
+  </div>
+  <div class="twoCols">
+    <div class="left">
+      <div class="wrapAnalysis">
+        @{var lastIndustry = "";}
+        @foreach (var item in Model.IndexItems)
+        {
+          @if (item.EpisodeEquityInfo.Equity.Industry.Name != lastIndustry)
+          {
+            lastIndustry = item.EpisodeEquityInfo.Equity.Industry.Name;
+            <div class="sector">
+              <div class="logoName"><h3>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Industry.Name)</h3></div>
+              <div class="events">Événements</div>
+              <div class="benefice">@Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)</div>
+              <div class="price">@Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)</div>
+              <div class="dividend">@Html.DisplayNameFor(model => model.IndexItems[0].DividendYield)</div>
+              @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+              {
+                <div class="extra">
+                  @Html.DisplayNameFor(model => model.IndexItems[0].PriceEarningsRatio)
+                </div>
+              }
+              @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+              {
+                <div class="extra">
+                  @Html.DisplayNameFor(model => model.IndexItems[0].LeverageRatio)
+                </div>
+              }
+              <div class="actions"></div>
             </div>
-        </div>
-
+          }
+          <div>
+            <div class="logo">
+              <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" /></a>
+            </div>
+            <div class="name">
+              <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b></a>
+            </div>
+            <div class="events">
+              @if (item.EpisodeEquityInfo.NewsTitle != null)
+              {
+                <i class="fal fa-newspaper"></i>
+              }
+              @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
+              {
+                <i class="fal fa-file-invoice-dollar"></i>
+              }
+              @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
+              {
+                <i class="fal fa-hand-holding-usd"></i>
+              }
+            </div>
+            <div class="benefice">
+              <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
+            </div>
+            <div class="price">
+              @switch (item.Trend)
+              {
+                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
+                  <strong class="trendUp"><i class="far fa-arrow-up"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                  break;
+                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
+                  <strong class="trendDown"><i class="far fa-arrow-down"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                  break;
+              }
+            </div>
+            <div class="dividend">
+              @Html.DisplayFor(modelItem => item.DividendYield)
+            </div>
+            @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+            {
+              <div class="extra">
+                @Html.DisplayFor(modelItem => item.PriceEarningsRatio)
+              </div>
+            }
+            @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+            {
+              <div class="extra">
+                @Html.DisplayFor(modelItem => item.LeverageRatio)
+              </div>
+            }
+            <div class="actions">
+              <a asp-page="../Portfolio/Trade" onclick="selectById(@item.EpisodeEquityInfo.EquityId)" class="btn buySell"><i class="far fa-exchange"></i>Acheter / vendre</a>
+            </div>
+          </div>
+        }
+      </div>
     </div>
+
+  </div>
 
 
 </div>
@@ -148,114 +147,114 @@
 
 
 <table class="table" style="display: none">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Equity.Industry)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Equity.Name)
-            </th>
-            <th>
-                Événements
-            </th>
-            <th class="right">
-                @Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)
-            </th>
-            <th class="right">
-                @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)
-            </th>
-            <th class="right">
-                @Html.DisplayNameFor(model => model.IndexItems[0].DividendYield)
-            </th>
-            @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-            {
-                <th class="right">
-                    @Html.DisplayNameFor(model => model.IndexItems[0].PriceEarningsRatio)
-                </th>
-            }
-            @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-            {
-                <th class="right">
-                    @Html.DisplayNameFor(model => model.IndexItems[0].LeverageRatio)
-                </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @{var lastIndustry2 = "";}
-        @foreach (var item in Model.IndexItems)
+  <thead>
+    <tr>
+      <th>
+        @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Equity.Industry)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Equity.Name)
+      </th>
+      <th>
+        Événements
+      </th>
+      <th class="right">
+        @Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)
+      </th>
+      <th class="right">
+        @Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)
+      </th>
+      <th class="right">
+        @Html.DisplayNameFor(model => model.IndexItems[0].DividendYield)
+      </th>
+      @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+      {
+        <th class="right">
+          @Html.DisplayNameFor(model => model.IndexItems[0].PriceEarningsRatio)
+        </th>
+      }
+      @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+      {
+        <th class="right">
+          @Html.DisplayNameFor(model => model.IndexItems[0].LeverageRatio)
+        </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @{var lastIndustry2 = "";}
+    @foreach (var item in Model.IndexItems)
+    {
+      @if (item.EpisodeEquityInfo.Equity.Industry.Name != lastIndustry)
+      {
+        lastIndustry = item.EpisodeEquityInfo.Equity.Industry.Name;
+        <tr bgcolor="DarkGray" class="h4" style="color:White"> <td colspan="20">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Industry.Name)</td></tr>
+      }
+      <tr>
+        <td>
+          <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img style="margin: 0px 8px" src="@Url.Content(item.EpisodeEquityInfo.Equity.ThumbPath)" /></a>
+        </td>
+        <td>
+          <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
+        </td>
+        <td class="nowrap">
+          @if (item.EpisodeEquityInfo.NewsTitle != null)
+          {
+            <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/newspaper_small.png" title="Nouvelle!" /></a>
+          }
+          @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
+          {
+            <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/results_small.png" title="Publication des résultats" /></a>
+          }
+          @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
+          {
+            <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/dividend_small.png" title="Dividende imminent" /></a>
+          }
+        </td>
+        <td class="nowrap-right">
+          <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
+        </td>
+        <td class="nowrap-right">
+          @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)
+          @switch (item.Trend)
+          {
+            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
+              <img src="~/images/up_arrow.png" />
+              break;
+            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
+              <img src="~/images/down_arrow.png" />
+              break;
+          }
+        </td>
+        <td class="nowrap-right">
+          @Html.DisplayFor(modelItem => item.DividendYield)
+        </td>
+        @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
         {
-            @if (item.EpisodeEquityInfo.Equity.Industry.Name != lastIndustry)
-            {
-                lastIndustry = item.EpisodeEquityInfo.Equity.Industry.Name;
-                <tr bgcolor="DarkGray" class="h4" style="color:White"> <td colspan="20">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Industry.Name)</td></tr>
-            }
-            <tr>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img style="margin: 0px 8px" src="@Url.Content(item.EpisodeEquityInfo.Equity.ThumbPath)" /></a>
-                </td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</a>
-                </td>
-                <td class="nowrap">
-                    @if (item.EpisodeEquityInfo.NewsTitle != null)
-                    {
-                        <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/newspaper_small.png" title="Nouvelle!" /></a>
-                    }
-                    @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
-                    {
-                        <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/results_small.png" title="Publication des résultats" /></a>
-                    }
-                    @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
-                    {
-                        <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="~/images/dividend_small.png" title="Dividende imminent" /></a>
-                    }
-                </td>
-                <td class="nowrap-right">
-                    <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
-                </td>
-                <td class="nowrap-right">
-                    @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)
-                    @switch (item.Trend)
-                    {
-                        case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
-                            <img src="~/images/up_arrow.png" />
-                            break;
-                        case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
-                            <img src="~/images/down_arrow.png" />
-                            break;
-                    }
-                </td>
-                <td class="nowrap-right">
-                    @Html.DisplayFor(modelItem => item.DividendYield)
-                </td>
-                @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-                {
-                    <td class="nowrap-right">
-                        @Html.DisplayFor(modelItem => item.PriceEarningsRatio)
-                    </td>
-                }
-                @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
-                {
-                    <td class="nowrap-right">
-                        @Html.DisplayFor(modelItem => item.LeverageRatio)
-                    </td>
-                }
-            </tr>
+          <td class="nowrap-right">
+            @Html.DisplayFor(modelItem => item.PriceEarningsRatio)
+          </td>
         }
-    </tbody>
+        @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
+        {
+          <td class="nowrap-right">
+            @Html.DisplayFor(modelItem => item.LeverageRatio)
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
 </table>
 
 
 @section Scripts {
-    <script type="text/javascript">
-        function selectById(id) {
-            event.preventDefault();
-            window.location.href = event.srcElement.href +
-                '?showModal=1' +
-                '&equity=' +
-                id;
-        }
-    </script>
+  <script type="text/javascript">
+    function selectById(id) {
+      event.preventDefault();
+      window.location.href = event.srcElement.href +
+        '?showModal=1' +
+        '&equity=' +
+        id;
     }
+  </script>
+}

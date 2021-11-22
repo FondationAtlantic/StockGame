@@ -43,50 +43,56 @@
 
 <div class="transition mywallet">
   <div class="walletHero">
-    <h1><i class="fal fa-wallet" aria-hidden="true"></i> Mon porte-feuille</h1>
+    <h1><i class="fal fa-wallet" aria-hidden="true"></i> Mon portefeuille</h1>
     <div class="flex">
-        <div class="left">
-            <div class="walletInfo">
-                <div>
-                    <h3>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h3>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.Portfolio.TotalValue)
-                    </div>
-                </div>
-                <div>
-                    <h3>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h3>
-                    <div class="value">
-                        @Html.DisplayFor(model => model.Portfolio.Cash)
-                    </div>
-                </div>
-                <div>
-                    @if (Model.PreviousEpisodePortfolio != null)
-                    {
-                        <h3>Depuis @Html.DisplayFor(model => model.PreviousEpisodePortfolio.EpisodeName)</h3>
-                        <h5>Montant reçu en dividendes</h5>
-                        <div class="value">$@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
-                        <h5>Changement de la valeur totale</h5>
-                        <div class="value">@Html.DisplayFor(model => model.ValueDifference)</div>
-                    }
-                </div>
+      <div class="left">
+        <div class="walletInfo">
+          <div class="row">
+            <div>
+              <h3>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h3>
+              <div class="value">
+                @Html.DisplayFor(model => model.Portfolio.TotalValue)
+              </div>
             </div>
+            <div>
+              <h3>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h3>
+              <div class="value">
+                @Html.DisplayFor(model => model.Portfolio.Cash)
+              </div>
+            </div>
+          </div>
+          @if (Model.PreviousEpisodePortfolio != null)
+          {
+            <h3>Depuis @Html.DisplayFor(model => model.PreviousEpisodePortfolio.EpisodeName)</h3>
+            <div class="row">
+              <div>
+                <h5>Montant reçu en dividendes</h5>
+                <div class="value">$@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
+              </div>
+              <div>
+                <h5>Changement de la valeur totale</h5>
+                <div class="value">@Html.DisplayFor(model => model.ValueDifference)</div>
+              </div>
+            </div>
+          }
         </div>
-        @if (Model.PortfolioTeamHistory.Items.Count > 1)
-        {
-            <div class="right" style="flex:1; overflow:hidden">
-                @*<div class="panel-body graph-transition" style="height: 240px">*@
-                <div class="graph-transition" style="height: 240px">
-                    <div id="portfolio_chart_div"></div>
-                </div>
-            </div>
-        }
+      </div>
+      @if (Model.PortfolioTeamHistory.Items.Count > 1)
+      {
+        <div class="right" style="flex:1; overflow:hidden">
+          @*<div class="panel-body graph-transition" style="height: 240px">*@
+          <div class="graph-transition" style="height: 240px">
+            <div id="portfolio_chart_div"></div>
+          </div>
+        </div>
+      }
     </div>
   </div>
   <div class="twoCols">
     <div class="left">
       <div class="title">
         <h2><i class="fal fa-chart-pie"></i>Mes actions</h2>
-        <a class="btn" data-target="#transaction-modal" data-toggle="modal"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
+        <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
       </div>
       <div class="wrapActions">
         @foreach (var item in Model.Portfolio.Items)
@@ -113,32 +119,28 @@
               </div>
             </div>
             <div class="variant">
-                @if (Model.PriceDifference != null)
+              @if (Model.PriceDifference != null)
+              {
+                @if (Model.PriceDifference[@item.EquityId] < 0)
                 {
-                    @if (Model.PriceDifference[@item.EquityId] < 0)
-                    {
-                        <strong class="trendDown">
-                            <i class="far fa-arrow-down"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
-                        </strong>
-                    }
-                    else
-                    {
-                        <strong class="trendUp">
-                            <i class="far fa-arrow-up"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
-                        </strong>
-                    }
+                  <strong class="trendDown">
+                    <i class="far fa-arrow-down"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                  </strong>
                 }
+                else
+                {
+                  <strong class="trendUp">
+                    <i class="far fa-arrow-up"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                  </strong>
+                }
+              }
 
             </div>
             <div class="actions">
-              <button title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+              <button class="btn buySell" title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
                 <i class="far fa-exchange"></i>Acheter / vendre
               </button>
-              <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
-                <i class="fal fa-passport"></i>Fiche complète
-              </a>
             </div>
-
           </div>
         }
       </div>
@@ -164,7 +166,7 @@
           </div>
           <div class="form-group">
             <label asp-for="TransactionEntry.Amount" class="control-label"></label>
-            <input asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10"/>
+            <input asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
             <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
           </div>
           <div class="form-group">
@@ -173,8 +175,8 @@
           </div>
         </div>
         <div class="modal-actions form-group">
-            <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" style="background-color: #00c609" />
-            <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn" style="background-color: #e10a00" />
+          <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" />
+          <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn red" />
         </div>
       </form>
     </div>

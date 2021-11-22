@@ -4,131 +4,174 @@
 @using Microsoft.AspNetCore.Html
 
 @{
-    ViewData["Title"] = "Classement";
+  ViewData["Title"] = "Classement";
 }
-
-<h2>Classement</h2>
-<h4>Partie <strong>@Model.Game.Name</strong></h4>
-
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#rankings">Tableau</a></li>
-    <li><a data-toggle="tab" href="#charts">Graphique</a></li>
-</ul>
-
-<style type="text/css">
-    .nowrap {
-        white-space: nowrap;
-    }
-
-    .negative {
-        color: red;
-    }
-</style>
 
 @{
-    Func<string, IHtmlContent> SortArrow = (prefix) => new Func<object, IHtmlContent>(@<text>
+  Func<string, IHtmlContent> SortArrow = (prefix) => new Func<object, IHtmlContent>(@<text>
     @if (Model.SortOrder.StartsWith(prefix))
     {
-        @if (Model.SortOrder.EndsWith("_asc"))
-        {
-            <span class="dropup"> <span class="caret"></span> </span>
-        }
-        else
-        {
-            <span class="caret"></span>
-        }
+      @if (Model.SortOrder.EndsWith("_asc"))
+      {
+        <span class="dropup"> <span class="caret"></span> </span>
+      }
+      else
+      {
+        <span class="caret"></span>
+      }
     }
-    </text>)(null);
+  </text>)(null);
+
+Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlContent>(@<text>
+  @if (Model.SortOrder.StartsWith(prefix))
+  {
+    @if (Model.SortOrder.EndsWith("_asc"))
+    {
+      <text>active</text>
+}
+else
+{
+<text>active</text>
+}
+  }
+  </text>)(null);
 }
 
-<div class="tab-content" width="100%">
+<div class="wrapContent">
+  <div class="title">
+    <h2><i class="fal fa-list-ol" aria-hidden="true"></i>Classement</h2>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#rankings">Tableau</a></li>
+      <li><a data-toggle="tab" href="#charts">Graphique</a></li>
+    </ul>
+  </div>
+  <div class="tab-content">
     <div id="rankings" class="tab-pane fade in active">
-        <div class="panel panel-default" style="border-top: 0px solid transparent;">
-            <div class="panel-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Position</th>
-                            <th>
-                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">Équipe @SortArrow("Team_")</a>
-                            </th>
-                            <th>
-                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement Session @SortArrow("GainPct_")</a>
-                            </th>
-                            <th>
-                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">Gain Session @SortArrow("Gain_")</a>
-                            </th>
-                            <th>
-                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">Rendement Total @SortArrow("TotalPct_")</a>
-                            </th>
-                            <th>
-                                <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">Valeur Totale @SortArrow("TotalValue_")</a>
-                            </th>
-                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                            {
-                                <th></th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.PortfolioGameRankingItems)
-                        {
-                            <tr class=@(item.Team == Model.ActiveTeam ? "success" : "none")>
-                                <td>@Html.DisplayFor(model => item.Rank)</td>
-                                <td>@Html.DisplayFor(model => item.Team.Name)</td>
-                                <td><span class="@(item.PctGain < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.PctGain)</span></td>
-                                <td class="nowrap">
-                                    @Html.DisplayFor(model => item.Gain)
-                                    @switch (item.Trend)
-                                    {
-                                        case PortfolioGameRankingItem.ValueTrend.Up:
-                                            <img src="~/images/up_arrow.png" />
-                                            break;
-                                        case PortfolioGameRankingItem.ValueTrend.Down:
-                                            <img src="~/images/down_arrow.png" />
-                                            break;
-                                    }
-                                </td>
-                                <td><span class="@(item.TotalPctGain < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalPctGain)</span></td>
-                                <td><span class="@(item.TotalValue < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalValue)</span></td>
-
-                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                {
-                                    <td>
-                                        @if (item.Team == Model.ActiveTeam)
-                                        {
-                                            <!--a asp-page="./Ranking" asp-route-SelectActiveTeamId="-1">Forget</!a-->
-                                        }
-                                        else
-                                        {
-                                            <a asp-page="./Ranking" asp-route-SelectActiveGameId="@Model.Game.Id" asp-route-SelectActiveTeamId="@item.Team.Id">Select</a>
-                                        }
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+      <div class="filters">
+        <h3>Partie <strong>@Model.Game.Name</strong></h3>
+        <div class="orderBy">
+          <label>Classer par</label>
+          <div class="fakeSelect">
+            <div class="currentValue">
+              <ul>
+                <li class="@SortActive("Team_")">
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">Équipe</a>
+                </li>
+                <li class="@SortActive("GainPct_")">
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement Session</a>
+                </li>
+                <li class="@SortActive("Gain_")">
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">Gain Session</a>
+                </li>
+                <li class="@SortActive("TotalPct_")">
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">Rendement Total</a>
+                </li>
+                <li class="@SortActive("TotalValue_")">
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">Valeur Totale</a>
+                </li>
+              </ul>
+              <i class="far fa-angle-down"></i>
             </div>
+            <div class="values">
+              <ul>
+                <li>
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">Équipe</a>
+                </li>
+                <li>
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement Session</a>
+                </li>
+                <li>
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">Gain Session</a>
+                </li>
+                <li>
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">Rendement Total</a>
+                </li>
+                <li>
+                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">Valeur Totale</a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+      <div class="wrapRanking">
+        <table class="table">
+          <thead>
+            <tr>
+              <th colspan="2"></th>
+              <th align="right">
+                Rendement session
+              </th>
+              @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+              {
+                <th></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @foreach (var item in Model.PortfolioGameRankingItems)
+            {
+              <tr class=@(item.Team == Model.ActiveTeam ? "success" : "none")>
+                <td valign="middle" class="position">
+                  @Html.DisplayFor(model => item.Rank)
+                </td>
+                <td>
+                  <span class="nameAndTotal">
+                    <b>@Html.DisplayFor(model => item.Team.Name)</b>
+                    <span><i><span class="@(item.TotalPctGain < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalPctGain)</span></i>&nbsp;|&nbsp;<i><span class="@(item.TotalValue < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalValue)</span></i></span>
+                  </span>
+                </td>
+                <td align="right">
+                  @switch (item.Trend)
+                  {
+                    case PortfolioGameRankingItem.ValueTrend.Up:
+                      <strong class="trendUp"><i class="far fa-arrow-up"></i> @Html.DisplayFor(model => item.PctGain)&nbsp;|&nbsp;@Html.DisplayFor(model => item.Gain)</strong>
+                      break;
+                    case PortfolioGameRankingItem.ValueTrend.Down:
+                      <strong class="trendDown"><i class="far fa-arrow-down"></i> @Html.DisplayFor(model => item.PctGain)&nbsp;|&nbsp;@Html.DisplayFor(model => item.Gain)</strong>
+                      break;
+                    default:
+                      @Html.DisplayFor(model => item.PctGain) <text>&nbsp;|&nbsp;</text> @Html.DisplayFor(model => item.Gain)
+                      break;
+                  }
+                </td>
 
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                  <td>
+                    @if (item.Team == Model.ActiveTeam)
+                    {
+                      <!--a asp-page="./Ranking" asp-route-SelectActiveTeamId="-1">Forget</!a-->
+                    }
+                    else
+                    {
+                      <a asp-page="./Ranking" asp-route-SelectActiveGameId="@Model.Game.Id" asp-route-SelectActiveTeamId="@item.Team.Id">Select</a>
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div id="charts" class="tab-pane fade">
-        <br />
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div id="portfolio_chart_div"></div>
-            </div>
+      <br />
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div id="portfolio_chart_div"></div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-
 
 @section Scripts {
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script>
+  <script>
+
         google.charts.load('current', { packages: ['corechart'] });
 
         var data = @Html.Raw(Json.Serialize(Model.PortfolioGameHistory));
@@ -194,5 +237,5 @@
             portfolioChart.draw(portfolioChartData, portfolioChartOptions);
         }
 
-    </script>
+  </script>
 }
