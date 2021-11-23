@@ -99,6 +99,10 @@
               {
                 <div><i class="fal fa-hand-holding-usd"></i><span class="m">Dividende imminent</span></div>
               }
+              @if (item.EpisodeEquityInfo.NewsTitle == null && !item.EpisodeEquityInfo.AnnounceFinancialResults && !item.EpisodeEquityInfo.Dividend.HasValue)
+              {
+                <text>—</text>
+              }
             </div>
             <div class="benefice">
               <span class="m">Bénéfice par action&nbsp;:&nbsp;</span><span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
@@ -116,7 +120,15 @@
               }
             </div>
             <div class="dividend">
-              <span class="m">Rendement dividende&nbsp;:&nbsp;</span>@Html.DisplayFor(modelItem => item.DividendYield)
+              <span class="m">Rendement dividende&nbsp;:&nbsp;</span>
+              @if (item.DividendYield > 0)
+              {
+                @Html.DisplayFor(modelItem => item.DividendYield)
+              }
+              else
+              {
+                <text>—</text>
+              }
             </div>
             @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
             {
@@ -131,7 +143,7 @@
               </div>
             }
             <div class="actions">
-              <a asp-page="../Portfolio/Trade" onclick="selectById(@item.EpisodeEquityInfo.EquityId)" class="btn buySell"><i class="far fa-exchange"></i>Acheter / vendre</a>
+              <a asp-page="../Portfolio/Trade" onclick="selectById(@item.EpisodeEquityInfo.EquityId)" class="btn small buySell"><i class="far fa-exchange"></i>Acheter / vendre</a>
             </div>
           </div>
         }

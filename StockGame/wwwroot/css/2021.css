@@ -102,29 +102,29 @@ img {
     background: #468412;
     color: #fff; }
   .btn.buySell {
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#81c14b+0,81c14b+50,e10a00+51,e10a00+100 */
-    background: #81c14b;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#5d993b+0,81c14b+50,a80000+51,a80000+100 */
+    background: #5d993b;
     /* Old browsers */
-    background: -moz-linear-gradient(-45deg, #81c14b 0%, #81c14b 50%, #e10a00 51%, #e10a00 100%);
+    background: -moz-linear-gradient(-45deg, #5d993b 0%, #81c14b 50%, #a80000 51%, #a80000 100%);
     /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg, #81c14b 0%, #81c14b 50%, #e10a00 51%, #e10a00 100%);
+    background: -webkit-linear-gradient(-45deg, #5d993b 0%, #81c14b 50%, #a80000 51%, #a80000 100%);
     /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg, #81c14b 0%, #81c14b 50%, #e10a00 51%, #e10a00 100%);
+    background: linear-gradient(135deg, #5d993b 0%, #81c14b 50%, #a80000 51%, #a80000 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#81c14b', endColorstr='#e10a00',GradientType=1 );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5d993b', endColorstr='#a80000',GradientType=1 );
     /* IE6-9 fallback on horizontal gradient */
-    border: none !important; }
+    border: none; }
     .btn.buySell:hover {
-      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e10a00+0,e10a00+49,81c14b+50,81c14b+100 */
-      background: #e10a00;
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#45752d+0,76a540+50,c40000+51,7f0000+100 */
+      background: #45752d;
       /* Old browsers */
-      background: -moz-linear-gradient(-45deg, #e10a00 0%, #e10a00 49%, #81c14b 50%, #81c14b 100%);
+      background: -moz-linear-gradient(-45deg, #45752d 0%, #76a540 50%, #c40000 51%, #7f0000 100%);
       /* FF3.6-15 */
-      background: -webkit-linear-gradient(-45deg, #e10a00 0%, #e10a00 49%, #81c14b 50%, #81c14b 100%);
+      background: -webkit-linear-gradient(-45deg, #45752d 0%, #76a540 50%, #c40000 51%, #7f0000 100%);
       /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(135deg, #e10a00 0%, #e10a00 49%, #81c14b 50%, #81c14b 100%);
+      background: linear-gradient(135deg, #45752d 0%, #76a540 50%, #c40000 51%, #7f0000 100%);
       /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e10a00', endColorstr='#81c14b',GradientType=1 );
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45752d', endColorstr='#7f0000',GradientType=1 );
       /* IE6-9 fallback on horizontal gradient */ }
   .btn.alt {
     background: transparent;
@@ -132,6 +132,8 @@ img {
     color: #81C14B; }
     .btn.alt:hover {
       color: #FFF; }
+  .btn.small {
+    padding: 0.625rem 1rem; }
   .btn.big {
     font-size: 1.375rem; }
   .btn i {
@@ -473,7 +475,9 @@ footer {
     width: 3.75rem;
     border-right: 1px solid #ddd;
     height: 100%;
-    flex-direction: column; }
+    flex-direction: column;
+    position: relative;
+    z-index: 10; }
     .app .leftBar a {
       width: 3.75rem;
       box-sizing: border-box;
@@ -489,10 +493,30 @@ footer {
       justify-content: center;
       font-size: 1.5rem;
       transition: all 0.25s;
-      text-decoration: none; }
+      text-decoration: none;
+      position: relative;
+      background-color: #FFF; }
       .app .leftBar a:hover, .app .leftBar a.active {
         background-color: #81C14B;
         color: #FFF; }
+      .app .leftBar a span {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+        display: flex;
+        height: 100%;
+        background: #FFF;
+        transition: all 0.5s;
+        white-space: nowrap;
+        align-items: center;
+        padding: 0 1.5rem;
+        color: #172A3A;
+        font-family: "Ubuntu", sans-serif;
+        font-size: 1.25rem;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.25); }
+      .app .leftBar a:hover span {
+        transform: translateX(100%); }
   .app .mainWindow {
     width: calc(100% - 3.75rem);
     box-sizing: border-box;
@@ -943,7 +967,8 @@ section {
       .wrapAnalysis > div .name a:hover {
         color: #74B3CE; }
   .wrapAnalysis > div .events {
-    width: 10%; }
+    width: 10%;
+    display: flex; }
     .wrapAnalysis > div .events i {
       font-size: 1.75rem;
       margin-right: 0.625rem; }

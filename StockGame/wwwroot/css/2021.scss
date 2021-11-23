@@ -199,21 +199,21 @@ img {
   }
 
   &.buySell {
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#81c14b+0,81c14b+50,e10a00+51,e10a00+100 */
-    background: rgb(129,193,75); /* Old browsers */
-    background: -moz-linear-gradient(-45deg, rgba(129,193,75,1) 0%, rgba(129,193,75,1) 50%, rgba(225,10,0,1) 51%, rgba(225,10,0,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg, rgba(129,193,75,1) 0%,rgba(129,193,75,1) 50%,rgba(225,10,0,1) 51%,rgba(225,10,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg, rgba(129,193,75,1) 0%,rgba(129,193,75,1) 50%,rgba(225,10,0,1) 51%,rgba(225,10,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#81c14b', endColorstr='#e10a00',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    border: none !important;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#5d993b+0,81c14b+50,a80000+51,a80000+100 */
+    background: rgb(93,153,59); /* Old browsers */
+    background: -moz-linear-gradient(-45deg, rgba(93,153,59,1) 0%, rgba(129,193,75,1) 50%, rgba(168,0,0,1) 51%, rgba(168,0,0,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, rgba(93,153,59,1) 0%,rgba(129,193,75,1) 50%,rgba(168,0,0,1) 51%,rgba(168,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, rgba(93,153,59,1) 0%,rgba(129,193,75,1) 50%,rgba(168,0,0,1) 51%,rgba(168,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5d993b', endColorstr='#a80000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    border: none;
 
     &:hover {
-      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e10a00+0,e10a00+49,81c14b+50,81c14b+100 */
-      background: rgb(225,10,0); /* Old browsers */
-      background: -moz-linear-gradient(-45deg, rgba(225,10,0,1) 0%, rgba(225,10,0,1) 49%, rgba(129,193,75,1) 50%, rgba(129,193,75,1) 100%); /* FF3.6-15 */
-      background: -webkit-linear-gradient(-45deg, rgba(225,10,0,1) 0%,rgba(225,10,0,1) 49%,rgba(129,193,75,1) 50%,rgba(129,193,75,1) 100%); /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(135deg, rgba(225,10,0,1) 0%,rgba(225,10,0,1) 49%,rgba(129,193,75,1) 50%,rgba(129,193,75,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e10a00', endColorstr='#81c14b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#45752d+0,76a540+50,c40000+51,7f0000+100 */
+      background: rgb(69,117,45); /* Old browsers */
+      background: -moz-linear-gradient(-45deg, rgba(69,117,45,1) 0%, rgba(118,165,64,1) 50%, rgba(196,0,0,1) 51%, rgba(127,0,0,1) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(-45deg, rgba(69,117,45,1) 0%,rgba(118,165,64,1) 50%,rgba(196,0,0,1) 51%,rgba(127,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(135deg, rgba(69,117,45,1) 0%,rgba(118,165,64,1) 50%,rgba(196,0,0,1) 51%,rgba(127,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45752d', endColorstr='#7f0000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
     }
   }
 
@@ -225,6 +225,10 @@ img {
     &:hover {
       color: #FFF;
     }
+  }
+
+  &.small {
+    padding: rem(10) rem(16);
   }
 
   &.big {
@@ -655,6 +659,8 @@ footer {
     border-right: 1px solid #ddd;
     height: 100%;
     flex-direction: column;
+    position: relative;
+    z-index: 10;
 
     a {
       width: rem(60);
@@ -672,10 +678,36 @@ footer {
       font-size: rem(24);
       transition: all $t1;
       text-decoration: none;
+      position: relative;
+      background-color: #FFF;
 
       &:hover, &.active {
         background-color: $c1;
         color: #FFF;
+      }
+
+      span{
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+        display: flex;
+        height: 100%;
+        background: #FFF;
+        transition: all $t2;
+        white-space: nowrap;
+        align-items: center;
+        padding: 0 rem(24);
+        color: $text;
+        font-family: $heading;
+        font-size: rem(20);
+        box-shadow: 0 0 5px rgba(0,0,0,0.25);
+      }
+
+      &:hover{
+        span{
+          transform: translateX(100%);
+        }
       }
     }
   }
@@ -1365,6 +1397,7 @@ section {
 
     .events {
       width: 10%;
+      display: flex;
 
       i {
         font-size: rem(28);
