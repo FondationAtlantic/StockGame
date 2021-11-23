@@ -63,8 +63,8 @@
           </div>
           @if (Model.PreviousEpisodePortfolio != null)
           {
-            <h3>Depuis @Html.DisplayFor(model => model.PreviousEpisodePortfolio.EpisodeName)</h3>
-            <div class="row">
+            <h2>Depuis @Html.DisplayFor(model => model.PreviousEpisodePortfolio.EpisodeName)</h2>
+            <div class="moreInfosRow">
               <div>
                 <h5>Montant reçu en dividendes</h5>
                 <div class="value">$@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>

@@ -60,19 +60,19 @@
             lastIndustry = item.EpisodeEquityInfo.Equity.Industry.Name;
             <div class="sector">
               <div class="logoName"><h3>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Industry.Name)</h3></div>
-              <div class="events">Événements</div>
-              <div class="benefice">@Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)</div>
-              <div class="price">@Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)</div>
-              <div class="dividend">@Html.DisplayNameFor(model => model.IndexItems[0].DividendYield)</div>
+              <div class="events d">Événements</div>
+              <div class="benefice d">@Html.DisplayNameFor(model => model.IndexItems[0].LastKnownEarningsPerShare)</div>
+              <div class="price d">@Html.DisplayNameFor(model => model.IndexItems[0].EpisodeEquityInfo.Price)</div>
+              <div class="dividend d">@Html.DisplayNameFor(model => model.IndexItems[0].DividendYield)</div>
               @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
               {
-                <div class="extra">
+                <div class="extra d">
                   @Html.DisplayNameFor(model => model.IndexItems[0].PriceEarningsRatio)
                 </div>
               }
               @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
               {
-                <div class="extra">
+                <div class="extra d">
                   @Html.DisplayNameFor(model => model.IndexItems[0].LeverageRatio)
                 </div>
               }
@@ -89,21 +89,22 @@
             <div class="events">
               @if (item.EpisodeEquityInfo.NewsTitle != null)
               {
-                <i class="fal fa-newspaper"></i>
+                <div><i class="fal fa-newspaper"></i><span class="m">Communiqué de presse</span></div>
               }
               @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
               {
-                <i class="fal fa-file-invoice-dollar"></i>
+                <div><i class="fal fa-file-invoice-dollar"></i><span class="m">Publication des résultats financiers</span></div>
               }
               @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
               {
-                <i class="fal fa-hand-holding-usd"></i>
+                <div><i class="fal fa-hand-holding-usd"></i><span class="m">Dividende imminent</span></div>
               }
             </div>
             <div class="benefice">
-              <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
+              <span class="m">Bénéfice par action&nbsp;:&nbsp;</span><span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
             </div>
             <div class="price">
+              <span class="m">Prix&nbsp;:&nbsp;</span>
               @switch (item.Trend)
               {
                 case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
@@ -115,7 +116,7 @@
               }
             </div>
             <div class="dividend">
-              @Html.DisplayFor(modelItem => item.DividendYield)
+              <span class="m">Rendement dividende&nbsp;:&nbsp;</span>@Html.DisplayFor(modelItem => item.DividendYield)
             </div>
             @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
             {

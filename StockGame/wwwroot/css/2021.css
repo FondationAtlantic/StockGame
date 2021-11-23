@@ -310,6 +310,9 @@ body {
   align-content: flex-start;
   align-items: flex-start; }
 
+.oldContent {
+  padding: 0 3.75rem; }
+
 .wrapAll {
   flex: 1 0 auto;
   width: 100%;
@@ -318,10 +321,16 @@ body {
   color: #172A3A;
   height: 100%;
   overflow: hidden; }
+  .wrapAll.notFixed {
+    height: auto;
+    overflow: visible; }
   .wrapAll.loginBody {
     overflow: hidden;
     position: relative;
-    padding: 0 2.25rem; }
+    padding: 0 2.25rem;
+    height: 100%; }
+    .wrapAll.loginBody .oldContent {
+      height: 100%; }
     .wrapAll.loginBody + footer {
       position: absolute;
       bottom: 0; }
@@ -426,9 +435,11 @@ footer {
           font-size: 0.875rem;
           border: 0;
           font-weight: 400;
-          color: #81C14B; }
+          color: #81C14B;
+          text-decoration: underline; }
           .topBar .right .currentGame .value a:hover {
-            background-color: transparent; }
+            background-color: transparent;
+            text-decoration: none; }
     .topBar .right form {
       display: flex;
       height: 100%; }
@@ -794,7 +805,8 @@ section {
   background-color: #172A3A;
   min-height: 300px;
   color: #FFF;
-  position: relative; }
+  position: relative;
+  z-index: 1; }
   .walletHero .img {
     background-image: url(/images/hero-wallet.jpg);
     background-repeat: no-repeat;
@@ -805,7 +817,8 @@ section {
     top: 0;
     right: 0;
     width: 50%;
-    height: 100%; }
+    height: 100%;
+    z-index: -1; }
     .walletHero .img:before {
       content: "";
       width: 35%;
@@ -826,9 +839,16 @@ section {
     display: flex; }
     .walletHero .flex .left {
       width: 40%; }
+      .walletHero .flex .left .walletInfo h2 {
+        font-size: 1.5rem;
+        font-weight: 400; }
+        .walletHero .flex .left .walletInfo h2:after {
+          margin-top: 0.75rem; }
       .walletHero .flex .left .walletInfo .row {
         margin-bottom: 2rem;
-        display: flex; }
+        display: flex;
+        margin-left: 0;
+        margin-right: 0; }
         .walletHero .flex .left .walletInfo .row > div {
           margin-right: 3.75rem; }
       .walletHero .flex .left .walletInfo h3 {
@@ -838,6 +858,8 @@ section {
       .walletHero .flex .left .walletInfo .value {
         font-weight: bold;
         font-size: 2rem; }
+      .walletHero .flex .left .walletInfo .moreInfosRow .value {
+        font-size: 1.5rem; }
     .walletHero .flex .wrapGraph {
       background: #FFF;
       padding: 2rem;
@@ -898,7 +920,7 @@ section {
     .wrapAnalysis > div.sector + div {
       background: transparent; }
       .wrapAnalysis > div.sector + div + div:not(.sector) {
-        background: rgba(0, 0, 0, 0.1); }
+        background: rgba(0, 0, 0, 0.05); }
     .wrapAnalysis > div.sector > .logoName {
       padding: 0; }
   .wrapAnalysis > div > div {
@@ -1321,7 +1343,8 @@ section {
     background: #FFF;
     flex-direction: column;
     width: 100%;
-    padding: 0.75rem 0; }
+    padding: 0.75rem 0;
+    z-index: 10; }
     .menuMobile.hidden {
       transform: translateY(-120%); }
     .menuMobile a {
@@ -1339,4 +1362,124 @@ section {
     padding: 1.5rem; }
   .wrapTeams > div {
     width: 100%;
-    margin: 0 0 0.75rem; } }
+    margin: 0 0 0.75rem; }
+  .mywallet .twoCols > .left, .myanalysis .twoCols > .left {
+    padding: 1.5rem; }
+  h1 {
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 2rem; }
+  .walletHero {
+    padding: 2rem;
+    min-height: 0; }
+  .walletHero .date {
+    font-size: 1rem; }
+  .walletHero .date i {
+    font-size: 1.25rem; }
+  .logoName h3 {
+    margin-top: 0; }
+  .wrapAnalysis > div {
+    flex-wrap: wrap; }
+    .wrapAnalysis > div .logo {
+      width: 15%;
+      margin-right: 5%;
+      padding: 0; }
+    .wrapAnalysis > div .name {
+      width: 80%;
+      padding: 0; }
+    .wrapAnalysis > div .events {
+      width: 100%;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem; }
+      .wrapAnalysis > div .events > div {
+        display: flex;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        align-items: center; }
+        .wrapAnalysis > div .events > div i {
+          width: 1.75rem;
+          flex-shrink: 0;
+          margin-right: 0.5rem; }
+    .wrapAnalysis > div .benefice, .wrapAnalysis > div .price, .wrapAnalysis > div .dividend {
+      width: 100%;
+      display: flex; }
+  .wrapAnalysis > div.sector + div, .wrapAnalysis > div.sector + div ~ div:not(.sector) {
+    padding: 1.5rem; }
+  .wrapAnalysis > div .events i {
+    font-size: 1.25rem; }
+  .wrapAnalysis > div .actions {
+    margin-top: 1.5rem; }
+    .wrapAnalysis > div .actions .btn {
+      width: 100%; }
+  .detailHero {
+    padding: 1.5rem;
+    flex-direction: column; }
+    .detailHero .left {
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+      .detailHero .left .back {
+        margin-bottom: 2rem;
+        width: 100%; }
+      .detailHero .left .btn {
+        margin-left: auto;
+        margin-right: auto; }
+      .detailHero .left .logoAndName {
+        width: 100%; }
+        .detailHero .left .logoAndName .logo {
+          width: 5rem;
+          margin-right: 1.5rem;
+          flex-shrink: 0; }
+        .detailHero .left .logoAndName h1 {
+          font-size: 1.75rem; }
+      .detailHero .left .infos .value {
+        font-size: 1.125rem; }
+      .detailHero .left .infos > div {
+        margin-right: 2rem; }
+    .detailHero .right {
+      padding-right: 0;
+      margin-top: 2rem; }
+      .detailHero .right .nav-tabs {
+        float: none;
+        display: inline-flex; }
+    .detailHero > .left, .detailHero .right {
+      width: 100%; }
+  .detailsPage .twoCols {
+    display: block; }
+    .detailsPage .twoCols > .left {
+      margin-right: 0; }
+    .detailsPage .twoCols > .right {
+      width: 100%; }
+      .detailsPage .twoCols > .right tr {
+        display: block; }
+  .walletHero .flex {
+    flex-direction: column-reverse; }
+    .walletHero .flex .left {
+      width: 100%; }
+      .walletHero .flex .left .walletInfo h3 {
+        font-size: 1.25rem;
+        margin-top: 0; }
+      .walletHero .flex .left .walletInfo .value {
+        font-size: 1.5rem; }
+      .walletHero .flex .left .walletInfo .row > div {
+        margin-right: 1.875rem;
+        flex: 1; }
+    .walletHero .flex .right {
+      width: 100%; }
+  .wrapActions > div {
+    flex-wrap: wrap; }
+    .wrapActions > div .name {
+      flex: 1;
+      margin-bottom: 0.75rem; }
+    .wrapActions > div .totalValue, .wrapActions > div .variant {
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: calc(120px + 0.75rem); }
+    .wrapActions > div .variant {
+      margin-top: 0.75rem; }
+    .wrapActions > div .actions {
+      margin-top: 1.75rem;
+      padding-left: calc(120px + 0.75rem);
+      align-items: flex-start; }
+  .modal-content {
+    min-width: 0; } }

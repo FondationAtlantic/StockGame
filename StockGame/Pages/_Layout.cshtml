@@ -24,7 +24,7 @@
   </environment>
 </head>
 <body>
-  <div class="wrapAll @(!User.Identity.IsAuthenticated ? "loginBody" : null)">
+  <div class="wrapAll @(!User.Identity.IsAuthenticated ? "loginBody" : null) @(!User.IsInRole("Student") ? "notFixed" : null )">
     @if (User.Identity.IsAuthenticated)
     {
       if (User.IsInRole("Student"))
@@ -44,7 +44,7 @@
               </div>
             }
             <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-              <a asp-page="/Account/Manage/Index" title="Mon compte"><i class="fal fa-user"></i></a>
+              <a asp-page="/Account/Manage/Index" is-active-page-regex="/Account/Manage" title="Mon compte"><i class="fal fa-user-cog"></i></a>
               <button type="submit" class="btn btn-link navbar-btn navbar-link" title="Déconnexion"><i class="fal fa-sign-out-alt"></i></button>
             </form>
           </div>
@@ -77,10 +77,18 @@
           </div>
         </div>
         <div class="menuMobile m hidden">
-          <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i> Tableau de bord</a>
-          <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i> Analyse du marché</a>
-          <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i> Porte-feuille</a>
-          <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i> Classement</a>
+          @if (Model.ActiveGame != null && Model.ActiveTeam != null)
+          {
+            <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i>Tableau de bord</a>
+            <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i> Analyse</a>
+            <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i> Portefeuille</a>
+            <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i> Classement</a>
+          }
+          <a is-active-page-regex="/Teams" asp-page="/Teams/Join"><i class="fal fa-users"></i> Mes équipes</a>
+          <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+            <a asp-page="/Account/Manage/Index" is-active-page-regex="/Account/Manage" title="Mon compte"><i class="fal fa-user-cog"></i> Mon compte</a>
+            <button type="submit" class="btn btn-link navbar-btn navbar-link" title="Déconnexion"><i class="fal fa-sign-out-alt"></i> Déconnexion</button>
+          </form>
         </div>
       }
       else
@@ -175,25 +183,27 @@
     }
     else
     {
-      @RenderBody()
+      <div class="oldContent">
+          @RenderBody()
+      </div>
     }
 
 
-  </div>
-    @*<footer>
-          <p>&copy; 2018 - Jeu Boursier</p>
-        </footer>*@
 
-    <div class="container body-content">
+    @*<footer>
+      <p>&copy; 2018 - Jeu Boursier</p>
+    </footer>*@
+    <div class="oldContent">
         @RenderBody()
     </div>
-
-    <environment include="Development">
+    
+  </div>
+      <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
+      </environment>
+      <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
@@ -207,17 +217,17 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-    <script>
-      function toggleMenu() {
-        if (document.querySelector(".menuMobile").classList.contains("hidden")) {
-          document.querySelector(".menuMobile").classList.remove("hidden");
-        } else {
-          document.querySelector(".menuMobile").classList.add("hidden");
+      </environment>
+      <script>
+        function toggleMenu() {
+          if (document.querySelector(".menuMobile").classList.contains("hidden")) {
+            document.querySelector(".menuMobile").classList.remove("hidden");
+          } else {
+            document.querySelector(".menuMobile").classList.add("hidden");
+          }
+
         }
-        
-      }
-    </script>
-    @RenderSection("Scripts", required: false)
+      </script>
+      @RenderSection("Scripts", required: false)
 </body>
 </html>
