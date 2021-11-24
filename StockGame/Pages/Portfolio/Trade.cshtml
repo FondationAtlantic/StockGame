@@ -188,8 +188,8 @@
             <div class="error hidden" id="invalidValue">Veuillez entrer un nombre</div>
           </div>
           <div class="modal-actions form-group">
-            <input id="buyButton" asp-for="TransactionEntry.Type" type="button" value="Achat" onclick="showConfirmation('buy')" class="btn" />
-            <input id="sellButton" asp-for="TransactionEntry.Type" type="button" value="Vente" onclick="showConfirmation('sell')" class="btn red" />
+            <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('buy')" class="btn" />
+            <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('sell')" class="btn red" />
           </div>
         </div>
         <div id="confirmation" class="hidden">
@@ -197,8 +197,8 @@
             <p id="confirmationMsg"></p>
           </div>
           <div class="modal-actions form-group">
-            <input asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return true;" class="btn" />
-            <input asp-for="TransactionEntry.Type" type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+            <input id="confirmationInput" asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return confirmResult();" class="btn" />
+            <input  type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
           </div>
         </div>
       </form>
@@ -211,17 +211,17 @@
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+    let transactionType;
 
+    $(document).ready(function () {
+      getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
+      getParameter('equity') && selectElement(getParameter('equity'));
+      document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
 
-        $(document).ready(function () {
-            getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
-            getParameter('equity') && selectElement(getParameter('equity'));
-            document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
-
-          document.getElementById('stockNumber').addEventListener("change", function () {
-            document.getElementById("totalAmount").textContent = calculateTransaction(this.value);
-          })
-        });
+      document.getElementById('stockNumber').addEventListener("change", function () {
+        document.getElementById("totalAmount").textContent = calculateTransaction(this.value);
+      })
+    });
 
     function calculateTransaction(n) {
       let index = document.getElementById('equity-select').selectedIndex;
@@ -242,7 +242,8 @@
       return n * tradeableEquities[index].price;
     }
 
-    function showConfirmation(type) {
+    async function showConfirmation(type) {
+      transactionType = type
       let amount = document.getElementById("stockNumber").value;
       if (amount.length == 0) {
         document.getElementById("invalidValue").classList.remove("hidden");
@@ -255,114 +256,122 @@
       document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?";
       document.getElementById("confirmation").classList.remove("hidden");
       document.getElementById("formInputs").classList.add("hidden");
+      if (confirmationResult !== null) {
+        return await confirmationResult
+      }
+    }
+
+    function confirmResult() {
+      document.getElementById('confirmationInput').value = transactionType === 'buy' ? 'Achat' : 'Vente'
     }
 
     function hideConfirmation() {
+      document.getElementById("formInputs").classList.remove("hidden");
       document.getElementById("confirmation").classList.add("hidden");
     }
 
-        function getParameter(parameterName) {
-            let parameters = new URLSearchParams(window.location.search);
-            return parameters.get(parameterName);
-        }
+    function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+    }
 
-        function selectElement(valueToSelect) {
-            let element = document.getElementById('equity-select');
-            element.value = valueToSelect;
-        }
+    function selectElement(valueToSelect) {
+        let element = document.getElementById('equity-select');
+        element.value = valueToSelect;
+    }
 
-        const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+    const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
-        google.charts.load('current', { packages: ['corechart'] });
+    google.charts.load('current', { packages: ['corechart'] });
 
-        const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+    const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 
-        let portfolioChartData;
-        let portfolioChart;
-        let portfolioChartOptions;
-        let lineColor;
+    let portfolioChartData;
+    let portfolioChart;
+    let portfolioChartOptions;
+    let lineColor;
 
-        google.charts.setOnLoadCallback(LoadChartData);
+    google.charts.setOnLoadCallback(LoadChartData);
 
-        function LoadChartData() {
-            LoadChart(data);
-            return false;
-        }
+    function LoadChartData() {
+        LoadChart(data);
+        return false;
+    }
     
-        function LoadChart(data) {
-            let backgroundColorDark = '#172A3A'
-            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
-            portfolioChartData = new google.visualization.DataTable();
-            portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
-            portfolioChartOptions = {
-            animation: {
-                startup: true,
-                duration: 350,
-                easing: 'out'
+    function LoadChart(data) {
+        let backgroundColorDark = '#172A3A'
+        @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
+        portfolioChartData = new google.visualization.DataTable();
+        portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
+        portfolioChartOptions = {
+        animation: {
+            startup: true,
+            duration: 350,
+            easing: 'out'
+        },
+        areaOpacity: 0.1,
+        backgroundColor: backgroundColorDark,
+        chartArea: {
+            width: '75%',
+            height: '60%',
+            bottom: '35%',
+            right: 1
+        },
+        colors: [lineColor],
+        hAxis: {
+            slantedText: true,
+            slantedTextAngle: 15,
+            textStyle: {
+                color: '#ffffff',
+                bold: true
+            }
+        },
+        height: 220,
+        lineWidth: 3,
+        vAxis: {
+            textPosition: 'out',
+            textStyle: {
+                color: '#c8dae9',
             },
-            areaOpacity: 0.1,
-            backgroundColor: backgroundColorDark,
-            chartArea: {
-                width: '75%',
-                height: '60%',
-                bottom: '35%',
-                right: 1
+            gridlines: {
+                color: '#315a7c',
             },
-            colors: [lineColor],
-            hAxis: {
-                slantedText: true,
-                slantedTextAngle: 15,
-                textStyle: {
-                    color: '#ffffff',
-                    bold: true
-                }
-            },
-            height: 220,
-            lineWidth: 3,
-            vAxis: {
-                textPosition: 'out',
-                textStyle: {
-                    color: '#c8dae9',
-                },
-                gridlines: {
-                    color: '#315a7c',
-                },
-                minorGridlines: {
-                    count: 0,
-                }
+            minorGridlines: {
+                count: 0,
             }
-            };
-
-            let portfolioDataArray = [];
-            $.each(data, function (i, item) {
-                portfolioDataArray.push([item.episodeName, item.totalValue]);
-            });
-
-            portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
-            portfolioChartData.addColumn('number'); // Implicit domain label col.
-            portfolioChartData.addRows(portfolioDataArray);
-
-            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
-
-            $("a[href='#graph']").on('shown.bs.tab', function (e) {
-                ResizeCharts();
-            });
-
-            if (document.addEventListener) {
-                window.addEventListener('resize', ResizeCharts);
-            }
-            else if (document.attachEvent) {
-                window.attachEvent('onresize', ResizeCharts);
-            }
-            else {
-                window.resize = ResizeCharts;
-            }
-            return false;
         }
+        };
 
-        function ResizeCharts(data) {
-            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+        let portfolioDataArray = [];
+        $.each(data, function (i, item) {
+            portfolioDataArray.push([item.episodeName, item.totalValue]);
+        });
+
+        portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+        portfolioChartData.addColumn('number'); // Implicit domain label col.
+        portfolioChartData.addRows(portfolioDataArray);
+
+        portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+
+        $("a[href='#graph']").on('shown.bs.tab', function (e) {
+            ResizeCharts();
+        });
+
+        if (document.addEventListener) {
+            window.addEventListener('resize', ResizeCharts);
         }
+        else if (document.attachEvent) {
+            window.attachEvent('onresize', ResizeCharts);
+        }
+        else {
+            window.resize = ResizeCharts;
+        }
+        return false;
+    }
+
+    function ResizeCharts(data) {
+        portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+    }
 
   </script>
 }
