@@ -167,7 +167,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
               <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
-              <select id="equity-select" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+              <select id="equitySelect" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
             </div>
             <div class="form-group">
               <label asp-for="TransactionEntry.Amount" class="control-label"></label>
@@ -180,6 +180,7 @@
             </div>
           </div>
           <div class="currentTransaction">
+            @Html.DisplayNameFor(model => model.Portfolio.Cash) : @Html.DisplayFor(model => model.Portfolio.Cash)
             <div id="totalAmount" class="value">
 
             </div>
@@ -188,8 +189,8 @@
             <div class="error hidden" id="invalidValue">Veuillez entrer un nombre</div>
           </div>
           <div class="modal-actions form-group">
-            <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('buy')" class="btn" />
-            <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('sell')" class="btn red" />
+            <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('Achat')" class="btn" />
+            <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('Vente')" class="btn red" />
           </div>
         </div>
         <div id="confirmation" class="hidden">
@@ -212,6 +213,13 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
     let transactionType;
+    const notEnoughCashElement = document.getElementById("notEnoughCash");
+    const notEnoughStockElement = document.getElementById("notEnoughStock")
+    const buyButtonElement = document.getElementById("buyButton");
+    const sellButtonElement = document.getElementById("sellButton");
+    const confirmationElement = document.getElementById("confirmation");
+    const formInputElement = document.getElementById("formInputs");
+    const totalAmountElement = document.getElementById("totalAmount");
 
     $(document).ready(function () {
       getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
@@ -219,50 +227,50 @@
       document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
 
       document.getElementById('stockNumber').addEventListener("change", function () {
-        document.getElementById("totalAmount").textContent = calculateTransaction(this.value);
+        totalAmountElement.textContent = `Estimation du coût : $${calculateTransaction(this.value)}`;
+      })
+      document.getElementById('equitySelect').addEventListener("change", function () {
+        totalAmountElement.textContent = `Estimation du coût : $${calculateTransaction(this.value)}`;
       })
     });
 
     function calculateTransaction(n) {
-      let index = document.getElementById('equity-select').selectedIndex;
+      let index = document.getElementById('equitySelect').selectedIndex;
       if (n * tradeableEquities[index].price > Number(String(@Model.Portfolio.Cash).replace(",", "."))) {
-        document.getElementById("notEnoughCash").classList.remove("hidden");
-        document.getElementById("buyButton").setAttribute("disabled", "disabled");
+        notEnoughCashElement.classList.remove("hidden");
+        buyButtonElement.setAttribute("disabled", "disabled");
       } else {
-        document.getElementById("notEnoughCash").classList.add("hidden");
-        document.getElementById("buyButton").removeAttribute("disabled");
+        notEnoughCashElement.classList.add("hidden");
+        buyButtonElement.removeAttribute("disabled");
       }
       if (n > tradeableEquities[index].amount) {
-        document.getElementById("notEnoughStock").classList.remove("hidden");
-        document.getElementById("sellButton").setAttribute("disabled", "disabled");
+        notEnoughStockElement.classList.remove("hidden");
+        sellButtonElement.setAttribute("disabled", "disabled");
       } else {
-        document.getElementById("notEnoughStock").classList.add("hidden");
-        document.getElementById("sellButton").removeAttribute("disabled");
+        notEnoughStockElement.classList.add("hidden");
+        sellButtonElement.removeAttribute("disabled");
       }
-      return n * tradeableEquities[index].price;
+      return (n * tradeableEquities[index].price).toFixed(2);
     }
 
-    async function showConfirmation(type) {
+    function showConfirmation(type) {
       transactionType = type
       let amount = document.getElementById("stockNumber").value;
       if (amount.length == 0) {
         document.getElementById("invalidValue").classList.remove("hidden");
         return;
       }
-      let index = document.getElementById('equity-select').selectedIndex;
+      let index = document.getElementById('equitySelect').selectedIndex;
       let name = tradeableEquities[index].name;
-      let side = type == 'buy' ? 'Acheter' : 'Vendre'
-      let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?";
+      let side = type == 'Achat' ? 'Acheter' : 'Vendre'
+      let strValue = (tradeableEquities[index].price * amount).toFixed(2);
+      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de $' + strValue + '?';
       document.getElementById("confirmation").classList.remove("hidden");
-      document.getElementById("formInputs").classList.add("hidden");
-      if (confirmationResult !== null) {
-        return await confirmationResult
-      }
+      formInputElement.classList.add("hidden");
     }
 
     function confirmResult() {
-      document.getElementById('confirmationInput').value = transactionType === 'buy' ? 'Achat' : 'Vente'
+      document.getElementById('confirmationInput').value = transactionType
     }
 
     function hideConfirmation() {
@@ -276,7 +284,7 @@
     }
 
     function selectElement(valueToSelect) {
-        let element = document.getElementById('equity-select');
+        let element = document.getElementById('equitySelect');
         element.value = valueToSelect;
     }
 
