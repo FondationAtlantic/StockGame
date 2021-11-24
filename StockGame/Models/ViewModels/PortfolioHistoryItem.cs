@@ -9,6 +9,7 @@ namespace StockGame.Models.ViewModels
 {
     public class PortfolioHistoryItem
     {
+        [DataType(DataType.Currency)]
         public float DividendsReceived { get; set; }
         [Display(Name = "Argent Disponible"), DataType(DataType.Currency)]
         public float Cash { get; set; }

@@ -117,6 +117,9 @@
                 case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
                   <strong class="trendDown"><i class="far fa-arrow-down"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
                   break;
+                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
+                  <strong class="trendSame">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                  break;
               }
             </div>
             <div class="dividend">

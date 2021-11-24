@@ -207,7 +207,7 @@ else if (User.IsInRole("Student"))
                                     <strong class="trendDown"><i class="far fa-arrow-down"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
                                     break;
                                 case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
-                                    <strong style="color: #808080 ">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                                    <strong class="trendSame">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>                                    
                                     break;
                             }
                         </div>

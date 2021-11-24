@@ -67,7 +67,7 @@
             <div class="moreInfosRow">
               <div>
                 <h5>Montant reçu en dividendes</h5>
-                <div class="value">$@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
+                <div class="value">@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
               </div>
               <div>
                 <h5>Changement de la valeur totale</h5>
@@ -100,10 +100,14 @@
           @if (item.Amount <= 0) { continue; }
           <div>
             <div class="logo">
-              <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+              <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+              </a>
             </div>
             <div class="name">
-              <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+              <a style="text-decoration: none; color: #172A3A" asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+              </a>
               <div class="qty">
                 @Html.DisplayFor(modelItem => item.Amount) actions
               </div>
@@ -163,7 +167,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
               <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
-              <select id="equity-select" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+              <select id="equitySelect" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
             </div>
             <div class="form-group">
               <label asp-for="TransactionEntry.Amount" class="control-label"></label>
@@ -176,6 +180,7 @@
             </div>
           </div>
           <div class="currentTransaction">
+            @Html.DisplayNameFor(model => model.Portfolio.Cash) : @Html.DisplayFor(model => model.Portfolio.Cash)
             <div id="totalAmount" class="value">
 
             </div>
@@ -184,8 +189,8 @@
             <div class="error hidden" id="invalidValue">Veuillez entrer un nombre</div>
           </div>
           <div class="modal-actions form-group">
-            <input id="buyButton" asp-for="TransactionEntry.Type" type="button" value="Achat" onclick="showConfirmation('buy')" class="btn" />
-            <input id="sellButton" asp-for="TransactionEntry.Type" type="button" value="Vente" onclick="showConfirmation('sell')" class="btn red" />
+            <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('Achat')" class="btn" />
+            <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('Vente')" class="btn red" />
           </div>
         </div>
         <div id="confirmation" class="hidden">
@@ -193,8 +198,8 @@
             <p id="confirmationMsg"></p>
           </div>
           <div class="modal-actions form-group">
-            <input asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return true;" class="btn" />
-            <input asp-for="TransactionEntry.Type" type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+            <input id="confirmationInput" asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return confirmResult();" class="btn" />
+            <input  type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
           </div>
         </div>
       </form>
@@ -207,158 +212,174 @@
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+    let transactionType;
+    const notEnoughCashElement = document.getElementById("notEnoughCash");
+    const notEnoughStockElement = document.getElementById("notEnoughStock")
+    const buyButtonElement = document.getElementById("buyButton");
+    const sellButtonElement = document.getElementById("sellButton");
+    const confirmationElement = document.getElementById("confirmation");
+    const formInputElement = document.getElementById("formInputs");
+    const totalAmountElement = document.getElementById("totalAmount");
 
+    $(document).ready(function () {
+      getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
+      getParameter('equity') && selectElement(getParameter('equity'));
+      document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
 
-        $(document).ready(function () {
-            getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
-            getParameter('equity') && selectElement(getParameter('equity'));
-            document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
-
-          document.getElementById('stockNumber').addEventListener("change", function () {
-            document.getElementById("totalAmount").textContent = calculateTransaction(this.value);
-          })
-        });
+      document.getElementById('stockNumber').addEventListener("change", function () {
+        totalAmountElement.textContent = `Estimation du coût : $${calculateTransaction(this.value)}`;
+      })
+      document.getElementById('equitySelect').addEventListener("change", function () {
+        totalAmountElement.textContent = `Estimation du coût : $${calculateTransaction(this.value)}`;
+      })
+    });
 
     function calculateTransaction(n) {
-      let index = document.getElementById('equity-select').selectedIndex;
+      let index = document.getElementById('equitySelect').selectedIndex;
       if (n * tradeableEquities[index].price > Number(String(@Model.Portfolio.Cash).replace(",", "."))) {
-        document.getElementById("notEnoughCash").classList.remove("hidden");
-        document.getElementById("buyButton").setAttribute("disabled", "disabled");
+        notEnoughCashElement.classList.remove("hidden");
+        buyButtonElement.setAttribute("disabled", "disabled");
       } else {
-        document.getElementById("notEnoughCash").classList.add("hidden");
-        document.getElementById("buyButton").removeAttribute("disabled");
+        notEnoughCashElement.classList.add("hidden");
+        buyButtonElement.removeAttribute("disabled");
       }
       if (n > tradeableEquities[index].amount) {
-        document.getElementById("notEnoughStock").classList.remove("hidden");
-        document.getElementById("sellButton").setAttribute("disabled", "disabled");
+        notEnoughStockElement.classList.remove("hidden");
+        sellButtonElement.setAttribute("disabled", "disabled");
       } else {
-        document.getElementById("notEnoughStock").classList.add("hidden");
-        document.getElementById("sellButton").removeAttribute("disabled");
+        notEnoughStockElement.classList.add("hidden");
+        sellButtonElement.removeAttribute("disabled");
       }
-      return n * tradeableEquities[index].price;
+      return (n * tradeableEquities[index].price).toFixed(2);
     }
 
     function showConfirmation(type) {
+      transactionType = type
       let amount = document.getElementById("stockNumber").value;
       if (amount.length == 0) {
         document.getElementById("invalidValue").classList.remove("hidden");
         return;
       }
-      let index = document.getElementById('equity-select').selectedIndex;
+      let index = document.getElementById('equitySelect').selectedIndex;
       let name = tradeableEquities[index].name;
-      let side = type == 'buy' ? 'Acheter' : 'Vendre'
-      let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?";
+      let side = type == 'Achat' ? 'Acheter' : 'Vendre'
+      let strValue = (tradeableEquities[index].price * amount).toFixed(2);
+      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de $' + strValue + '?';
       document.getElementById("confirmation").classList.remove("hidden");
-      document.getElementById("formInputs").classList.add("hidden");
+      formInputElement.classList.add("hidden");
+    }
+
+    function confirmResult() {
+      document.getElementById('confirmationInput').value = transactionType
     }
 
     function hideConfirmation() {
+      document.getElementById("formInputs").classList.remove("hidden");
       document.getElementById("confirmation").classList.add("hidden");
     }
 
-        function getParameter(parameterName) {
-            let parameters = new URLSearchParams(window.location.search);
-            return parameters.get(parameterName);
-        }
+    function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+    }
 
-        function selectElement(valueToSelect) {
-            let element = document.getElementById('equity-select');
-            element.value = valueToSelect;
-        }
+    function selectElement(valueToSelect) {
+        let element = document.getElementById('equitySelect');
+        element.value = valueToSelect;
+    }
 
-        const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+    const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
-        google.charts.load('current', { packages: ['corechart'] });
+    google.charts.load('current', { packages: ['corechart'] });
 
-        const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+    const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 
-        let portfolioChartData;
-        let portfolioChart;
-        let portfolioChartOptions;
-        let lineColor;
+    let portfolioChartData;
+    let portfolioChart;
+    let portfolioChartOptions;
+    let lineColor;
 
-        google.charts.setOnLoadCallback(LoadChartData);
+    google.charts.setOnLoadCallback(LoadChartData);
 
-        function LoadChartData() {
-            LoadChart(data);
-            return false;
-        }
+    function LoadChartData() {
+        LoadChart(data);
+        return false;
+    }
     
-        function LoadChart(data) {
-            let backgroundColorDark = '#172A3A'
-            @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
-            portfolioChartData = new google.visualization.DataTable();
-            portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
-            portfolioChartOptions = {
-            animation: {
-                startup: true,
-                duration: 350,
-                easing: 'out'
+    function LoadChart(data) {
+        let backgroundColorDark = '#172A3A'
+        @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
+        portfolioChartData = new google.visualization.DataTable();
+        portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
+        portfolioChartOptions = {
+        animation: {
+            startup: true,
+            duration: 350,
+            easing: 'out'
+        },
+        areaOpacity: 0.1,
+        backgroundColor: backgroundColorDark,
+        chartArea: {
+            width: '75%',
+            height: '60%',
+            bottom: '35%',
+            right: 1
+        },
+        colors: [lineColor],
+        hAxis: {
+            slantedText: true,
+            slantedTextAngle: 15,
+            textStyle: {
+                color: '#ffffff',
+                bold: true
+            }
+        },
+        height: 220,
+        lineWidth: 3,
+        vAxis: {
+            textPosition: 'out',
+            textStyle: {
+                color: '#c8dae9',
             },
-            areaOpacity: 0.1,
-            backgroundColor: backgroundColorDark,
-            chartArea: {
-                width: '75%',
-                height: '60%',
-                bottom: '35%',
-                right: 1
+            gridlines: {
+                color: '#315a7c',
             },
-            colors: [lineColor],
-            hAxis: {
-                slantedText: true,
-                slantedTextAngle: 15,
-                textStyle: {
-                    color: '#ffffff',
-                    bold: true
-                }
-            },
-            height: 220,
-            lineWidth: 3,
-            vAxis: {
-                textPosition: 'out',
-                textStyle: {
-                    color: '#c8dae9',
-                },
-                gridlines: {
-                    color: '#315a7c',
-                },
-                minorGridlines: {
-                    count: 0,
-                }
+            minorGridlines: {
+                count: 0,
             }
-            };
-
-            let portfolioDataArray = [];
-            $.each(data, function (i, item) {
-                portfolioDataArray.push([item.episodeName, item.totalValue]);
-            });
-
-            portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
-            portfolioChartData.addColumn('number'); // Implicit domain label col.
-            portfolioChartData.addRows(portfolioDataArray);
-
-            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
-
-            $("a[href='#graph']").on('shown.bs.tab', function (e) {
-                ResizeCharts();
-            });
-
-            if (document.addEventListener) {
-                window.addEventListener('resize', ResizeCharts);
-            }
-            else if (document.attachEvent) {
-                window.attachEvent('onresize', ResizeCharts);
-            }
-            else {
-                window.resize = ResizeCharts;
-            }
-            return false;
         }
+        };
 
-        function ResizeCharts(data) {
-            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+        let portfolioDataArray = [];
+        $.each(data, function (i, item) {
+            portfolioDataArray.push([item.episodeName, item.totalValue]);
+        });
+
+        portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+        portfolioChartData.addColumn('number'); // Implicit domain label col.
+        portfolioChartData.addRows(portfolioDataArray);
+
+        portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+
+        $("a[href='#graph']").on('shown.bs.tab', function (e) {
+            ResizeCharts();
+        });
+
+        if (document.addEventListener) {
+            window.addEventListener('resize', ResizeCharts);
         }
+        else if (document.attachEvent) {
+            window.attachEvent('onresize', ResizeCharts);
+        }
+        else {
+            window.resize = ResizeCharts;
+        }
+        return false;
+    }
+
+    function ResizeCharts(data) {
+        portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+    }
 
   </script>
 }
