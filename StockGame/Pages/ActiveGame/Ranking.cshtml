@@ -100,8 +100,8 @@ else
             <tr>
               <th colspan="2"></th>
               <th align="right">
-                Rendement session
-              </th>
+                <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement session @SortArrow("GainPct_")</a>
+</th>
               @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
               {
                 <th></th>

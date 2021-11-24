@@ -78,8 +78,6 @@ else if (User.IsInRole("Student"))
           {
             <div class="slide">
               <div>
-                <div class="img" style="background-image: url(@Url.Content(item.EpisodeEquityInfo.NewsImgPath))">
-                </div>
                 <div class="left">
                   <h2>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</h2>
                   <p>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsDetail)</p>
@@ -264,6 +262,7 @@ else if (User.IsInRole("Student"))
           <div class="infoBlock">
             <div class="title">
               <h3>Dernières activités</h3>
+              <div class="episode">@Model.ActiveTradingSession.Episode.Name</div>
             </div>
             <div class="activities">
               @foreach (var item in Model.IndexItems)
@@ -272,9 +271,6 @@ else if (User.IsInRole("Student"))
                 {
                   <a asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">
                     <h4>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name) publie ses résultats de trimestre</h4>
-                    <div>
-                      <span style="display:none" class="@(item.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.EpisodeEquityInfo.EarningPerShare)</span> @Html.DisplayFor(model => item.EpisodeEquityInfo.Episode.Name)
-                    </div>
                   </a>
                 }
               }
