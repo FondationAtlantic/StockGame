@@ -67,7 +67,7 @@
             <div class="moreInfosRow">
               <div>
                 <h5>Montant reçu en dividendes</h5>
-                <div class="value">$@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
+                <div class="value">@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
               </div>
               <div>
                 <h5>Changement de la valeur totale</h5>
@@ -100,10 +100,14 @@
           @if (item.Amount <= 0) { continue; }
           <div>
             <div class="logo">
-              <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+              <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+              </a>
             </div>
             <div class="name">
-              <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+              <a style="text-decoration: none; color: #172A3A" asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+              </a>
               <div class="qty">
                 @Html.DisplayFor(modelItem => item.Amount) actions
               </div>

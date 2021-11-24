@@ -419,6 +419,10 @@ form label {
   color: $error;
 }
 
+.trendSame {
+  color: $text;
+}
+
 // ================================================================================================================
 // BASE
 // ================================================================================================================
@@ -1062,7 +1066,7 @@ section {
           background: rgba(0,0,0,0.1);
         }
 
-        .trendUp, .trendDown {
+        .trendUp, .trendDown, .trendSame {
           transition: all $t2;
         }
 
@@ -1070,7 +1074,7 @@ section {
           background: $c1;
           color: #fff;
 
-          .trendUp, .trendDown {
+          .trendUp, .trendDown, .trendSame {
             color: #FFF;
           }
         }
