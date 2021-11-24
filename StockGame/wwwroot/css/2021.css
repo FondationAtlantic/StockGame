@@ -7,7 +7,8 @@ h1 {
   letter-spacing: -0.01em;
   margin-bottom: 2.625rem; }
   h1 i {
-    margin-right: 1.5rem; }
+    margin-right: 1.5rem;
+    color: #81C14B; }
 
 h2 {
   font-family: "Ubuntu", sans-serif;
@@ -538,7 +539,7 @@ section {
   .dashboard .tns-outer .tns-nav {
     position: absolute;
     bottom: 1rem;
-    right: 3rem;
+    left: 6.75rem;
     z-index: 2; }
     .dashboard .tns-outer .tns-nav > button {
       background: transparent;
@@ -552,20 +553,42 @@ section {
       .dashboard .tns-outer .tns-nav > button.tns-nav-active {
         background: #81C14B; }
 
+.dashboard .tns-inner {
+  background-image: url(../images/hero-dashboard.jpg);
+  background-position: right top;
+  background-repeat: no-repeat;
+  background-color: #172A3A;
+  background-blend-mode: lighten;
+  position: relative;
+  z-index: 1; }
+  .dashboard .tns-inner:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#172a3a+0,172a3a+31,ffffff+100&1+0,1+31,0+100 */
+    background: -moz-linear-gradient(left, #172a3a 0%, #172a3a 31%, rgba(255, 255, 255, 0) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #172a3a 0%, #172a3a 31%, rgba(255, 255, 255, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #172a3a 0%, #172a3a 31%, rgba(255, 255, 255, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 );
+    /* IE6-9 */ }
+
 .dashboard .newsfeed {
-  background: #172A3A;
   color: #FFF;
   margin: 0; }
   .dashboard .newsfeed .slide {
     position: relative;
-    padding: 3rem;
-    background-color: #172A3A;
-    height: 400px; }
+    padding: 0 3rem; }
     .dashboard .newsfeed .slide > div {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 100%; }
+      min-height: 400px; }
     .dashboard .newsfeed .slide .tag {
       background: #e10a00;
       padding: 0.25rem 0.5rem;
@@ -576,7 +599,8 @@ section {
       border-radius: 0.75rem;
       overflow: hidden;
       max-height: 250px;
-      max-width: 600px; }
+      max-width: 600px;
+      border: 2px solid #172A3A; }
       .dashboard .newsfeed .slide .image img {
         width: 100%;
         height: 100%;
@@ -592,7 +616,6 @@ section {
       height: 100%;
       background-repeat: no-repeat;
       background-size: cover;
-      background-blend-mode: multiply;
       background-position: center;
       background-color: #172A3A; }
       .dashboard .newsfeed .slide .img:before {
@@ -655,7 +678,11 @@ section {
     padding: 2rem;
     background-color: #EFEFEF; }
     .dashboard .twoCols > .right .title {
-      margin-bottom: 1.375rem; }
+      margin-bottom: 1.375rem;
+      flex-wrap: wrap; }
+      .dashboard .twoCols > .right .title .episode {
+        width: 100%;
+        margin-top: 0.5rem; }
       .dashboard .twoCols > .right .title h3 {
         margin: 0; }
     .dashboard .twoCols > .right .activities a {
@@ -825,7 +852,7 @@ section {
       margin-right: 0.75rem; }
 
 .walletHero {
-  padding: 4rem 3rem;
+  padding: 4rem 3rem 4rem 6rem;
   background-color: #172A3A;
   min-height: 300px;
   color: #FFF;
@@ -836,7 +863,6 @@ section {
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-color: #172A3A;
-    background-blend-mode: multiply;
     position: absolute;
     top: 0;
     right: 0;
@@ -854,11 +880,6 @@ section {
       background: -webkit-linear-gradient(left, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       background: linear-gradient(to right, #172a3a 0%, rgba(255, 255, 255, 0) 100%);
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 ); }
-  .walletHero .date {
-    font-size: 1.5rem; }
-    .walletHero .date i {
-      margin-right: 1rem;
-      font-size: 1.75rem; }
   .walletHero .flex {
     display: flex; }
     .walletHero .flex .left {
@@ -881,7 +902,8 @@ section {
         font-family: "Roboto", sans-serif; }
       .walletHero .flex .left .walletInfo .value {
         font-weight: bold;
-        font-size: 2rem; }
+        font-size: 2rem;
+        color: #81C14B; }
       .walletHero .flex .left .walletInfo .moreInfosRow .value {
         font-size: 1.5rem; }
     .walletHero .flex .wrapGraph {
@@ -890,6 +912,47 @@ section {
       flex: 1;
       border-radius: 0.75rem;
       overflow: hidden; }
+  .walletHero h2 {
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem; }
+  .walletHero .moreInfosRow {
+    display: flex; }
+    .walletHero .moreInfosRow > div {
+      margin-right: 2rem; }
+
+.analysisHero {
+  background-image: url(../images/analysis-hero.jpg);
+  background-size: 66% auto;
+  background-repeat: no-repeat;
+  background-position: right;
+  padding: 4rem 3rem 4rem 6rem;
+  background-color: #172A3A;
+  min-height: 300px;
+  color: #FFF;
+  position: relative;
+  z-index: 1; }
+  .analysisHero:before {
+    content: "";
+    width: 66%;
+    height: 100%;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#172a3a+0,172a3a+31,ffffff+100&1+0,1+31,0+100 */
+    background: -moz-linear-gradient(left, #172a3a 0%, #172a3a 31%, rgba(255, 255, 255, 0) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #172a3a 0%, #172a3a 31%, rgba(255, 255, 255, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #172a3a 0%, #172a3a 31%, rgba(255, 255, 255, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#172a3a', endColorstr='#00ffffff',GradientType=1 );
+    /* IE6-9 */ }
+  .analysisHero .date {
+    font-size: 1.5rem; }
+    .analysisHero .date i {
+      margin-right: 1rem;
+      font-size: 1.75rem; }
 
 .mywallet .twoCols, .myanalysis .twoCols {
   display: flex; }
@@ -1482,13 +1545,15 @@ section {
     .walletHero .flex .left {
       width: 100%; }
       .walletHero .flex .left .walletInfo h3 {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         margin-top: 0; }
       .walletHero .flex .left .walletInfo .value {
         font-size: 1.5rem; }
       .walletHero .flex .left .walletInfo .row > div {
         margin-right: 1.875rem;
         flex: 1; }
+        .walletHero .flex .left .walletInfo .row > div:last-child {
+          margin-right: 0; }
     .walletHero .flex .right {
       width: 100%; }
   .wrapActions > div {
@@ -1507,4 +1572,15 @@ section {
       padding-left: calc(120px + 0.75rem);
       align-items: flex-start; }
   .modal-content {
-    min-width: 0; } }
+    min-width: 0; }
+  .dashboard .tns-inner {
+    background-size: 100% 100%; }
+  .dashboard .newsfeed .slide > div {
+    min-height: 0; }
+  .dashboard .tns-outer .tns-nav {
+    right: 1.5rem;
+    left: auto; }
+  .topBar .right .currentGame {
+    display: flex;
+    align-items: center;
+    font-weight: bold; } }

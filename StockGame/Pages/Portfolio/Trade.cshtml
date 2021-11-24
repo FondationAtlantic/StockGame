@@ -158,25 +158,44 @@
           </button>
           <h4 class="modal-title"><i class="far fa-exchange"></i>Transaction</h4>
         </div>
-        <div class="modal-body">
-          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-          <div class="form-group">
-            <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
-            <select id="equity-select" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+        <div id="formInputs">
+          <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+              <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
+              <select id="equity-select" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+            </div>
+            <div class="form-group">
+              <label asp-for="TransactionEntry.Amount" class="control-label"></label>
+              <input id="stockNumber" asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
+              <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <label asp-for="TransactionEntry.Reason" class="control-label"></label>
+              <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
+            </div>
           </div>
-          <div class="form-group">
-            <label asp-for="TransactionEntry.Amount" class="control-label"></label>
-            <input asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
-            <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
+          <div class="currentTransaction">
+            <div id="totalAmount" class="value">
+
+            </div>
+            <div class="error hidden" id="notEnoughCash">Fonds inssufisants pour procéder à l'achat</div>
+            <div class="error hidden" id="notEnoughStock">Quantité d'actions inssufisante pour procéder à la vente</div>
+            <div class="error hidden" id="invalidValue">Veuillez entrer un nombre</div>
           </div>
-          <div class="form-group">
-            <label asp-for="TransactionEntry.Reason" class="control-label"></label>
-            <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
+          <div class="modal-actions form-group">
+            <input id="buyButton" asp-for="TransactionEntry.Type" type="button" value="Achat" onclick="showConfirmation('buy')" class="btn" />
+            <input id="sellButton" asp-for="TransactionEntry.Type" type="button" value="Vente" onclick="showConfirmation('sell')" class="btn red" />
           </div>
         </div>
-        <div class="modal-actions form-group">
-          <input asp-for="TransactionEntry.Type" type="submit" value="Achat" onclick="return validate('buy');" class="btn" />
-          <input asp-for="TransactionEntry.Type" type="submit" value="Vente" onclick="return validate('sell');" class="btn red" />
+        <div id="confirmation" class="hidden">
+          <div class="modal-body">
+            <p id="confirmationMsg"></p>
+          </div>
+          <div class="modal-actions form-group">
+            <input asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return true;" class="btn" />
+            <input asp-for="TransactionEntry.Type" type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+          </div>
         </div>
       </form>
     </div>
@@ -188,11 +207,55 @@
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+
+
         $(document).ready(function () {
             getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
             getParameter('equity') && selectElement(getParameter('equity'));
             document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
+
+          document.getElementById('stockNumber').addEventListener("change", function () {
+            document.getElementById("totalAmount").textContent = calculateTransaction(this.value);
+          })
         });
+
+    function calculateTransaction(n) {
+      let index = document.getElementById('equity-select').selectedIndex;
+      if (n * tradeableEquities[index].price > Number(String(@Model.Portfolio.Cash).replace(",", "."))) {
+        document.getElementById("notEnoughCash").classList.remove("hidden");
+        document.getElementById("buyButton").setAttribute("disabled", "disabled");
+      } else {
+        document.getElementById("notEnoughCash").classList.add("hidden");
+        document.getElementById("buyButton").removeAttribute("disabled");
+      }
+      if (n > tradeableEquities[index].amount) {
+        document.getElementById("notEnoughStock").classList.remove("hidden");
+        document.getElementById("sellButton").setAttribute("disabled", "disabled");
+      } else {
+        document.getElementById("notEnoughStock").classList.add("hidden");
+        document.getElementById("sellButton").removeAttribute("disabled");
+      }
+      return n * tradeableEquities[index].price;
+    }
+
+    function showConfirmation(type) {
+      let amount = document.getElementById("stockNumber").value;
+      if (amount.length == 0) {
+        document.getElementById("invalidValue").classList.remove("hidden");
+        return;
+      }
+      let index = document.getElementById('equity-select').selectedIndex;
+      let name = tradeableEquities[index].name;
+      let side = type == 'buy' ? 'Acheter' : 'Vendre'
+      let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?";
+      document.getElementById("confirmation").classList.remove("hidden");
+      document.getElementById("formInputs").classList.add("hidden");
+    }
+
+    function hideConfirmation() {
+      document.getElementById("confirmation").classList.add("hidden");
+    }
 
         function getParameter(parameterName) {
             let parameters = new URLSearchParams(window.location.search);
@@ -205,18 +268,6 @@
         }
 
         const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
-
-        function validate(type) {
-            let amount = $('#TransactionEntry_Amount')[0].value;
-            if (amount.length == 0) {
-                return true;
-            }
-            let side = type == 'buy' ? 'Acheter' : 'Vendre'
-            let index = document.getElementById('equity-select').selectedIndex
-            let name = tradeableEquities[index].name;
-            let strValue = Number(tradeableEquities[index].price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            return confirm(side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + "?");
-        }
 
         google.charts.load('current', { packages: ['corechart'] });
 
@@ -233,7 +284,7 @@
             LoadChart(data);
             return false;
         }
-
+    
         function LoadChart(data) {
             let backgroundColorDark = '#172A3A'
             @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
