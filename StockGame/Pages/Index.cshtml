@@ -5,26 +5,6 @@
   ViewData["Title"] = "Accueil";
 }
 
-@*/////// TEST ///////*@
-<style type="text/css">
-  @@keyframes transitionIn {
-    from {
-      opacity: 0;
-      transform: translateY(-5px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .transition {
-    animation: transitionIn .4s ease-out;
-  }
-</style>
-@*//// ^^ TEST ^^ ////*@
-
 @if (!User.Identity.IsAuthenticated)
 {
   <div class="login centered">
@@ -53,7 +33,7 @@ else if (User.IsInRole("Student"))
   }
   else if (Model.ActiveGame != null && Model.ActiveTeam != null)
   {
-    <div class="dashboard transition">
+    <div class="dashboard">
       <section class="newsfeed">
         @if (Model.ActiveTradingSession.Episode.NewsTitle != null)
         {
@@ -371,8 +351,8 @@ else if (User.IsInRole("Student"))
 
   <script>
         $('#transaction, #transaction2').on('click', function (e) {
-            event.preventDefault();
-            window.location.href = event.srcElement.href + '?showModal=1';
+          event.preventDefault();
+          window.location.href = '/Portfolio/Trade?showModal=1';
         });
 
         google.charts.load('current', { packages: ['corechart'] });

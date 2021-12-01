@@ -5,43 +5,7 @@
   ViewData["Title"] = "Portefeuille";
 }
 
-@*/////// TEST ///////*@
-<style type="text/css">
-  @@keyframes transitionIn {
-    from {
-      opacity: 0;
-      transform: translateY(-5px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .transition {
-    animation: transitionIn .4s ease-out;
-  }
-
-  @@keyframes transitionY {
-    from {
-      opacity: 0;
-      transform: rotateX(90deg)
-    }
-
-    to {
-      opacity: 1;
-      transform: rotateX(0deg)
-    }
-  }
-
-  .graph-transition {
-    animation: transitionY 1s ease;
-  }
-</style>
-@*//// ^^ TEST ^^ ////*@
-
-<div class="transition mywallet">
+<div class="mywallet">
   <div class="walletHero">
     <h1><i class="fal fa-wallet" aria-hidden="true"></i> Mon portefeuille</h1>
     <div class="flex">
@@ -79,11 +43,8 @@
       </div>
       @if (Model.PortfolioTeamHistory.Items.Count > 1)
       {
-        <div class="right" style="flex:1; overflow:hidden">
-          @*<div class="panel-body graph-transition" style="height: 240px">*@
-          <div class="graph-transition" style="height: 240px">
-            <div id="portfolio_chart_div"></div>
-          </div>
+        <div class="right" style="flex: 1; overflow: hidden; margin-right: 5%;">
+            <div class="graph-transition" id="portfolio_chart_div" style="height: 16.5rem;"></div>
         </div>
       }
     </div>
@@ -92,7 +53,7 @@
     <div class="left">
       <div class="title">
         <h2><i class="fal fa-chart-pie"></i>Mes actions</h2>
-        <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal"><i class="far fa-exchange"></i> Transiger</a>
+        <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal" onclick="setModalInfo()"><i class="far fa-exchange"></i> Transiger</a>
       </div>
       <div class="wrapActions">
         @foreach (var item in Model.Portfolio.Items)
@@ -141,7 +102,7 @@
 
             </div>
             <div class="actions">
-              <button class="btn buySell" title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+              <button class="btn buySell" title="Transiger" onclick="setModalInfo(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
                 <i class="far fa-exchange"></i>Transiger
               </button>
             </div>
@@ -233,10 +194,12 @@
     const equitySelectElement = document.getElementById('equitySelect');
 
     $(document).ready(function () {
-      getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
-      getParameter('equity') && selectElement(getParameter('equity'));
-      setQuantity(equitySelectElement.value);
-      document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
+      // Timeout nécessaire pour que l'animation termine sans glitch visuel avant d'afficher le modal
+      setTimeout(function () {
+        getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
+        setModalInfo(getParameter('equity'));
+        document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
+      }, 400);
 
       stockNumberElement.addEventListener("change", function () {
         totalAmountElement.textContent = calculateTransaction(this.value);
@@ -246,6 +209,17 @@
         totalAmountElement.textContent = calculateTransaction(this.value);
       })
     });
+
+    function setModalInfo(value) {
+      if (value) {
+        selectElement(value);
+        setQuantity(value);
+        hideConfirmation();
+      } else {
+        setQuantity(equitySelectElement.value)
+      }
+      totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
+    }
 
     function calculateTransaction(n) {
       let index = document.getElementById('equitySelect').selectedIndex;
@@ -298,7 +272,6 @@
     }
 
     function selectElement(valueToSelect) {
-      hideConfirmation()
       equitySelectElement.value = valueToSelect;
       setQuantity(valueToSelect);
     }
@@ -331,42 +304,43 @@
         portfolioChartData = new google.visualization.DataTable();
         portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
         portfolioChartOptions = {
-        animation: {
-            startup: true,
-            duration: 350,
-            easing: 'out'
-        },
-        areaOpacity: 0.1,
-        backgroundColor: backgroundColorDark,
-        chartArea: {
-            width: '75%',
-            height: '60%',
-            bottom: '35%',
-            right: 1
-        },
-        colors: [lineColor],
-        hAxis: {
-            slantedText: true,
-            slantedTextAngle: 15,
-            textStyle: {
-                color: '#ffffff',
-                bold: true
-            }
-        },
-        height: 220,
-        lineWidth: 3,
-        vAxis: {
-            textPosition: 'out',
-            textStyle: {
-                color: '#c8dae9',
-            },
-            gridlines: {
-                color: '#315a7c',
-            },
+          animation: {
+              startup: true,
+              duration: 500,
+              easing: 'out'
+          },
+          areaOpacity: 0.1,
+          backgroundColor: backgroundColorDark,
+          chartArea: {
+              width: '100%',
+              height: '100%',
+              bottom: '26%',
+              top: '2%',
+              right: '-1%',
+              left: '12%'
+          },
+          colors: [lineColor],
+          hAxis: {
+              slantedText: true,
+              slantedTextAngle: 15,
+              textStyle: {
+                  color: '#ffffff',
+                  bold: true
+              }
+          },
+          lineWidth: 3,
+          vAxis: {
+              textPosition: 'out',
+              textStyle: {
+                  color: '#c8dae9',
+              },
+              gridlines: {
+                  color: '#315a7c',
+              },
             minorGridlines: {
-                count: 0,
+              count: 0,
             }
-        }
+          }
         };
 
         let portfolioDataArray = [];
