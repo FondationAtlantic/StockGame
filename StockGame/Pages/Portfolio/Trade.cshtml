@@ -229,16 +229,20 @@
     const confirmationElement = document.getElementById("confirmation");
     const formInputElement = document.getElementById("formInputs");
     const totalAmountElement = document.getElementById("totalAmount");
+    const stockNumberElement = document.getElementById('stockNumber');
+    const equitySelectElement = document.getElementById('equitySelect');
 
     $(document).ready(function () {
       getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
       getParameter('equity') && selectElement(getParameter('equity'));
+      setQuantity(equitySelectElement.value);
       document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
 
-      document.getElementById('stockNumber').addEventListener("change", function () {
+      stockNumberElement.addEventListener("change", function () {
         totalAmountElement.textContent = calculateTransaction(this.value);
       })
       document.getElementById('equitySelect').addEventListener("change", function () {
+        setQuantity(this.value);
         totalAmountElement.textContent = calculateTransaction(this.value);
       })
     });
@@ -289,16 +293,21 @@
     }
 
     function getParameter(parameterName) {
-        let parameters = new URLSearchParams(window.location.search);
-        return parameters.get(parameterName);
+      let parameters = new URLSearchParams(window.location.search);
+      return parameters.get(parameterName);
     }
 
     function selectElement(valueToSelect) {
-        let element = document.getElementById('equitySelect');
-        element.value = valueToSelect;
+      hideConfirmation()
+      equitySelectElement.value = valueToSelect;
+      setQuantity(valueToSelect);
     }
 
     const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+
+    function setQuantity(value) {
+      stockNumberElement.value = tradeableEquities.find(e => e.equityId == value).amount;
+    }
 
     google.charts.load('current', { packages: ['corechart'] });
 
@@ -315,7 +324,7 @@
         LoadChart(data);
         return false;
     }
-    
+
     function LoadChart(data) {
         let backgroundColorDark = '#172A3A'
         @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
