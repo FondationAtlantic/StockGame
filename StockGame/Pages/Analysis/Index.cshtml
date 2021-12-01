@@ -81,7 +81,7 @@
           }
           <div>
             <div class="logo">
-              <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" /></a>
+              <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="@Url.Content(item.EpisodeEquityInfo.Equity.ImgPath)" /></a>
             </div>
             <div class="name">
               <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b></a>
@@ -146,7 +146,7 @@
               </div>
             }
             <div class="actions">
-              <a asp-page="../Portfolio/Trade" onclick="selectById(@item.EpisodeEquityInfo.EquityId)" class="btn small buySell"><i class="far fa-exchange"></i>Acheter / vendre</a>
+              <a asp-page="../Portfolio/Trade" onclick="selectById(@item.EpisodeEquityInfo.EquityId)" class="btn small buySell"><i class="far fa-exchange"></i>Transiger</a>
             </div>
           </div>
         }

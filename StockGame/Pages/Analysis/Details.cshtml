@@ -23,7 +23,7 @@
       </div>
       <div class="logoAndName">
         <div class="logo">
-          <img src="@Url.Content(string.Concat(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+          <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath)" />
         </div>
         <div>
           <h1>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Name)</h1>
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-      <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Acheter / vendre des actions</a>
+      <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Transiger</a>
     </div>
     <div class="right">
       <div style="height: 240px">

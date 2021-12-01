@@ -33,8 +33,8 @@
         <img src="~/images/stockgame.png" alt="Stockgame" />
       </div>
       <div class="loginChoices">
-        <a class="btn big" asp-page="./Account/Login">Se connecter</a>
-        <a asp-page="./Account/Register">Je n'ai pas de compte</a>
+        <a class="btn big" asp-page="./Account/Login">Me connecter</a>
+        <a asp-page="./Account/Register">Je n'ai pas encore de compte</a>
       </div>
     </div>
   </div>
@@ -62,7 +62,9 @@ else if (User.IsInRole("Student"))
               <div class="left">
                 <div class="tag">Dernière heure</div>
                 <h2>@Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsTitle)</h2>
-                <p>@Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsDetail)</p>
+                <div class="newsText">
+                  @Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsDetail)
+                </div>
               </div>
               <div class="right">
                 <div class="image">
@@ -80,11 +82,13 @@ else if (User.IsInRole("Student"))
               <div>
                 <div class="left">
                   <h2>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsTitle)</h2>
-                  <p>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsDetail)</p>
+                  <div class="newsText">
+                    @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.NewsDetail)
+                  </div>
                   <a class="btn" asp-page="./Analysis/Details" asp-route-id="@item.EpisodeEquityInfo.Id">Plus d'informations</a>
                 </div>
                 <div class="right">
-                  <img src="@Url.Content(string.Concat(item.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+                  <img src="@Url.Content(item.EpisodeEquityInfo.Equity.ImgPath)" />
                 </div>
               </div>
             </div>
@@ -96,7 +100,7 @@ else if (User.IsInRole("Student"))
           <section class="wallet">
             <div class="title">
               <h2><i class="fal fa-wallet" aria-hidden="true"></i> Mon portefeuille</h2>
-              <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
+              <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Transiger</a>
             </div>
             <div class="resume">
               <div class="whiteBlock">
@@ -174,7 +178,7 @@ else if (User.IsInRole("Student"))
           <section class="market">
             <div class="title">
               <h2><i class="fal fa-chart-line"></i> Marché actuel</h2>
-              <a id="transaction2" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
+              <a id="transaction2" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i> Transiger</a>
             </div>
             <div class="resume">
               <div class="whiteBlock noPadding">
@@ -231,7 +235,7 @@ else if (User.IsInRole("Student"))
                   <h3>Meilleur rendement dividende</h3>
                   <div class="wealth">
                     <div class="img">
-                      <img src="@Url.Content(string.Concat(Model.HighestYield.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+                      <img src="@Url.Content(Model.HighestYield.EpisodeEquityInfo.Equity.ImgPath)" />
                     </div>
                     <div>
                       <h4>@Model.HighestYield.EpisodeEquityInfo.Equity.Name</h4>
@@ -243,7 +247,7 @@ else if (User.IsInRole("Student"))
                   <h3>Faible rendement dividende</h3>
                   <div class="wealth">
                     <div class="img">
-                      <img src="@Url.Content(string.Concat(Model.LowestYield.EpisodeEquityInfo.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+                      <img src="@Url.Content(Model.LowestYield.EpisodeEquityInfo.Equity.ImgPath)" />
                     </div>
                     <div>
                       <h4>@Model.LowestYield.EpisodeEquityInfo.Equity.Name</h4>

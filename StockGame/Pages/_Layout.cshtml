@@ -39,7 +39,7 @@
             @if (Model.ActiveGame != null && Model.ActiveTeam != null)
             {
               <div class="currentGame">
-                <div class="label">Partie en cours</div>
+                <div class="label">Ma partie en cours</div>
                 <div class="value">@Model.ActiveTradingSession.Episode.Name <a asp-page="./ActiveGame/Index">Changer</a></div>
               </div>
             }
@@ -59,8 +59,9 @@
             <div class="currentGame">
               @Model.ActiveTradingSession.Episode.Name
             </div>
-            <a onclick="toggleMenu()">
+            <a onclick="toggleMenu(this)">
               <i class="fal fa-bars"></i>
+              <i class="fal fa-times hidden"></i>
             </a>
           </div>
         </div>
@@ -222,13 +223,18 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
       </environment>
       <script>
-        function toggleMenu() {
+        function toggleMenu(elem) {
           if (document.querySelector(".menuMobile").classList.contains("hidden")) {
             document.querySelector(".menuMobile").classList.remove("hidden");
+            elem.querySelector(".fa-times").classList.remove("hidden");
+            elem.querySelector(".fa-bars").classList.add("hidden");
+            elem.classList.add("active");
           } else {
             document.querySelector(".menuMobile").classList.add("hidden");
+            elem.querySelector(".fa-times").classList.add("hidden");
+            elem.querySelector(".fa-bars").classList.remove("hidden");
+            elem.classList.remove("active");
           }
-
         }
       </script>
       @RenderSection("Scripts", required: false)

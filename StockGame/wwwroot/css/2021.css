@@ -289,6 +289,9 @@ form label {
 .trendDown, .loss {
   color: #e10a00; }
 
+.trendSame {
+  color: #172A3A; }
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
@@ -581,6 +584,11 @@ section {
 .dashboard .newsfeed {
   color: #FFF;
   margin: 0; }
+  .dashboard .newsfeed .newsText {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden; }
   .dashboard .newsfeed .slide {
     position: relative;
     padding: 0 3rem; }
@@ -588,7 +596,7 @@ section {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 400px; }
+      min-height: 440px; }
     .dashboard .newsfeed .slide .tag {
       background: #e10a00;
       padding: 0.25rem 0.5rem;
@@ -765,12 +773,12 @@ section {
       font-weight: bold; }
     .dashboard .resume .table .data > a:nth-child(odd) {
       background: rgba(0, 0, 0, 0.1); }
-    .dashboard .resume .table .data > a .trendUp, .dashboard .resume .table .data > a .trendDown {
+    .dashboard .resume .table .data > a .trendUp, .dashboard .resume .table .data > a .trendDown, .dashboard .resume .table .data > a .trendSame {
       transition: all 0.5s; }
     .dashboard .resume .table .data > a:hover {
       background: #81C14B;
       color: #fff; }
-      .dashboard .resume .table .data > a:hover .trendUp, .dashboard .resume .table .data > a:hover .trendDown {
+      .dashboard .resume .table .data > a:hover .trendUp, .dashboard .resume .table .data > a:hover .trendDown, .dashboard .resume .table .data > a:hover .trendSame {
         color: #FFF; }
     .dashboard .resume .table .data > a > div {
       padding: 0.375rem 0.75rem; }
@@ -809,7 +817,8 @@ section {
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  padding: 1rem 1.5rem; }
+  padding: 1rem 1.5rem;
+  border: none; }
   .modal-header:before, .modal-header:after {
     display: none; }
   .modal-header h4 {
@@ -829,6 +838,19 @@ section {
       color: #FFF;
       opacity: 0.7; }
 
+.tradeInfos {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 1.5rem;
+  background-color: #172A3A;
+  color: #FFF;
+  font-size: 1.25rem; }
+  .tradeInfos .value {
+    font-weight: bold;
+    color: #81C14B; }
+  .tradeInfos .availableMoney {
+    margin-bottom: 0.5rem; }
+
 .modal-body {
   padding: 1.5rem; }
 
@@ -836,20 +858,28 @@ section {
   display: flex;
   border-top: 1px solid #172A3A;
   padding: 1.5rem; }
-  .modal-actions input, .modal-actions buton {
+  .modal-actions > div {
     flex: 1;
-    margin-right: 1.5rem;
+    margin-right: 1.5rem; }
+    .modal-actions > div:last-child {
+      margin: 0; }
+  .modal-actions input, .modal-actions buton {
     font-size: 1.25rem;
     padding: 1rem 1.25rem;
     height: auto;
-    border: none; }
+    border: none;
+    width: 100%; }
+    .modal-actions input:disabled, .modal-actions buton:disabled {
+      background: #DCDCDC;
+      pointer-events: none; }
     .modal-actions input:hover, .modal-actions buton:hover {
       border: none; }
-    .modal-actions input:last-child, .modal-actions buton:last-child {
-      margin-right: 0; }
     .modal-actions input i, .modal-actions buton i {
       font-size: 1.375rem;
       margin-right: 0.75rem; }
+  .modal-actions .error {
+    color: #e10a00;
+    margin-top: 0.5rem; }
 
 .walletHero {
   padding: 4rem 3rem 4rem 6rem;
@@ -1220,36 +1250,39 @@ section {
   margin-bottom: 2rem; }
   .filters h3 {
     margin: 0; }
-  .filters .orderBy {
-    margin-left: 5rem; }
-  .filters .fakeSelect {
-    position: relative; }
-    .filters .fakeSelect ul {
+
+.orderBy {
+  margin-left: 5rem;
+  align-items: center; }
+  .orderBy .fakeSelect {
+    position: relative;
+    margin-left: 0.75rem; }
+    .orderBy .fakeSelect ul {
       padding: 0;
       margin: 0; }
-      .filters .fakeSelect ul li {
+      .orderBy .fakeSelect ul li {
         padding: 0; }
-        .filters .fakeSelect ul li a {
+        .orderBy .fakeSelect ul li a {
           color: #172A3A;
           text-decoration: none; }
-    .filters .fakeSelect:hover .values {
+    .orderBy .fakeSelect:hover .values {
       display: block; }
-    .filters .fakeSelect .currentValue {
+    .orderBy .fakeSelect .currentValue {
       border: 1px solid #172A3A;
       padding: 0.5rem 0.75rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       min-width: 200px; }
-      .filters .fakeSelect .currentValue i {
+      .orderBy .fakeSelect .currentValue i {
         margin-left: 0.5rem; }
-      .filters .fakeSelect .currentValue li {
+      .orderBy .fakeSelect .currentValue li {
         display: none; }
-        .filters .fakeSelect .currentValue li.active {
+        .orderBy .fakeSelect .currentValue li.active {
           display: block; }
-        .filters .fakeSelect .currentValue li a {
+        .orderBy .fakeSelect .currentValue li a {
           pointer-events: none; }
-    .filters .fakeSelect .values {
+    .orderBy .fakeSelect .values {
       position: absolute;
       top: 100%;
       left: 0;
@@ -1257,14 +1290,14 @@ section {
       width: 100%;
       background: #FFF;
       display: none; }
-      .filters .fakeSelect .values li {
+      .orderBy .fakeSelect .values li {
         list-style: none; }
-        .filters .fakeSelect .values li a {
+        .orderBy .fakeSelect .values li a {
           background: #FFF;
           padding: 0.5rem 0.75rem;
           display: block;
           transition: all 0.5s; }
-          .filters .fakeSelect .values li a:hover {
+          .orderBy .fakeSelect .values li a:hover {
             cursor: pointer;
             background: rgba(0, 0, 0, 0.1); }
 
@@ -1355,12 +1388,21 @@ section {
     padding: 0 1.5rem; }
     .login.centered .loginChoices {
       padding: 0 3rem; }
+  .form-group.flex {
+    flex-direction: column; }
+    .form-group.flex button {
+      margin-right: 0;
+      margin-bottom: 1rem; }
   .wrapAll.loginBody:before {
     top: -51.25rem;
     left: -36.25rem; }
   .wrapAll.loginBody:after {
     bottom: -51.25rem;
     right: -36.25rem; }
+  .topBar {
+    position: relative;
+    z-index: 20;
+    background: #FFF; }
   h2 {
     font-size: 1.75rem; }
   h3 {
@@ -1375,11 +1417,12 @@ section {
     .dashboard .newsfeed .slide .left {
       max-width: 100%;
       font-size: 1rem;
-      padding-right: 1rem; }
+      padding-right: 1rem;
+      flex: 1; }
       .dashboard .newsfeed .slide .left h2 {
         font-size: 1.5rem; }
     .dashboard .newsfeed .slide .right {
-      max-width: 120px; }
+      width: 4rem; }
     .dashboard .newsfeed .slide .img {
       width: 100%; }
   .dashboard .twoCols {
@@ -1432,7 +1475,8 @@ section {
     flex-direction: column;
     width: 100%;
     padding: 0.75rem 0;
-    z-index: 10; }
+    z-index: 10;
+    box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.25); }
     .menuMobile.hidden {
       transform: translateY(-120%); }
     .menuMobile a {
@@ -1446,6 +1490,9 @@ section {
         color: #FFF; }
       .menuMobile a i {
         margin-right: 0.625rem; }
+    .menuMobile form .btn {
+      float: right;
+      margin-right: 1.5rem; }
   .wrapContent {
     padding: 1.5rem; }
   .wrapTeams > div {
@@ -1457,9 +1504,12 @@ section {
     font-size: 2rem;
     margin-top: 0;
     margin-bottom: 2rem; }
-  .walletHero {
+  .walletHero, .analysisHero {
     padding: 2rem;
-    min-height: 0; }
+    min-height: 0;
+    background-size: auto 100%; }
+    .walletHero:before, .analysisHero:before {
+      width: 100%; }
   .walletHero .date {
     font-size: 1rem; }
   .walletHero .date i {
@@ -1478,7 +1528,8 @@ section {
     .wrapAnalysis > div .events {
       width: 100%;
       margin-top: 0.75rem;
-      margin-bottom: 0.75rem; }
+      margin-bottom: 0.75rem;
+      flex-direction: column; }
       .wrapAnalysis > div .events > div {
         display: flex;
         width: 100%;
@@ -1583,4 +1634,30 @@ section {
   .topBar .right .currentGame {
     display: flex;
     align-items: center;
-    font-weight: bold; } }
+    font-weight: bold; }
+  .filters {
+    display: block; }
+  #rankings .orderBy {
+    display: block;
+    text-align: left;
+    margin: 0; }
+  #rankings .nav.nav-tabs {
+    display: inline-flex;
+    margin-top: 0.75rem; }
+  .wrapRanking .position {
+    font-size: 0.875rem;
+    width: 2rem; }
+  .wrapRanking table {
+    font-size: 0.8125rem; }
+    .wrapRanking table th:first-child {
+      text-align: left; }
+    .wrapRanking table td:last-child {
+      white-space: nowrap; }
+  .wrapRanking .nameAndTotal b {
+    font-size: 0.875rem; }
+  .oldContent {
+    padding: 0; }
+  .login h2 {
+    font-size: 1.5rem; }
+  .centered .logo {
+    max-width: 60%; } }

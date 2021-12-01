@@ -800,6 +800,13 @@ section {
     color: #FFF;
     margin: 0;
 
+    .newsText {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     .slide {
       position: relative;
       padding: 0 rem(48);
@@ -808,7 +815,7 @@ section {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        min-height: 400px;
+        min-height: 440px;
       }
 
       .tag {
@@ -1136,6 +1143,7 @@ section {
   width: 100%;
   box-sizing: border-box;
   padding: rem(16) rem(24);
+  border: none;
 
   &:before, &:after {
     display: none;
@@ -1166,6 +1174,24 @@ section {
   }
 }
 
+.tradeInfos {
+  width: 100%;
+  box-sizing: border-box;
+  padding: rem(16) rem(24);
+  background-color: $text;
+  color: #FFF;
+  font-size: rem(20);
+
+  .value {
+    font-weight: bold;
+    color: #81C14B;
+  }
+
+  .availableMoney{
+    margin-bottom: rem(8);
+  }
+}
+
 .modal-body {
   padding: rem(24);
 }
@@ -1175,26 +1201,40 @@ section {
   border-top: 1px solid $text;
   padding: rem(24);
 
-  input, buton {
+  > div {
     flex: 1;
     margin-right: rem(24);
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  input, buton {
     font-size: rem(20);
     padding: rem(16) rem(20);
     height: auto;
     border: none;
+    width: 100%;
+
+    &:disabled {
+      background: #DCDCDC;
+      pointer-events: none;
+    }
 
     &:hover {
       border: none;
-    }
-
-    &:last-child {
-      margin-right: 0;
     }
 
     i {
       font-size: rem(22);
       margin-right: rem(12);
     }
+  }
+
+  .error{
+    color: $error;
+    margin-top: rem(8);
   }
 }
 
@@ -1760,13 +1800,15 @@ section {
   h3 {
     margin: 0;
   }
+}
 
-  .orderBy {
-    margin-left: rem(80);
-  }
+.orderBy {
+  margin-left: rem(80);
+  align-items: center;
 
   .fakeSelect {
     position: relative;
+    margin-left: rem(12);
 
     ul {
       padding: 0;
@@ -1840,6 +1882,8 @@ section {
     }
   }
 }
+
+
 
 .wrapRanking {
   th {
@@ -1982,6 +2026,15 @@ section {
     }
   }
 
+  .form-group.flex {
+    flex-direction: column;
+
+    button{
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
   .wrapAll {
     &.loginBody {
       &:before {
@@ -1994,6 +2047,12 @@ section {
         right: rem(-580);
       }
     }
+  }
+
+  .topBar {
+    position: relative;
+    z-index: 20;
+    background: #FFF;
   }
 
   h2 {
@@ -2022,6 +2081,7 @@ section {
           max-width: 100%;
           font-size: rem(16);
           padding-right: rem(16);
+          flex: 1;
 
           h2 {
             font-size: rem(24);
@@ -2029,7 +2089,7 @@ section {
         }
 
         .right {
-          max-width: 120px;
+          width: 4rem;
         }
 
         .img {
@@ -2128,6 +2188,7 @@ section {
     width: 100%;
     padding: rem(12) 0;
     z-index: 10;
+    box-shadow: 0 0 15px 5px rgba(0,0,0,0.25);
 
     &.hidden {
       transform: translateY(-120%);
@@ -2148,6 +2209,11 @@ section {
       i {
         margin-right: rem(10);
       }
+    }
+
+    form .btn{
+      float: right;
+      margin-right: 1.5rem;
     }
   }
 
@@ -2170,9 +2236,14 @@ section {
     margin-bottom: 2rem;
   }
 
-  .walletHero {
+  .walletHero, .analysisHero {
     padding: 2rem;
     min-height: 0;
+    background-size: auto 100%;
+
+    &:before{
+      width: 100%;
+    }
   }
 
   .walletHero .date {
@@ -2205,6 +2276,7 @@ section {
       width: 100%;
       margin-top: rem(12);
       margin-bottom: rem(12);
+      flex-direction: column;
 
       > div {
         display: flex;
@@ -2397,5 +2469,57 @@ section {
     display: flex;
     align-items: center;
     font-weight: bold;
+  }
+
+  .filters{
+    display: block;
+  }
+
+  #rankings {
+    .orderBy {
+      display: block;
+      text-align: left;
+      margin: 0;
+    }
+
+    .nav.nav-tabs {
+      display: inline-flex;
+      margin-top: rem(12)
+    }
+  }
+
+  .wrapRanking {
+    .position {
+      font-size: rem(14);
+      width: 2rem;
+    }
+
+    table {
+      font-size: rem(13);
+
+      th:first-child{
+        text-align: left;
+      }
+
+      td:last-child{
+        white-space: nowrap;
+      }
+    }
+
+    .nameAndTotal b {
+      font-size: rem(14);
+    }
+  }
+
+  .oldContent{
+    padding: 0;
+  }
+
+  .login h2{
+    font-size: 1.5rem;
+  }
+
+  .centered .logo{
+    max-width: 60%;
   }
 }
