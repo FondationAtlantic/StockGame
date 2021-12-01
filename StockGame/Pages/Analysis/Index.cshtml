@@ -22,28 +22,9 @@
     .negative {
         color: red;
     }
-
-@*/////// TEST ///////*@
-    @@keyframes transitionIn {
-        from {
-            opacity: 0;
-            transform: translateY(-5px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    .transition {
-        animation: transitionIn .4s ease-out;
-    }
-    .posXY {
-        margin: 2%;
-    }
-@*//// ^^ TEST ^^ ////*@
 </style>
 
-<div class="transition myanalysis">
+<div class="myanalysis">
   <div class="analysisHero">
     <h1><i class="fal fa-chart-line" aria-hidden="true"></i>Analyse</h1>
     <div class="date"><i class="fal fa-calendar-alt"></i>Session <strong>@Model.ActiveTradingSession.Episode.Name</strong></div>

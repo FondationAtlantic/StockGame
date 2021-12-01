@@ -1661,3 +1661,25 @@ section {
     font-size: 1.5rem; }
   .centered .logo {
     max-width: 60%; } }
+
+@keyframes transitionIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px); }
+  to {
+    opacity: 1;
+    transform: translateY(0); } }
+
+.transition {
+  animation: transitionIn .4s ease-out; }
+
+@keyframes transitionY {
+  from {
+    opacity: 0;
+    transform: rotateX(90deg); }
+  to {
+    opacity: 1;
+    transform: rotateX(0deg); } }
+
+.graph-transition {
+  animation: transitionY 1s ease; }

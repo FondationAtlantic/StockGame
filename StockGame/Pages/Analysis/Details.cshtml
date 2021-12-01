@@ -41,14 +41,12 @@
       </div>
       <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Transiger</a>
     </div>
-    <div class="right">
-      <div style="height: 240px">
-        <div id="price_chart_div"></div>
-      </div>
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" id="btnPrice">Historique de prix</a></li>
-        <li><a data-toggle="tab" id="btnDividend">Historique des dividendes</a></li>
-      </ul>
+    <div class="right mr-2">
+        <div class="graph-transition" id="price_chart_div" style="height: 14rem;"></div>
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" id="btnPrice">Historique de prix</a></li>
+          <li><a data-toggle="tab" id="btnDividend">Historique des dividendes</a></li>
+        </ul>
     </div>
   </div>
   <div class="twoCols">
@@ -422,11 +420,11 @@
 
   <script>
         $('#transaction').on('click', function (e) {
-            event.preventDefault();
-            window.location.href = event.srcElement.href +
-                '?showModal=1' +
-                '&equity=' +
-                @Model.DetailsItem.EpisodeEquityInfo.Equity.Id;
+          event.preventDefault();
+          window.location.href = '/Portfolio/Trade' +
+                                '?showModal=1' +
+                                '&equity=' +
+                                @Model.DetailsItem.EpisodeEquityInfo.Equity.Id;
         });
 
         google.charts.load('current', { packages: ['corechart'] });
@@ -462,14 +460,16 @@
                 areaOpacity: 0.1,
                 backgroundColor: backgroundColorDark,
                 chartArea: {
-                    width: '100%',
-                    height: '100%'
+                    width: '87%',
+                    height: '100%',
+                    bottom: '30%',
+                    right: 1
                 },
                 colors: [lineColor],
                 hAxis: {
-                    slantedText: false,
+                    slantedText: true,
                     slantedTextAngle: 15,
-                    textPosition: 'in',
+                    textPosition: 'out',
                     textStyle: {
                         color: '#ffffff',
                         bold: true
@@ -498,15 +498,19 @@
                 },
                 backgroundColor: backgroundColorDark,
                 chartArea: {
-                    width: '100%',
-                    height: '100%'
+                  width: '87%',
+                  height: '100%',
+                  bottom: '30%',
+                  right: 1
                 },
                 hAxis: {
-                    textPosition: 'in',
-                    textStyle: {
-                        color: '#ffffff',
-                        bold: true
-                    }
+                  slantedText: true,
+                  slantedTextAngle: 15,
+                  textPosition: 'out',
+                  textStyle: {
+                      color: '#ffffff',
+                      bold: true
+                  }
                 },
                 series: { 1: { pointShape: 'diamond', pointSize: 8, lineWidth: 0 } },
                 lineWidth: 3,
