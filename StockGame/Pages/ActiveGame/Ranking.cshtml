@@ -40,7 +40,7 @@ else
 <div class="wrapContent">
   <div class="title">
     <h2><i class="fal fa-list-ol" aria-hidden="true"></i>Classement</h2>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs d">
       <li class="active"><a data-toggle="tab" href="#rankings">Tableau</a></li>
       <li><a data-toggle="tab" href="#charts">Graphique</a></li>
     </ul>
@@ -49,7 +49,11 @@ else
     <div id="rankings" class="tab-pane fade in active">
       <div class="filters">
         <h3>Partie <strong>@Model.Game.Name</strong></h3>
-        <div class="orderBy">
+        <ul class="nav nav-tabs m">
+          <li class="active"><a data-toggle="tab" href="#rankings">Tableau</a></li>
+          <li><a data-toggle="tab" href="#charts">Graphique</a></li>
+        </ul>
+        <div class="orderBy d">
           <label>Classer par</label>
           <div class="fakeSelect">
             <div class="currentValue">
@@ -98,7 +102,52 @@ else
         <table class="table">
           <thead>
             <tr>
-              <th colspan="2"></th>
+              <th colspan="2">
+                <div class="orderBy m">
+                  <label>Classer par</label>
+                  <div class="fakeSelect">
+                    <div class="currentValue">
+                      <ul>
+                        <li class="@SortActive("Team_")">
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">Équipe</a>
+                        </li>
+                        <li class="@SortActive("GainPct_")">
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement Session</a>
+                        </li>
+                        <li class="@SortActive("Gain_")">
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">Gain Session</a>
+                        </li>
+                        <li class="@SortActive("TotalPct_")">
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">Rendement Total</a>
+                        </li>
+                        <li class="@SortActive("TotalValue_")">
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">Valeur Totale</a>
+                        </li>
+                      </ul>
+                      <i class="far fa-angle-down"></i>
+                    </div>
+                    <div class="values">
+                      <ul>
+                        <li>
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">Équipe</a>
+                        </li>
+                        <li>
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement Session</a>
+                        </li>
+                        <li>
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">Gain Session</a>
+                        </li>
+                        <li>
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">Rendement Total</a>
+                        </li>
+                        <li>
+                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">Valeur Totale</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </th>
               <th align="right">
                 <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement session @SortArrow("GainPct_")</a>
 </th>

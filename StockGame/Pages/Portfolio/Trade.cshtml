@@ -92,7 +92,7 @@
     <div class="left">
       <div class="title">
         <h2><i class="fal fa-chart-pie"></i>Mes actions</h2>
-        <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal"><i class="far fa-exchange"></i> Acheter / vendre des actions</a>
+        <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal"><i class="far fa-exchange"></i> Transiger</a>
       </div>
       <div class="wrapActions">
         @foreach (var item in Model.Portfolio.Items)
@@ -101,7 +101,7 @@
           <div>
             <div class="logo">
               <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
-                <img src="@Url.Content(string.Concat(item.Equity.ImgPath.Split('.').FirstOrDefault(), ".png"))" />
+                <img src="@Url.Content(item.Equity.ImgPath)" />
               </a>
             </div>
             <div class="name">
@@ -142,7 +142,7 @@
             </div>
             <div class="actions">
               <button class="btn buySell" title="Transiger" onclick="selectElement(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
-                <i class="far fa-exchange"></i>Acheter / vendre
+                <i class="far fa-exchange"></i>Transiger
               </button>
             </div>
           </div>
@@ -162,6 +162,14 @@
           </button>
           <h4 class="modal-title"><i class="far fa-exchange"></i>Transaction</h4>
         </div>
+        <div class="tradeInfos">
+          <div class="availableMoney">
+            @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
+          </div>
+          <div class="currentTransaction">
+            Valeur de la transaction : <span id="totalAmount" class="value">0</span>
+          </div>
+        </div>
         <div id="formInputs">
           <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -173,6 +181,7 @@
               <label asp-for="TransactionEntry.Amount" class="control-label"></label>
               <input id="stockNumber" asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
               <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
+              <div class="error hidden" id="invalidValue"><i class="fal fa-exclamation-triangle"></i> Veuillez entrer un nombre</div>
             </div>
             <div class="form-group">
               <label asp-for="TransactionEntry.Reason" class="control-label"></label>
@@ -180,17 +189,17 @@
             </div>
           </div>
           <div class="currentTransaction">
-            @Html.DisplayNameFor(model => model.Portfolio.Cash) : @Html.DisplayFor(model => model.Portfolio.Cash)
-            <div id="totalAmount" class="value">
 
-            </div>
-            <div class="error hidden" id="notEnoughCash">Fonds inssufisants pour procéder à l'achat</div>
-            <div class="error hidden" id="notEnoughStock">Quantité d'actions inssufisante pour procéder à la vente</div>
-            <div class="error hidden" id="invalidValue">Veuillez entrer un nombre</div>
           </div>
           <div class="modal-actions form-group">
-            <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('Achat')" class="btn" />
-            <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('Vente')" class="btn red" />
+            <div>
+              <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('Achat')" class="btn" />
+              <div class="error hidden" id="notEnoughCash"><i class="fal fa-exclamation-triangle"></i> Fonds insuffisants pour procéder à l'achat</div>
+            </div>
+            <div>
+              <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('Vente')" class="btn red" />
+              <div class="error hidden" id="notEnoughStock"><i class="fal fa-exclamation-triangle"></i> Quantité d'actions insuffisante pour procéder à la vente</div>
+            </div>
           </div>
         </div>
         <div id="confirmation" class="hidden">
@@ -199,7 +208,7 @@
           </div>
           <div class="modal-actions form-group">
             <input id="confirmationInput" asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return confirmResult();" class="btn" />
-            <input  type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+            <input type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
           </div>
         </div>
       </form>
@@ -227,10 +236,10 @@
       document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
 
       document.getElementById('stockNumber').addEventListener("change", function () {
-        totalAmountElement.textContent = `Estimation du coût : $${calculateTransaction(this.value)}`;
+        totalAmountElement.textContent = calculateTransaction(this.value);
       })
       document.getElementById('equitySelect').addEventListener("change", function () {
-        totalAmountElement.textContent = `Estimation du coût : $${calculateTransaction(this.value)}`;
+        totalAmountElement.textContent = calculateTransaction(this.value);
       })
     });
 
@@ -250,7 +259,8 @@
         notEnoughStockElement.classList.add("hidden");
         sellButtonElement.removeAttribute("disabled");
       }
-      return (n * tradeableEquities[index].price).toFixed(2);
+      var result = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((n * tradeableEquities[index].price).toFixed(2));
+      return result.replace("CA", "").trim();
     }
 
     function showConfirmation(type) {
