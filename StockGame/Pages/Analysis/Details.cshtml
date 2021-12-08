@@ -19,7 +19,7 @@
   <div class="detailHero">
     <div class="left">
       <div class="back">
-        <a asp-page="./Index"><i class="fal fa-long-arrow-left"></i>Retour à la liste</a>
+        <a asp-page="./AnalysisIndex"><i class="fal fa-long-arrow-left"></i>Retour à la liste</a>
       </div>
       <div class="logoAndName">
         <div class="logo">
@@ -42,7 +42,7 @@
       <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Transiger</a>
     </div>
     <div class="right mr-2">
-        <div class="graph-transition" id="price_chart_div" style="height: 14rem;"></div>
+        <div class="graph-transition details-graph" id="price_chart_div" ></div>
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" id="btnPrice">Historique de prix</a></li>
           <li><a data-toggle="tab" id="btnDividend">Historique des dividendes</a></li>
@@ -460,7 +460,7 @@
                 areaOpacity: 0.1,
                 backgroundColor: backgroundColorDark,
                 chartArea: {
-                    width: '87%',
+                    width: '85%',
                     height: '100%',
                     bottom: '30%',
                     right: 1
@@ -498,7 +498,7 @@
                 },
                 backgroundColor: backgroundColorDark,
                 chartArea: {
-                  width: '87%',
+                  width: '85%',
                   height: '100%',
                   bottom: '30%',
                   right: 1
@@ -512,7 +512,14 @@
                       bold: true
                   }
                 },
-                series: { 1: { pointShape: 'diamond', pointSize: 8, lineWidth: 0 } },
+                series: {
+                  1: {
+                    color: 'white',
+                    pointShape: 'diamond',
+                    pointSize: 6,
+                    lineWidth: 1
+                  }
+                },
                 lineWidth: 3,
                 vAxis: {
                     textPosition: 'in',
