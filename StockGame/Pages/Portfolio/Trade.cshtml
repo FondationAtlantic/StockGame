@@ -130,6 +130,9 @@
           <div class="currentTransaction">
             Valeur de la transaction : <span id="totalAmount" class="value">0</span>
           </div>
+          <div id="ownedSharesAmount" class="currentTransaction">
+            Nombre d'actions détenues : <span id="shareAmount" class="value"></span>
+          </div>
         </div>
         <div id="formInputs">
           <div class="modal-body">
@@ -192,6 +195,8 @@
     const totalAmountElement = document.getElementById("totalAmount");
     const stockNumberElement = document.getElementById('stockNumber');
     const equitySelectElement = document.getElementById('equitySelect');
+    const ownedSharesElement = document.getElementById('ownedSharesAmount');
+    const shareAmountElement = document.getElementById('shareAmount');
 
     $(document).ready(function () {
       // Timeout nécessaire pour que l'animation termine sans glitch visuel avant d'afficher le modal
@@ -237,8 +242,8 @@
         notEnoughStockElement.classList.add("hidden");
         sellButtonElement.removeAttribute("disabled");
       }
-      var result = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((n * tradeableEquities[index].price).toFixed(2));
-      return result.replace("CA", "").trim();
+      var result = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((n * tradeableEquities[index].price).toFixed(2));
+      return result.replace("US", "").trim();
     }
 
     function showConfirmation(type) {
@@ -279,7 +284,14 @@
     const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
     function setQuantity(value) {
-      stockNumberElement.value = tradeableEquities.find(e => e.equityId == value).amount;
+      stockNumberElement.value = 10;
+      let quantity = tradeableEquities.find(e => e.equityId == value).amount;
+      if (quantity) {
+        shareAmountElement.textContent = quantity;
+        ownedSharesElement.classList.remove('hidden');
+      } else {
+        ownedSharesElement.classList.add('hidden');
+      }
     }
 
     google.charts.load('current', { packages: ['corechart'] });
