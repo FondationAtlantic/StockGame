@@ -1564,7 +1564,7 @@ section {
 
   &:after {
     content: "";
-    width: 50%;
+    width: 70%;
     height: 100%;
     position: absolute;
     z-index: -1;
@@ -2016,6 +2016,7 @@ section {
   html {
     height: auto;
     min-width: 320px;
+    font-size: 14px;
   }
 
   .login.centered {
@@ -2176,7 +2177,15 @@ section {
   }
 
   section {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .walletInfo{
+    margin-top: rem(24);
+  }
+
+  .orderBy .fakeSelect{
+    margin-left: 0;
   }
 
   .menuMobile {
@@ -2211,7 +2220,7 @@ section {
       }
     }
 
-    form .btn{
+    form .btn {
       float: right;
       margin-right: 1.5rem;
     }
@@ -2278,7 +2287,7 @@ section {
       margin-bottom: rem(12);
       flex-direction: column;
 
-      > div {
+      > a > div {
         display: flex;
         width: 100%;
         margin-bottom: 0.5rem;

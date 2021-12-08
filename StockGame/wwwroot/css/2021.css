@@ -1095,7 +1095,7 @@ section {
   z-index: 1; }
   .detailHero:after {
     content: "";
-    width: 50%;
+    width: 70%;
     height: 100%;
     position: absolute;
     z-index: -1;
@@ -1383,7 +1383,8 @@ section {
     padding: 0 1.5rem; }
   html {
     height: auto;
-    min-width: 320px; }
+    min-width: 320px;
+    font-size: 14px; }
   .login.centered {
     padding: 0 1.5rem; }
     .login.centered .loginChoices {
@@ -1466,7 +1467,11 @@ section {
   .dashboard .resume .table .head > div {
     padding-top: 0; }
   section {
-    margin-bottom: 2rem; }
+    margin-bottom: 3rem; }
+  .walletInfo {
+    margin-top: 1.5rem; }
+  .orderBy .fakeSelect {
+    margin-left: 0; }
   .menuMobile {
     position: absolute;
     top: 3.75rem;
@@ -1530,12 +1535,12 @@ section {
       margin-top: 0.75rem;
       margin-bottom: 0.75rem;
       flex-direction: column; }
-      .wrapAnalysis > div .events > div {
+      .wrapAnalysis > div .events > a > div {
         display: flex;
         width: 100%;
         margin-bottom: 0.5rem;
         align-items: center; }
-        .wrapAnalysis > div .events > div i {
+        .wrapAnalysis > div .events > a > div i {
           width: 1.75rem;
           flex-shrink: 0;
           margin-right: 0.5rem; }
