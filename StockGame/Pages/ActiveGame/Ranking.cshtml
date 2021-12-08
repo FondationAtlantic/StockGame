@@ -28,11 +28,11 @@ Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlConten
     @if (Model.SortOrder.EndsWith("_asc"))
     {
       <text>active</text>
-}
-else
-{
-<text>active</text>
-}
+    }
+    else
+    {
+    <text>active</text>
+    }
   }
   </text>)(null);
 }
@@ -150,7 +150,7 @@ else
               </th>
               <th align="right">
                 <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">Rendement session @SortArrow("GainPct_")</a>
-</th>
+              </th>
               @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
               {
                 <th></th>
@@ -206,11 +206,7 @@ else
     </div>
     <div id="charts" class="tab-pane fade">
       <br />
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div id="portfolio_chart_div"></div>
-        </div>
-      </div>
+         <div class="graph-transition" id="portfolio_chart_div"  style="height: 40rem;"></div>
     </div>
   </div>
 </div>
@@ -220,71 +216,85 @@ else
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
   <script>
+    google.charts.load('current', { packages: ['corechart'] });
 
-        google.charts.load('current', { packages: ['corechart'] });
+    var data = @Html.Raw(Json.Serialize(Model.PortfolioGameHistory));
 
-        var data = @Html.Raw(Json.Serialize(Model.PortfolioGameHistory));
+    var portfolioChartData;
+    var portfolioChart;
+    var portfolioChartOptions;
 
-        var portfolioChartData;
-        var portfolioChart;
-        var portfolioChartOptions;
+    google.charts.setOnLoadCallback(LoadChartData);
 
-        google.charts.setOnLoadCallback(LoadChartData);
+    function LoadChartData() {
+      LoadChart(data);
+      return false;
+    }
 
-        function LoadChartData() {
-            LoadChart(data);
-            return false;
-        }
+    function LoadChart(portfolioGameHistory) {
+      portfolioChartData = new google.visualization.DataTable();
+      portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+      portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
+      portfolioChartOptions = {
+        animation: {
+          startup: true,
+          duration: 1000,
+          easing: 'inAndOut'
+        },
+        chartArea: {
+          width: '80%',
+          height: '100%',
+          bottom: '26%',
+          top: '5%',
+          left: '6%',
+          right: '15%'
+        },
+        title: "Valeur des portefeuilles",
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: 15
+        },
+        vAxis: {
+          title: 'Valeur'
+        },
+      };
 
-        function LoadChart(portfolioGameHistory) {
+      var portfolioDataArray = [];
 
-            portfolioChartData = new google.visualization.DataTable();
-            portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
-            portfolioChart = new google.visualization.LineChart(document.getElementById('portfolio_chart_div'));
-            portfolioChartOptions = {
-                height: "400",
-                title: "Valeur des portefeuilles",
-                chartArea: { width: '50%', top: 55, height: '60%' },
-                hAxis: { slantedText: true, slantedTextAngle: 60 },
-                vAxis: { title: 'Valeur' },
-            };
+      //add episode names
+      $.each(portfolioGameHistory.episodeNames, function (i, name) {
+        portfolioDataArray.push([name]);
+      });
+      $.each(portfolioGameHistory.teamHistories, function (i, portfolioTeamHistory) {
+        portfolioChartData.addColumn('number', portfolioTeamHistory.teamName); // Implicit domain label col.
+        $.each(portfolioTeamHistory.items, function (j, item) {
+          var row = portfolioDataArray[j];
+          row.push(item.totalValue);
+        });
+      });
 
-            var portfolioDataArray = [];
+      portfolioChartData.addRows(portfolioDataArray);
 
-            //add episode names
-            $.each(portfolioGameHistory.episodeNames, function (i, name) {
-                portfolioDataArray.push([name]);
-            });
-            $.each(portfolioGameHistory.teamHistories, function (i, portfolioTeamHistory) {
-                portfolioChartData.addColumn('number', portfolioTeamHistory.teamName); // Implicit domain label col.
-                $.each(portfolioTeamHistory.items, function (j, item) {
-                    var row = portfolioDataArray[j];
-                    row.push(item.totalValue);
-                });
-            });
+      $("a[href='#charts']").on('shown.bs.tab', function (e) {
+        ResizeCharts();
+      });
 
-            portfolioChartData.addRows(portfolioDataArray);
+      if (document.addEventListener) {
+        window.addEventListener('resize', ResizeCharts);
+      }
+      else if (document.attachEvent) {
+        window.attachEvent('onresize', ResizeCharts);
+      }
+      else {
+        window.resize = ResizeCharts;
+      }
 
-            $("a[href='#charts']").on('shown.bs.tab', function (e) {
-                ResizeCharts();
-            });
+      return false;
+    }
 
-            if (document.addEventListener) {
-                window.addEventListener('resize', ResizeCharts);
-            }
-            else if (document.attachEvent) {
-                window.attachEvent('onresize', ResizeCharts);
-            }
-            else {
-                window.resize = ResizeCharts;
-            }
-
-            return false;
-        }
-
-        function ResizeCharts(data) {
-            portfolioChart.draw(portfolioChartData, portfolioChartOptions);
-        }
+    function ResizeCharts(data) {
+      portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+    }
 
   </script>
 }
