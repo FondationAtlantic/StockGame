@@ -35,7 +35,14 @@
               </div>
               <div>
                 <h5>Changement de la valeur totale</h5>
-                <div class="value">@Html.DisplayFor(model => model.ValueDifference)</div>
+                @if (Model.ValueDifference >= 0)
+                {
+                  <div class="value">@Html.DisplayFor(model => model.ValueDifference)</div>
+                }
+                else
+                {
+                  <div class="value" style="color: #e10a00">@Html.DisplayFor(model => model.ValueDifference)</div>
+                }
               </div>
             </div>
           }
@@ -43,7 +50,7 @@
       </div>
       @if (Model.PortfolioTeamHistory.Items.Count > 1)
       {
-        <div class="right" style="flex: 1; overflow: hidden; margin-right: 5%;">
+        <div class="right" style="flex: 1; overflow: hidden; margin-right: 4%;">
             <div class="graph-transition" id="portfolio_chart_div" style="height: 16.5rem;"></div>
         </div>
       }
@@ -250,7 +257,7 @@
       }
       let index = document.getElementById('equitySelect').selectedIndex;
       let name = tradeableEquities[index].name;
-      let side = type == 'Achat' ? 'Acheter' : 'Vendre'
+      let side = type == 'Achat' ? 'Acheter' : 'Vendre';
       let strValue = (tradeableEquities[index].price * amount).toFixed(2);
       document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de $' + strValue + '?';
       document.getElementById("confirmation").classList.remove("hidden");
