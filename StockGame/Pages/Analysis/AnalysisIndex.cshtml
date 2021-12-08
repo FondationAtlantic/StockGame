@@ -62,23 +62,29 @@
           }
           <div>
             <div class="logo">
-              <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="@Url.Content(item.EpisodeEquityInfo.Equity.ImgPath)" /></a>
+              <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><img src="@Url.Content(item.EpisodeEquityInfo.Equity.ImgPath)" /></a>
             </div>
             <div class="name">
-              <a asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b></a>
+              <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id"><b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b></a>
             </div>
             <div class="events">
               @if (item.EpisodeEquityInfo.NewsTitle != null)
               {
-                <div><i class="fal fa-newspaper"></i><span class="m">Communiqué de presse</span></div>
+                <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
+                  <div><i class="fal fa-newspaper"></i><span class="m">Communiqué de presse</span></div>
+                </a>
               }
               @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
               {
-                <div><i class="fal fa-file-invoice-dollar"></i><span class="m">Publication des résultats financiers</span></div>
+                <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
+                  <div><i class="fal fa-file-invoice-dollar"></i><span class="m">Publication des résultats financiers</span></div>
+                </a>
               }
               @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
               {
-                <div><i class="fal fa-hand-holding-usd"></i><span class="m">Dividende imminent</span></div>
+                <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
+                  <div><i class="fal fa-hand-holding-usd"></i><span class="m">Dividende imminent</span></div>
+                </a>
               }
               @if (item.EpisodeEquityInfo.NewsTitle == null && !item.EpisodeEquityInfo.AnnounceFinancialResults && !item.EpisodeEquityInfo.Dividend.HasValue)
               {

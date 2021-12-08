@@ -40,7 +40,7 @@
             {
               <div class="currentGame">
                 <div class="label">Ma partie en cours</div>
-                <div class="value">@Model.ActiveTradingSession.Episode.Name <a asp-page="./ActiveGame/Index">Changer</a></div>
+                <div class="value">@Model.ActiveTradingSession.Episode.Name @*<a asp-page="./ActiveGame/Index">Changer</a>*@</div>
               </div>
             }
             <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
@@ -56,9 +56,12 @@
             </div>
           </div>
           <div class="right">
-            <div class="currentGame">
-              @*@Model.ActiveTradingSession.Episode.Name*@
-            </div>
+            @if (Model.ActiveGame != null && Model.ActiveTeam != null)
+            {
+              <div class="currentGame">
+                @Model.ActiveTradingSession.Episode.Name
+              </div>
+            }
             <a onclick="toggleMenu(this)">
               <i class="fal fa-bars"></i>
               <i class="fal fa-times hidden"></i>
@@ -70,7 +73,7 @@
             @if (Model.ActiveGame != null && Model.ActiveTeam != null)
             {
               <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i><span>Tableau de bord</span></a>
-              <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i><span>Analyse</span></a>
+              <a is-active-page-regex="/Analysis" asp-page="/Analysis/AnalysisIndex"><i class="fal fa-chart-line"></i><span>Analyse</span></a>
               <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i><span>Portefeuille</span></a>
               <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i><span>Classement</span></a>
             }
@@ -84,7 +87,7 @@
           @if (Model.ActiveGame != null && Model.ActiveTeam != null)
           {
             <a is-active-page-regex="/Index" asp-page="/Index"><i class="fal fa-tachometer-alt-slow"></i>Tableau de bord</a>
-            <a is-active-page-regex="/Analysis" asp-page="/Analysis/Index"><i class="fal fa-chart-line"></i> Analyse</a>
+            <a is-active-page-regex="/Analysis" asp-page="/Analysis/AnalysisIndex"><i class="fal fa-chart-line"></i> Analyse</a>
             <a is-active-page-regex="/Portfolio" asp-page="/Portfolio/Trade"><i class="fal fa-wallet"></i> Portefeuille</a>
             <a is-active-page-regex="/ActiveGame/Ranking" asp-page="/ActiveGame/Ranking"><i class="fal fa-list-ol"></i> Classement</a>
           }
