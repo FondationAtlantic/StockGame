@@ -237,8 +237,8 @@
         notEnoughStockElement.classList.add("hidden");
         sellButtonElement.removeAttribute("disabled");
       }
-      var result = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((n * tradeableEquities[index].price).toFixed(2));
-      return result.replace("CA", "").trim();
+      var result = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((n * tradeableEquities[index].price).toFixed(2));
+      return result.replace("US", "").trim();
     }
 
     function showConfirmation(type) {
