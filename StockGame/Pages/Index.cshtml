@@ -29,7 +29,7 @@ else if (User.IsInRole("Student"))
         <p>Les étudiants sont invités à commencer par joindre une équipe.</p>
         <a asp-page="./Teams/Join" class="btn">Joindre une équipe</a>
       </div>
-     </div>
+    </div>
   }
   else if (Model.ActiveGame != null && Model.ActiveTeam != null)
   {
@@ -114,39 +114,41 @@ else if (User.IsInRole("Student"))
                 </div>
               }
             </div>
-            <div class="resume d">
+            <div class="resume">
               @if (Model.PortfolioTeamHistory.Items.Count > 1)
               {
-                <div class="whiteBlock">
-                  <h4>Profits et Pertes</h4>
-                  <div class="graph">
+                <div class="whiteBlock infoSupp">
+                  <div>
+                    <h4>Profits et Pertes</h4>
+                    @if (Model.ProfitLosses > 0.0f)
+                    {
+                      <div class="value win">
+                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
+                        @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
+                      </div>
+                    }
+                    else if (Model.ProfitLosses < 0.0f)
+                    {
+                      <div class="value loss">
+                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
+                        @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
+                      </div>
+                    }
+                    else
+                    {
+                      <div class="value">
+                        @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
+                        @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
+                      </div>
+                    }
                   </div>
-                  @if (Model.ProfitLosses > 0.0f)
-                  {
-                    <div class="value win">
-                      @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
-                      @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
-                    </div>
-                  }
-                  else if (Model.ProfitLosses < 0.0f)
-                  {
-                    <div class="value loss">
-                      @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
-                      @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
-                    </div>
-                  }
-                  else
-                  {
-                    <div class="value">
-                      @Html.DisplayFor(modelItem => modelItem.ProfitLosses) <br />
-                      @Html.DisplayFor(modelItem => modelItem.ProfitLossesPct)
-                    </div>
-                  }
                 </div>
-                <div class="whiteBlock">
-                  <h4>Valeur du portefeuille</h4>
-                  <div class="graph">
-                    <div id="price_chart_div"></div>
+                <div class="whiteBlock infoSupp">
+                  <div>
+                    <h4>Valeur du portefeuille</h4>
+                    <div class="graph">
+                      <div id="price_chart_div"></div>
+                    </div>
                   </div>
                 </div>
               }
@@ -182,18 +184,18 @@ else if (User.IsInRole("Student"))
                           @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)
                         </div>
                         <div>
-                            @switch (item.Trend)
-                            {
-                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
-                                    <strong class="trendUp"><i class="far fa-arrow-up"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                                    break;
-                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
-                                    <strong class="trendDown"><i class="far fa-arrow-down"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                                    break;
-                                case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
-                                    <strong class="trendSame">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>                                    
-                                    break;
-                            }
+                          @switch (item.Trend)
+                          {
+                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
+                              <strong class="trendUp"><i class="far fa-arrow-up"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                              break;
+                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
+                              <strong class="trendDown"><i class="far fa-arrow-down"></i> @Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                              break;
+                            case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
+                              <strong class="trendSame">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
+                              break;
+                          }
                         </div>
                         <div>
                           @if (item.LastKnownEarningsPerShare < 0.0f)

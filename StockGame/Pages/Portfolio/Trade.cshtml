@@ -63,6 +63,10 @@
         <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal" onclick="setModalInfo()"><i class="far fa-exchange"></i> Transiger</a>
       </div>
       <div class="wrapActions">
+        @if (!Model.Portfolio.Items.Where(x => x.Amount > 0).Any())
+        {
+          <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal" onclick="setModalInfo()"><i class="far fa-exchange"></i> Acheter mes premières actions</a>
+        }
         @foreach (var item in Model.Portfolio.Items)
         {
           @if (item.Amount <= 0) { continue; }
@@ -175,8 +179,12 @@
             <h4 id="confirmationMsg"></h4>
           </div>
           <div class="modal-actions form-group">
-            <input id="confirmationInput" asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return confirmResult();" class="btn" />
-            <input type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+            <div>
+              <input id="confirmationInput" asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return confirmResult();" class="btn" />
+            </div>
+            <div>
+              <input type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+            </div>
           </div>
         </div>
       </form>
