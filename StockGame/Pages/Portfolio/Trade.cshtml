@@ -123,7 +123,7 @@
 <div class="modal fade" id="transaction-modal" tabindex="-1" role="dialog" style="margin:0 auto">
   <div class="modal-dialog modal-mob">
     <div class="modal-content">
-      <form id="form" method="post" onsubmit="return false;">
+      <form id="form" method="post">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true"><i class="fal fa-times"></i></span>
@@ -145,7 +145,7 @@
               <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
               <select id="equitySelect" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group" onkeypress="if (event.key === 'Enter') closeMobileKeyboard()">
               <label asp-for="TransactionEntry.Amount" class="control-label"></label>
               <input id="stockNumber" asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
               <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
@@ -265,7 +265,7 @@
     }
 
     function confirmResult() {
-      document.getElementById('confirmationInput').value = transactionType
+      document.getElementById('confirmationInput').value = transactionType;
     }
 
     function hideConfirmation() {
@@ -287,6 +287,11 @@
 
     function setQuantity(value) {
       stockNumberElement.value = tradeableEquities.find(e => e.equityId == value).amount;
+    }
+
+    function closeMobileKeyboard() {
+      event.preventDefault();
+      stockNumberElement.blur();
     }
 
     google.charts.load('current', { packages: ['corechart'] });
