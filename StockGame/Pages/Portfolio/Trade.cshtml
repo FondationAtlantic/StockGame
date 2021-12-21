@@ -138,7 +138,7 @@
             Valeur de la transaction : <span id="totalAmount" class="value"></span>
           </div>
           <div id="ownedSharesAmount" class="currentTransaction">
-            Nombre d'actions détenues : <span id="shareAmount" class="value"></span>
+            Nombre d'actions détenues : <span id="shareAmount" class="value clicky" onclick="setAllShares()"></span>
           </div>
         </div>
         <div id="formInputs">
@@ -230,6 +230,7 @@
       } else {
         setQuantity(equitySelectElement.value)
       }
+      stockNumberElement.value = 10;
       totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
     }
 
@@ -291,7 +292,6 @@
     const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
     function setQuantity(value) {
-      stockNumberElement.value = 10;
       let quantity = tradeableEquities.find(e => e.equityId == value).amount;
       if (quantity) {
         shareAmountElement.textContent = quantity;
@@ -299,6 +299,11 @@
       } else {
         ownedSharesElement.classList.add('hidden');
       }
+    }
+
+    function setAllShares() {
+      stockNumberElement.value = tradeableEquities.find(e => e.equityId == equitySelectElement.value).amount;
+      totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
     }
 
     function closeMobileKeyboard() {
