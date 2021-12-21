@@ -139,7 +139,10 @@
             @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
           </div>
           <div class="currentTransaction">
-            Valeur de la transaction : <span id="totalAmount" class="value">0</span>
+            Valeur de la transaction : <span id="totalAmount" class="value"></span>
+          </div>
+          <div id="ownedSharesAmount" class="currentTransaction">
+            Nombre d'actions détenues : <span id="shareAmount" class="value clicky" onclick="setAllShares()"></span>
           </div>
         </div>
         <div id="formInputs">
@@ -207,6 +210,8 @@
     const totalAmountElement = document.getElementById("totalAmount");
     const stockNumberElement = document.getElementById('stockNumber');
     const equitySelectElement = document.getElementById('equitySelect');
+    const ownedSharesElement = document.getElementById('ownedSharesAmount');
+    const shareAmountElement = document.getElementById('shareAmount');
 
     $(document).ready(function () {
       // Timeout nécessaire pour que l'animation termine sans glitch visuel avant d'afficher le modal
@@ -233,6 +238,7 @@
       } else {
         setQuantity(equitySelectElement.value)
       }
+      stockNumberElement.value = 10;
       totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
     }
 
@@ -294,7 +300,18 @@
     const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
 
     function setQuantity(value) {
-      stockNumberElement.value = tradeableEquities.find(e => e.equityId == value).amount;
+      let quantity = tradeableEquities.find(e => e.equityId == value).amount;
+      if (quantity) {
+        shareAmountElement.textContent = quantity;
+        ownedSharesElement.classList.remove('hidden');
+      } else {
+        ownedSharesElement.classList.add('hidden');
+      }
+    }
+
+    function setAllShares() {
+      stockNumberElement.value = tradeableEquities.find(e => e.equityId == equitySelectElement.value).amount;
+      totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
     }
 
     function closeMobileKeyboard() {
