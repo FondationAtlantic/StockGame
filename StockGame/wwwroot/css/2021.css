@@ -1347,6 +1347,16 @@ section {
       .nav-tabs li a:hover {
         background: rgba(0, 0, 0, 0.075) !important; }
 
+.graph-transition {
+  animation: transitionY 1s ease; }
+
+.portfolio-graph {
+  height: 16.5rem; }
+
+.details-graph {
+  height: 20rem;
+  width: 55vw; }
+
 @media screen and (max-width: 1600px) {
   .dashboard .twoCols > .right {
     width: 300px; }
@@ -1441,7 +1451,14 @@ section {
       box-shadow: none;
       padding: 0;
       text-align: left;
-      margin-bottom: 1.5rem; }
+      margin-bottom: 1.5rem;
+      width: 100%;
+      flex-shrink: 0; }
+      .dashboard .resume .whiteBlock.infoSupp {
+        display: block; }
+      .dashboard .resume .whiteBlock .graph {
+        width: 100%;
+        margin: 0; }
       .dashboard .resume .whiteBlock:last-child {
         margin-bottom: 0; }
       .dashboard .resume .whiteBlock i {
@@ -1558,6 +1575,20 @@ section {
   .detailHero {
     padding: 1.5rem;
     flex-direction: column; }
+    .detailHero:after {
+      width: 100%;
+      height: 70%;
+      bottom: 0;
+      top: auto;
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,172a3a+11,172a3a+100&0+0,1+11,1+100 */
+      background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #172a3a 11%, #172a3a 100%);
+      /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #172a3a 11%, #172a3a 100%);
+      /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #172a3a 11%, #172a3a 100%);
+      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#172a3a',GradientType=0 );
+      /* IE6-9 */ }
     .detailHero .left {
       display: flex;
       flex-direction: column;
@@ -1567,7 +1598,8 @@ section {
         width: 100%; }
       .detailHero .left .btn {
         margin-left: auto;
-        margin-right: auto; }
+        margin-right: auto;
+        min-width: 200px; }
       .detailHero .left .logoAndName {
         width: 100%; }
         .detailHero .left .logoAndName .logo {
@@ -1665,7 +1697,9 @@ section {
   .login h2 {
     font-size: 1.5rem; }
   .centered .logo {
-    max-width: 60%; } }
+    max-width: 60%; }
+  .details-graph {
+    width: 100%; } }
 
 @keyframes transitionIn {
   from {
