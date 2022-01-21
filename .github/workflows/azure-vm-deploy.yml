@@ -50,7 +50,7 @@ jobs:
   deploy-dev:
     needs: build
     runs-on: [self-hosted, windows, x64, fa-stockgame]
-    name: Deploy on dev (teststockgame)
+    name: Deploy on dev
 
     steps:
       - uses: actions/download-artifact@v2
