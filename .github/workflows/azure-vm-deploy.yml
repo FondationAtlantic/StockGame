@@ -39,7 +39,7 @@ jobs:
         run: dotnet build --no-restore -c Release
 
       - name: Publish
-        run: dotnet-publish StockGame/StockGame.csproj --no-build -c Release -o ./published
+        run: dotnet publish StockGame/StockGame.csproj --no-build -c Release -o ./published
 
       - uses: actions/upload-artifact@v2
         with:
