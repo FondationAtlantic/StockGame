@@ -1,4 +1,4 @@
-name: "StockGame Deployment"
+name: "Deploy"
 
 env:
   ARTIFACT_NAME: fa-stockgame-${{ github.sha }}
