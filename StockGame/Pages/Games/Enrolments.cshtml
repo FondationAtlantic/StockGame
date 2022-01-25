@@ -1,0 +1,70 @@
+@page
+@model StockGame.Pages.Games.EnrolmentsModel
+
+@{
+    ViewData["Title"] = "Enrolments";
+}
+
+<h2>Enrolments</h2>
+
+<h4>Game: @Model.Game.Name</h4>
+<hr />
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Game.Id" />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Enroled?
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Enrolments[0].Group.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Enrolments[0].Group.School)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Enrolments[0].Group.TeacherUser)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+@for (int i = 0; i < Model.Enrolments.Count; i++) {
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="@Model.Enrolments[i].Selected" />
+                            </label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input type="hidden" asp-for="@Model.Enrolments[i].Group.Id" />
+                    @Html.DisplayFor(modelItem => Model.Enrolments[i].Group.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Enrolments[i].Group.School.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Enrolments[i].Group.TeacherUser.FullName)
+                </td>
+            </tr>
+}
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+
+</form>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+

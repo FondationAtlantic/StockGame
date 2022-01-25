@@ -1,0 +1,146 @@
+﻿@page
+@model StockGame.Pages.Teams.JoinModel
+
+@{
+    ViewData["Title"] = "Joindre";
+}
+
+<div class="wrapContent">
+  <div class="title">
+    <h2><i class="fal fa-users" aria-hidden="true"></i>Mes équipes</h2>
+    <a class="btn btn-sm" data-target="#join-modal" data-toggle="modal">Joindre une équipe</a>
+  </div>
+  @if (Model.Team.Count == 0)
+  {
+    <div>
+      Aucune équipe pour l'instant!
+    </div>
+  }
+  <div class="wrapTeams">
+    @foreach (var item in Model.Team)
+    {
+      <div class=@(ViewData["AddedTeamId"] != null && ViewData["AddedTeamId"].ToString() == item.Id.ToString() ? "team success" : "team")>
+        @if (Model.CurrentUser.Id == item.OwnerUser.Id)
+        {
+          <h4><a asp-page="./Edit" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h4>
+        }
+        else
+        {
+          <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
+        }
+        <p><b>Groupe:</b> @Html.DisplayFor(modelItem => item.Group.Name)</p>
+        <p><b>Enseignant:</b> @Html.DisplayFor(modelItem => item.Group.TeacherUser.FullName)</p>
+        <p><b>École:</b> @Html.DisplayFor(modelItem => item.Group.School.Name)</p>
+      </div>
+    }
+  </div>
+  <a class="btn btn-sm m" data-target="#join-modal" data-toggle="modal">Joindre une équipe</a>
+</div>
+
+<div class="modal fade  " id="join-modal" tabindex="-1" role="dialog" style="margin:0 auto">
+    <div class="modal-dialog modal-mob">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Joindre une équipe</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="TeamSelector.SchoolId" class="control-label"></label>
+                        <select asp-for="TeamSelector.SchoolId" class="form-control" asp-items="ViewBag.SchoolId"></select>
+                        <span asp-validation-for="TeamSelector.SchoolId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TeamSelector.GroupId" class="control-label"></label>
+                        <select asp-for="TeamSelector.GroupId" class="form-control" asp-items="ViewBag.GroupId"></select>
+                        <span asp-validation-for="TeamSelector.GroupId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TeamSelector.TeamId" class="control-label"></label>
+                        <select asp-for="TeamSelector.TeamId" class="form-control" asp-items="ViewBag.TeamId"></select>
+                        <span asp-validation-for="TeamSelector.TeamId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="AutoCreateTeamName" style="padding-left: 20px;display: none;">
+                        <label asp-for="TeamSelector.AutoCreateTeamName" class="control-label"></label>
+                        <input asp-for="TeamSelector.AutoCreateTeamName" class="form-control" />
+                        <span asp-validation-for="TeamSelector.AutoCreateTeamName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TeamSelector.JoinPassword" class="control-label"></label>
+                        <input asp-for="TeamSelector.JoinPassword" class="form-control" />
+                        <span asp-validation-for="TeamSelector.JoinPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-submit">
+                        <input type="submit" value="Joindre" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('#TeamSelector_SchoolId').change(function () {
+                var ddlsource = '#TeamSelector_SchoolId';
+                $.getJSON({
+                    url: "/Teams/Join?handler=groups",
+                    data: { SchoolId: $(ddlsource).val() },
+                    success: function (data) {
+                        var items = '';
+                        $('#TeamSelector_GroupId').empty();
+                        $.each(data, function (i, group) {
+                            items += "<option value='" + group.id + "'>" + group.name + "</option>";
+                        });
+                        $('#TeamSelector_GroupId').html(items);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $('#TeamSelector_SchoolId').nextAll('span').html(jqXHR.responseText);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#TeamSelector_GroupId').change(function () {
+                var ddlsource = '#TeamSelector_GroupId';
+                $.getJSON({
+                    url: "/Teams/Join?handler=teams",
+                    data: { GroupId: $(ddlsource).val() },
+                    success: function (data) {
+                        var items = '';
+                        $('#TeamSelector_TeamId').empty();
+                        $('#AutoCreateTeamName').css('display', 'none');
+                        $.each(data, function (i, team) {
+                            items += "<option value='" + team.id + "'>" + team.name + "</option>";
+                        });
+                        $('#TeamSelector_TeamId').html(items);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $('#TeamSelector_GroupId').nextAll('span').html(jqXHR.responseText);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            function OnTeamChange() {
+                var ddlsource = '#TeamSelector_TeamId';
+                if ($(ddlsource).val() == -2)
+                    $('#AutoCreateTeamName').css('display', 'block');
+                else
+                    $('#AutoCreateTeamName').css('display', 'none');
+            };
+
+            $('#TeamSelector_TeamId').change(OnTeamChange);
+            OnTeamChange();
+        });
+    </script>
+
+}

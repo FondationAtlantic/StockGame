@@ -1,0 +1,23 @@
+﻿@page
+@model StockGame.Pages.ActiveGame.NewsModel
+@{
+    ViewData["Title"] = "Nouvelle!";
+}
+
+<h2>Dernière heure!</h2>
+
+@if(Model.ActiveGame != null)
+{
+    @if(Model.ActiveTradingSession.Episode.NewsTitle != null) 
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading"><img src="~/images/newspaper_small.png" title="Nouvelles" /> Nouvelles</div>
+            <div class="panel-body">
+                <img src="@Url.Content(Model.ActiveTradingSession.Episode.NewsImgPath)" style="max-width:100%;" />
+                <br />
+                <h3>@Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsTitle)</h3>
+                @Html.DisplayFor(model => model.ActiveTradingSession.Episode.NewsDetail)
+            </div>
+        </div>
+    }
+}

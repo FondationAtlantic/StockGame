@@ -1,0 +1,415 @@
+﻿@page
+@model StockGame.Pages.Portfolio.TradeModel
+
+@{
+  ViewData["Title"] = "Portefeuille";
+}
+
+<div class="mywallet">
+  <div class="walletHero">
+    <h1><i class="fal fa-wallet" aria-hidden="true"></i> Mon portefeuille</h1>
+    <div class="flex">
+      <div class="left">
+        <div class="walletInfo">
+          <div class="row">
+            <div>
+              <h3>@Html.DisplayNameFor(model => model.Portfolio.TotalValue)</h3>
+              <div class="value">
+                @Html.DisplayFor(model => model.Portfolio.TotalValue)
+              </div>
+            </div>
+            <div>
+              <h3>@Html.DisplayNameFor(model => model.Portfolio.Cash)</h3>
+              <div class="value">
+                @Html.DisplayFor(model => model.Portfolio.Cash)
+              </div>
+            </div>
+          </div>
+          @if (Model.PreviousEpisodePortfolio != null)
+          {
+            <h2>Depuis @Html.DisplayFor(model => model.PreviousEpisodePortfolio.EpisodeName)</h2>
+            <div class="moreInfosRow">
+              <div>
+                <h5>Montant reçu en dividendes</h5>
+                <div class="value">@Html.DisplayFor(model => model.PreviousEpisodePortfolio.DividendsReceived)</div>
+              </div>
+              <div>
+                <h5>Changement de la valeur totale</h5>
+                @if (Model.ValueDifference >= 0)
+                {
+                  <div class="value">@Html.DisplayFor(model => model.ValueDifference)</div>
+                }
+                else
+                {
+                  <div class="value" style="color: #e10a00">@Html.DisplayFor(model => model.ValueDifference)</div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+      @if (Model.PortfolioTeamHistory.Items.Count > 1)
+      {
+        <div class="right" style="flex: 1; overflow: hidden; margin-right: 4%;">
+            <div class="graph-transition portfolio-graph" id="portfolio_chart_div"></div>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="twoCols">
+    <div class="left">
+      <div class="title">
+        <h2><i class="fal fa-chart-pie"></i>Mes actions</h2>
+        <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal" onclick="setModalInfo()"><i class="far fa-exchange"></i> Transiger</a>
+      </div>
+      <div class="wrapActions">
+        @if (!Model.Portfolio.Items.Where(x => x.Amount > 0).Any())
+        {
+          <a class="btn buySell" data-target="#transaction-modal" data-toggle="modal" onclick="setModalInfo()"><i class="far fa-exchange"></i> Acheter mes premières actions</a>
+        }
+        @foreach (var item in Model.Portfolio.Items)
+        {
+          @if (item.Amount <= 0) { continue; }
+          <div>
+            <div class="logo">
+              <a asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <img src="@Url.Content(item.Equity.ImgPath)" />
+              </a>
+            </div>
+            <div class="name">
+              <a style="text-decoration: none; color: #172A3A" asp-page="../Analysis/Details" asp-route-id="@item.EpisodeEquityId">
+                <b>@Html.DisplayFor(modelItem => item.Equity.Name)</b>
+              </a>
+              <div class="qty">
+                @Html.DisplayFor(modelItem => item.Amount) actions
+              </div>
+            </div>
+            <div class="totalValue">
+              <b></b>
+              @if (item.Value > 0f)
+              {
+                <b>@Html.DisplayFor(modelItem => item.Value)</b>
+              }
+              <div class="unit">
+                @Html.DisplayFor(modelItem => item.Price) / action
+              </div>
+            </div>
+            <div class="variant">
+              @if (Model.PriceDifference != null)
+              {
+                @if (Model.PriceDifference[@item.EquityId] < 0)
+                {
+                  <strong class="trendDown">
+                    <i class="far fa-arrow-down"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                  </strong>
+                }
+                else
+                {
+                  <strong class="trendUp">
+                    <i class="far fa-arrow-up"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                  </strong>
+                }
+              }
+
+            </div>
+            <div class="actions">
+              <button class="btn buySell" title="Transiger" onclick="setModalInfo(@Html.DisplayFor(i => item.Equity.Id))" data-target="#transaction-modal" data-toggle="modal">
+                <i class="far fa-exchange"></i>Transiger
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="transaction-modal" tabindex="-1" role="dialog" style="margin:0 auto">
+  <div class="modal-dialog modal-mob">
+    <div class="modal-content">
+      <form id="form" method="post">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="fal fa-times"></i></span>
+          </button>
+          <h4 class="modal-title"><i class="far fa-exchange"></i>Transaction</h4>
+        </div>
+        <div class="tradeInfos">
+          <div class="availableMoney">
+            @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
+          </div>
+          <div class="currentTransaction">
+            Valeur de la transaction : <span id="totalAmount" class="value"></span>
+          </div>
+          <div id="ownedSharesAmount" class="currentTransaction">
+            Nombre d'actions détenues : <span id="shareAmount" class="value clicky" onclick="setAllShares()"></span>
+          </div>
+        </div>
+        <div id="formInputs">
+          <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+              <label asp-for="TransactionEntry.Equity.Name" class="control-label"></label>
+              <select id="equitySelect" asp-for="TransactionEntry.EquityId" class="form-control" asp-items="ViewBag.EquityId"></select>
+            </div>
+            <div class="form-group" onkeypress="if (event.key === 'Enter') closeMobileKeyboard()">
+              <label asp-for="TransactionEntry.Amount" class="control-label"></label>
+              <input id="stockNumber" asp-for="TransactionEntry.Amount" class="form-control" type="number" min="0" step="10" />
+              <span id="validation" asp-validation-for="TransactionEntry.Amount" class="text-danger"></span>
+              <div class="error hidden" id="invalidValue"><i class="fal fa-exclamation-triangle"></i> Veuillez entrer un nombre</div>
+            </div>
+            <div class="form-group">
+              <label asp-for="TransactionEntry.Reason" class="control-label"></label>
+              <select asp-for="TransactionEntry.TransactionReasonId" class="form-control" asp-items="ViewBag.TransactionReasonId"></select>
+            </div>
+          </div>
+          <div class="currentTransaction">
+
+          </div>
+          <div class="modal-actions form-group">
+            <div>
+              <input id="buyButton" type="button" value="Achat" onclick="showConfirmation('Achat')" class="btn" />
+              <div class="error hidden" id="notEnoughCash"><i class="fal fa-exclamation-triangle"></i> Fonds insuffisants pour procéder à l'achat</div>
+            </div>
+            <div>
+              <input id="sellButton" type="button" value="Vente" onclick="showConfirmation('Vente')" class="btn red" />
+              <div class="error hidden" id="notEnoughStock"><i class="fal fa-exclamation-triangle"></i> Quantité d'actions insuffisante pour procéder à la vente</div>
+            </div>
+          </div>
+        </div>
+        <div id="confirmation" class="hidden">
+          <div class="modal-body">
+            <h4 id="confirmationMsg"></h4>
+          </div>
+          <div class="modal-actions form-group">
+            <div>
+              <input id="confirmationInput" asp-for="TransactionEntry.Type" type="submit" value="Confirmer" onclick="return confirmResult();" class="btn" />
+            </div>
+            <div>
+              <input type="button" value="Annuler" onclick="hideConfirmation()" class="btn red" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    let transactionType;
+    const notEnoughCashElement = document.getElementById("notEnoughCash");
+    const notEnoughStockElement = document.getElementById("notEnoughStock")
+    const buyButtonElement = document.getElementById("buyButton");
+    const sellButtonElement = document.getElementById("sellButton");
+    const confirmationElement = document.getElementById("confirmation");
+    const formInputElement = document.getElementById("formInputs");
+    const totalAmountElement = document.getElementById("totalAmount");
+    const stockNumberElement = document.getElementById('stockNumber');
+    const equitySelectElement = document.getElementById('equitySelect');
+    const ownedSharesElement = document.getElementById('ownedSharesAmount');
+    const shareAmountElement = document.getElementById('shareAmount');
+
+    $(document).ready(function () {
+      // Timeout nécessaire pour que l'animation termine sans glitch visuel avant d'afficher le modal
+      setTimeout(function () {
+        getParameter('showModal') == 1 && $('#transaction-modal').modal('show');
+        setModalInfo(getParameter('equity'));
+        document.getElementById('validation').innerHTML.length > 0 && $('#transaction-modal').modal('show');
+      }, 400);
+
+      stockNumberElement.addEventListener("change", function () {
+        totalAmountElement.textContent = calculateTransaction(this.value);
+      })
+      document.getElementById('equitySelect').addEventListener("change", function () {
+        setQuantity(this.value);
+        totalAmountElement.textContent = calculateTransaction(this.value);
+      })
+    });
+
+    function setModalInfo(value) {
+      if (value) {
+        selectElement(value);
+        setQuantity(value);
+        hideConfirmation();
+      } else {
+        setQuantity(equitySelectElement.value)
+      }
+      stockNumberElement.value = 10;
+      totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
+    }
+
+    function calculateTransaction(n) {
+      let index = document.getElementById('equitySelect').selectedIndex;
+      if (n * tradeableEquities[index].price > Number(String(@Model.Portfolio.Cash).replace(",", "."))) {
+        notEnoughCashElement.classList.remove("hidden");
+        buyButtonElement.setAttribute("disabled", "disabled");
+      } else {
+        notEnoughCashElement.classList.add("hidden");
+        buyButtonElement.removeAttribute("disabled");
+      }
+      if (n > tradeableEquities[index].amount) {
+        notEnoughStockElement.classList.remove("hidden");
+        sellButtonElement.setAttribute("disabled", "disabled");
+      } else {
+        notEnoughStockElement.classList.add("hidden");
+        sellButtonElement.removeAttribute("disabled");
+      }
+      var result = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((n * tradeableEquities[index].price).toFixed(2));
+      return result.replace("US", "").trim();
+    }
+
+    function showConfirmation(type) {
+      transactionType = type
+      let amount = document.getElementById("stockNumber").value;
+      if (amount.length == 0) {
+        document.getElementById("invalidValue").classList.remove("hidden");
+        return;
+      }
+      let index = document.getElementById('equitySelect').selectedIndex;
+      let name = tradeableEquities[index].name;
+      let side = type == 'Achat' ? 'Acheter' : 'Vendre';
+      let strValue = (tradeableEquities[index].price * amount).toFixed(2);
+      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de $' + strValue + '?';
+      document.getElementById("confirmation").classList.remove("hidden");
+      formInputElement.classList.add("hidden");
+    }
+
+    function confirmResult() {
+      document.getElementById('confirmationInput').value = transactionType;
+    }
+
+    function hideConfirmation() {
+      document.getElementById("formInputs").classList.remove("hidden");
+      document.getElementById("confirmation").classList.add("hidden");
+    }
+
+    function getParameter(parameterName) {
+      let parameters = new URLSearchParams(window.location.search);
+      return parameters.get(parameterName);
+    }
+
+    function selectElement(valueToSelect) {
+      equitySelectElement.value = valueToSelect;
+      setQuantity(valueToSelect);
+    }
+
+    const tradeableEquities = @Html.Raw(Json.Serialize(Model.TradeableEquities));
+
+    function setQuantity(value) {
+      let quantity = tradeableEquities.find(e => e.equityId == value).amount;
+      if (quantity) {
+        shareAmountElement.textContent = quantity;
+        ownedSharesElement.classList.remove('hidden');
+      } else {
+        ownedSharesElement.classList.add('hidden');
+      }
+    }
+
+    function setAllShares() {
+      stockNumberElement.value = tradeableEquities.find(e => e.equityId == equitySelectElement.value).amount;
+      totalAmountElement.textContent = calculateTransaction(stockNumberElement.value);
+    }
+
+    function closeMobileKeyboard() {
+      event.preventDefault();
+      stockNumberElement.blur();
+    }
+
+    google.charts.load('current', { packages: ['corechart'] });
+
+    const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
+
+    let portfolioChartData;
+    let portfolioChart;
+    let portfolioChartOptions;
+    let lineColor;
+
+    google.charts.setOnLoadCallback(LoadChartData);
+
+    function LoadChartData() {
+        LoadChart(data);
+        return false;
+    }
+
+    function LoadChart(data) {
+        let backgroundColorDark = '#172A3A'
+        @Model.ActiveGame.InitialCash <= @Model.Portfolio.TotalValue ? lineColor = '#00c609' : lineColor = '#e10a00';
+        portfolioChartData = new google.visualization.DataTable();
+        portfolioChart = new google.visualization.AreaChart(document.getElementById('portfolio_chart_div'));
+        portfolioChartOptions = {
+          animation: {
+              startup: true,
+              duration: 500,
+              easing: 'out'
+          },
+          areaOpacity: 0.1,
+          backgroundColor: backgroundColorDark,
+          chartArea: {
+              width: '100%',
+              height: '100%',
+              bottom: '26%',
+              top: '2%',
+              right: '-1%',
+              left: '12%'
+          },
+          colors: [lineColor],
+          hAxis: {
+              slantedText: true,
+              slantedTextAngle: 15,
+              textStyle: {
+                  color: '#ffffff',
+                  bold: true
+              }
+          },
+          lineWidth: 3,
+          vAxis: {
+              textPosition: 'out',
+              textStyle: {
+                  color: '#c8dae9',
+              },
+              gridlines: {
+                  color: '#315a7c',
+              },
+            minorGridlines: {
+              count: 0,
+            }
+          }
+        };
+
+        let portfolioDataArray = [];
+        $.each(data, function (i, item) {
+            portfolioDataArray.push([item.episodeName, item.totalValue]);
+        });
+
+        portfolioChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+        portfolioChartData.addColumn('number'); // Implicit domain label col.
+        portfolioChartData.addRows(portfolioDataArray);
+
+        portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+
+        $("a[href='#graph']").on('shown.bs.tab', function (e) {
+            ResizeCharts();
+        });
+
+        if (document.addEventListener) {
+            window.addEventListener('resize', ResizeCharts);
+        }
+        else if (document.attachEvent) {
+            window.attachEvent('onresize', ResizeCharts);
+        }
+        else {
+            window.resize = ResizeCharts;
+        }
+        return false;
+    }
+
+    function ResizeCharts(data) {
+        portfolioChart.draw(portfolioChartData, portfolioChartOptions);
+    }
+
+  </script>
+}

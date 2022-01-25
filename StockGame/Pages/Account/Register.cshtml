@@ -1,0 +1,40 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Création de compte";
+}
+
+<section class="login centered">
+  <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <div class="logo">
+      <a asp-page="/Index"><img src="~/images/stockgame.png" /></a>
+    </div>
+    <div class="title">
+      <h2>Création de compte</h2>
+    </div>
+    <div class="form-group">
+      <label asp-for="Input.Email">Ton courriel</label>
+      <input asp-for="Input.Email" class="form-control" />
+      <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <label asp-for="Input.Password">Ton mot de passe</label>
+      <input asp-for="Input.Password" class="form-control" />
+      <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <label asp-for="Input.ConfirmPassword">Confirme à nouveau ton mot de passe</label>
+      <input asp-for="Input.ConfirmPassword" class="form-control" />
+      <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group flex">
+      <button type="submit" class="btn btn-default">M’enregistrer</button>
+      <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Me connecter</a>
+    </div>
+  </form>
+</section>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

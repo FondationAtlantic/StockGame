@@ -1,0 +1,55 @@
+@page
+@model StockGame.Pages.Groups.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Group</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.AllowJoin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.AllowJoin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.AllowAutoCreateTeam)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.AllowAutoCreateTeam)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.AutoCreateTeamPassword)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.AutoCreateTeamPassword)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.School)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.School.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.TeacherUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.TeacherUser.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Group.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

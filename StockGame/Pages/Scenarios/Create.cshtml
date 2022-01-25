@@ -1,0 +1,69 @@
+@page
+@model StockGame.Pages.Scenarios.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Scenario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Scenario.Name" class="control-label"></label>
+                <input asp-for="Scenario.Name" class="form-control" />
+                <span asp-validation-for="Scenario.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Scenario.HistoricalEpisodeCount" class="control-label"></label>
+                <input asp-for="Scenario.HistoricalEpisodeCount" class="form-control" />
+                <span asp-validation-for="Scenario.HistoricalEpisodeCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Scenario.PlayableEpisodeCount" class="control-label"></label>
+                <input asp-for="Scenario.PlayableEpisodeCount" class="form-control" />
+                <span asp-validation-for="Scenario.PlayableEpisodeCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Selected Equities</div>
+                    <div class="panel-body">
+                        <span asp-validation-for="Scenario" class="text-danger"></span>
+                        <div class="col-md-offset-2 col-md-10">
+                            <table>
+                                @for (int i = 0; i < Model.EquityList.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.EquityList[i].Equity.Id" />
+                                            <input type="hidden" asp-for="@Model.EquityList[i].Equity.Name" />
+                                            <label>
+                                                <input asp-for="@Model.EquityList[i].Selected" />
+                                            </label>
+                                            @Model.EquityList[i].Equity.Name
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

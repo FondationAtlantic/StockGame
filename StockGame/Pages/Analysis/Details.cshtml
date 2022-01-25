@@ -1,0 +1,595 @@
+﻿@page
+@model StockGame.Pages.Analysis.DetailsModel
+
+@{
+  ViewData["Title"] = "Détails";
+}
+
+<style type="text/css">
+  .second {
+    text-align: right;
+  }
+
+  .negative {
+    color: red;
+  }
+</style>
+
+<div class="detailsPage">
+  <div class="detailHero">
+    <div class="left">
+      <div class="back">
+        <a asp-page="./AnalysisIndex"><i class="fal fa-long-arrow-left"></i>Retour à la liste</a>
+      </div>
+      <div class="logoAndName">
+        <div class="logo">
+          <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.Equity.ImgPath)" />
+        </div>
+        <div>
+          <h1>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Name)</h1>
+          <div class="infos">
+            <div>
+              <div class="label">@Html.DisplayNameFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Industry)</div>
+              <div class="value">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Equity.Industry.Name)</div>
+            </div>
+            <div>
+              <div class="label">@Html.DisplayNameFor(model => model.DetailsItem.EpisodeEquityInfo.Price)</div>
+              <div class="value">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Price)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a id="transaction" class="btn buySell" href="/Portfolio/Trade"><i class="far fa-exchange"></i>Transiger</a>
+    </div>
+    <div class="right">
+        <div class="graph-transition details-graph" id="price_chart_div" ></div>
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" id="btnPrice">Historique de prix</a></li>
+          <li><a data-toggle="tab" id="btnDividend">Historique des dividendes</a></li>
+        </ul>
+    </div>
+  </div>
+  <div class="twoCols">
+    <div class="left">
+      <div class="title">
+        <h2><i class="fal fa-file-chart-line"></i> Bilan</h2>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th text-align="left" style="border-top:none;"><i>@Model.ResultsInfo.PresentationBasis</i></th>
+            <th class="second" style="width:120px; border-top:none;">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (Model.ResultsInfo.Cash.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.Cash)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.Cash)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.ShortTermAssets.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.ShortTermAssets)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.ShortTermAssets)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.Loans.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.Loans)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.Loans)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.OtherAssets.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.OtherAssets)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.OtherAssets)</td>
+            </tr>
+          }
+          <tr class="highlight">
+            <th style="padding-left:30px;">@Html.DisplayNameFor(model => model.ResultsInfo.TotalAssets)</th>
+            <td class="second" style="border-top: solid 1px black; border-bottom: solid 2px black;">@Html.DisplayFor(model => model.ResultsInfo.TotalAssets)</td>
+          </tr>
+          @if (Model.ResultsInfo.ShortTermLiabilities.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.ShortTermLiabilities)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.ShortTermLiabilities)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.LongTermDebt.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.LongTermDebt)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.LongTermDebt)</td>
+            </tr>
+          }
+          <tr class="highlight">
+            <th style="padding-left:30px;">@Html.DisplayNameFor(model => model.ResultsInfo.TotalLiabilities)</th>
+            <td class="second" style="border-top: solid 1px black;">@Html.DisplayFor(model => model.ResultsInfo.TotalLiabilities)</td>
+          </tr>
+          <tr>
+            <td>@Html.DisplayNameFor(model => model.ResultsInfo.TotalEquity)</td>
+            <td class="second">@Html.DisplayFor(model => model.ResultsInfo.TotalEquity)</td>
+          </tr>
+          <tr class="highlight">
+            <th style="padding-left:30px;">@Html.DisplayNameFor(model => model.ResultsInfo.TotalLiabilitiesAndEquity)</th>
+            <td class="second" style="border-top: solid 1px black; border-bottom: solid 2px black;">@Html.DisplayFor(model => model.ResultsInfo.TotalLiabilitiesAndEquity)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="right">
+      @if (Model.DetailsItem.EpisodeEquityInfo.NewsTitle != null)
+      {
+        <div class="title">
+          <h3><i class="fal fa-newspaper"></i>Nouvelle</h3>
+        </div>
+        <div>
+          <div class="img">
+            <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.NewsImgPath)" style="max-width:100%;" />
+          </div>
+          <div class="text">
+            <b>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsTitle)</b>
+            @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsDetail)
+          </div>
+        </div>
+      }
+      <div class="title">
+        <h3><i class="fal fa-hand-holding-usd"></i>Dividende</h3>
+      </div>
+      <div>
+        <table>
+          @if (Model.DetailsItem.PrevDividendEpisode != null)
+          {
+            <tr>
+              <td><b>Précédent :</b></td>
+              <td>
+                @Html.DisplayFor(model => model.DetailsItem.PrevDividendEpisode.Dividend) [@Html.DisplayFor(model => model.DetailsItem.PrevDividendEpisode.Episode.Name)]
+              </td>
+            </tr>
+          }
+          @if (!Model.DetailsItem.HasNextKnownDividend)
+          {
+            <tr>
+              <td><b>Prochain :</b></td>
+              <td>Aucun dividende à venir</td>
+            </tr>
+          }
+          else
+          {
+            @if (Model.DetailsItem.EpisodeEquityInfo.Dividend != null)
+            {
+              <tr>
+                <td><b>Dividende Imminent!</b></td>
+                <td>
+                  @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Dividend) [@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]
+                </td>
+              </tr>
+            }
+            else if (Model.DetailsItem.NextDividendEpisode != null)
+            {
+              <tr>
+                <td><b>Prochain :</b></td>
+                <td>
+                  [@Html.DisplayFor(model => model.DetailsItem.NextDividendEpisode.Episode.Name)]
+                </td>
+              </tr>
+            }
+            @if (Model.DetailsItem.DividendYield != null)
+            {
+              <tr>
+                <td><b>Rendement Dividende :</b></td>
+                <td>
+                  @Html.DisplayFor(model => model.DetailsItem.DividendYield)
+                </td>
+              </tr>
+            }
+          }
+        </table>
+      </div>
+      <div class="title">
+        <h3><i class="fal fa-file-invoice-dollar"></i>Publication du Bénéfice par Action</h3>
+      </div>
+      <div>
+        <table>
+          @if (Model.DetailsItem.PrevResultsEpisode != null)
+          {
+            <tr>
+              <td><b>Précédent :</b></td>
+              <td>
+                <span class="@(Model.DetailsItem.PrevResultsEpisode.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.EarningPerShare)</span>
+
+                <span>[@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.Episode.Name)]</span>
+              </td>
+            </tr>
+          }
+          @if (Model.DetailsItem.EpisodeEquityInfo.AnnounceFinancialResults)
+          {
+            <tr>
+              <td><b>Nouveau Bénéfice!</b></td>
+              <td>
+                <span class="@(Model.DetailsItem.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.EarningPerShare)</span>
+                <span>[@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]</span>
+              </td>
+            </tr>
+          }
+          @if (Model.DetailsItem.NextResultsEpisode != null)
+          {
+            <tr>
+              <td><b>Prochain:</b></td>
+              <td>
+                [@Html.DisplayFor(model => model.DetailsItem.NextResultsEpisode.Episode.Name)]
+              </td>
+            </tr>
+          }
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="display: none">
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Info</a></li>
+    <li><a data-toggle="tab" href="#menu1">Historique</a></li>
+    <li><a data-toggle="tab" href="#menu2">Bilan</a></li>
+  </ul>
+
+  <div class="tab-content" width="100%">
+    <div id="home" class="tab-pane fade in active">
+
+      @if (Model.DetailsItem.EpisodeEquityInfo.NewsTitle != null)
+      {
+        <div class="panel panel-default">
+          <div class="panel-heading"><img src="~/images/newspaper_small.png" title="Nouvelles" /> Nouvelles</div>
+          <div class="panel-body">
+            <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.NewsImgPath)" style="max-width:100%;" />
+            <br />
+            <h3>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsTitle)</h3>
+            @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsDetail)
+          </div>
+        </div>
+      }
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><img src="~/images/dividend_small.png" title="Dividende" /> Dividende</div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            @if (Model.DetailsItem.PrevDividendEpisode != null)
+            {
+              <dt>Précédent</dt>
+              <dd>
+                @Html.DisplayFor(model => model.DetailsItem.PrevDividendEpisode.Dividend) [@Html.DisplayFor(model => model.DetailsItem.PrevDividendEpisode.Episode.Name)]
+              </dd>
+            }
+            @if (!Model.DetailsItem.HasNextKnownDividend)
+            {
+              <dt>Prochain</dt>
+              <dd>Aucun dividende à venir</dd>
+            }
+            else
+            {
+              @if (Model.DetailsItem.EpisodeEquityInfo.Dividend != null)
+              {
+                <dt>Dividende Imminent!</dt>
+                <dd>
+                  @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Dividend) [@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]
+                </dd>
+              }
+              else if (Model.DetailsItem.NextDividendEpisode != null)
+              {
+                <dt>Prochain</dt>
+                <dd>
+                  [@Html.DisplayFor(model => model.DetailsItem.NextDividendEpisode.Episode.Name)]
+                </dd>
+              }
+              @if (Model.DetailsItem.DividendYield != null)
+              {
+                <dt>Rendement Dividende</dt>
+                <dd>
+                  @Html.DisplayFor(model => model.DetailsItem.DividendYield)
+                </dd>
+              }
+            }
+          </dl>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><img src="~/images/results_small.png" title="Résultats Financiers" />Publication du Bénéfice par Action</div>
+        <div class="panel-body">
+          <dl class="dl-horizontal">
+            @if (Model.DetailsItem.PrevResultsEpisode != null)
+            {
+              <dt>Précédent</dt>
+              <dd>
+                <span class="@(Model.DetailsItem.PrevResultsEpisode.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.EarningPerShare)</span> [@Html.DisplayFor(model => model.DetailsItem.PrevResultsEpisode.Episode.Name)]
+              </dd>
+
+            }
+            @if (Model.DetailsItem.EpisodeEquityInfo.AnnounceFinancialResults)
+            {
+              <dt>Nouveau Bénéfice!</dt>
+              <dd>
+                <span class="@(Model.DetailsItem.EpisodeEquityInfo.EarningPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.EarningPerShare)</span> [@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)]
+              </dd>
+            }
+            @if (Model.DetailsItem.NextResultsEpisode != null)
+            {
+              <dt>Prochain</dt>
+              <dd>
+                [@Html.DisplayFor(model => model.DetailsItem.NextResultsEpisode.Episode.Name)]
+              </dd>
+            }
+          </dl>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="menu1" class="tab-pane fade">
+      <br />
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <table class="table">
+        <thead>
+          <tr>
+            <th text-align="left" style="border-top:none;"><i>@Model.ResultsInfo.PresentationBasis</i></th>
+            <th class="second" style="width:120px; border-top:none;">@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.Episode.Name)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (Model.ResultsInfo.Cash.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.Cash)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.Cash)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.ShortTermAssets.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.ShortTermAssets)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.ShortTermAssets)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.Loans.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.Loans)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.Loans)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.OtherAssets.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.OtherAssets)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.OtherAssets)</td>
+            </tr>
+          }
+          <tr style="background-color:lightblue">
+            <th style="padding-left:30px;">@Html.DisplayNameFor(model => model.ResultsInfo.TotalAssets)</th>
+            <td class="second" style="border-top: solid 1px black; border-bottom: solid 2px black;">@Html.DisplayFor(model => model.ResultsInfo.TotalAssets)</td>
+          </tr>
+          @if (Model.ResultsInfo.ShortTermLiabilities.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.ShortTermLiabilities)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.ShortTermLiabilities)</td>
+            </tr>
+          }
+          @if (Model.ResultsInfo.LongTermDebt.HasValue)
+          {
+            <tr>
+              <td>@Html.DisplayNameFor(model => model.ResultsInfo.LongTermDebt)</td>
+              <td class="second">@Html.DisplayFor(model => model.ResultsInfo.LongTermDebt)</td>
+            </tr>
+          }
+          <tr style="background-color:lightblue">
+            <th style="padding-left:30px;">@Html.DisplayNameFor(model => model.ResultsInfo.TotalLiabilities)</th>
+            <td class="second" style="border-top: solid 1px black;">@Html.DisplayFor(model => model.ResultsInfo.TotalLiabilities)</td>
+          </tr>
+          <tr>
+            <td>@Html.DisplayNameFor(model => model.ResultsInfo.TotalEquity)</td>
+            <td class="second">@Html.DisplayFor(model => model.ResultsInfo.TotalEquity)</td>
+          </tr>
+          <tr style="background-color:lightblue">
+            <th style="padding-left:30px;">@Html.DisplayNameFor(model => model.ResultsInfo.TotalLiabilitiesAndEquity)</th>
+            <td class="second" style="border-top: solid 1px black; border-bottom: solid 2px black;">@Html.DisplayFor(model => model.ResultsInfo.TotalLiabilitiesAndEquity)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <a asp-page="./Index">Retour à la liste</a>
+  </div>
+</div>
+
+@section Scripts {
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+        $('#transaction').on('click', function (e) {
+          event.preventDefault();
+          window.location.href = '/Portfolio/Trade' +
+                                '?showModal=1' +
+                                '&equity=' +
+                                @Model.DetailsItem.EpisodeEquityInfo.Equity.Id;
+        });
+
+        google.charts.load('current', { packages: ['corechart'] });
+
+        const data = @Html.Raw(Json.Serialize(Model.PerShareChartItems));
+
+        let priceChartData;
+        let priceChart;
+        let priceChartOptions;
+        let epsChartData;
+        let epsChart;
+        let epsChartOptions;
+
+        google.charts.setOnLoadCallback(LoadChartData);
+
+        function LoadChartData() {
+            LoadChart(data);
+            return false;
+        }
+
+        function LoadChart(data) {
+            let backgroundColorDark = '#172A3A'
+            let current = 0;
+            data[0].price <= data[data.length - 1].price ? lineColor = '#00c609' : lineColor = '#e10a00'
+
+            priceChart = new google.visualization.AreaChart(document.getElementById('price_chart_div'));
+            priceChartOptions = {
+                animation: {
+                    startup: true,
+                    duration: 500,
+                    easing: 'out'
+                },
+                areaOpacity: 0.1,
+                backgroundColor: backgroundColorDark,
+                chartArea: {
+                    width: '85%',
+                    height: '100%',
+                    bottom: '30%',
+                    right: 1
+                },
+                colors: [lineColor],
+                hAxis: {
+                    slantedText: true,
+                    slantedTextAngle: 15,
+                    textPosition: 'out',
+                    textStyle: {
+                        color: '#ffffff',
+                        bold: true
+                    }
+                },
+                lineWidth: 3,
+                vAxis: {
+                    textPosition: 'in',
+                    textStyle: {
+                        color: '#c8dae9',
+                    },
+                    gridlines: {
+                        color: '#315a7c',
+                    },
+                    minorGridlines: {
+                        count: 0,
+                    }
+                }
+            };
+
+            epsChartOptions = {
+                animation: {
+                    startup: true,
+                    duration: 500,
+                    easing: 'out'
+                },
+                backgroundColor: backgroundColorDark,
+                chartArea: {
+                  width: '85%',
+                  height: '100%',
+                  bottom: '30%',
+                  right: 1
+                },
+                hAxis: {
+                  slantedText: true,
+                  slantedTextAngle: 15,
+                  textPosition: 'out',
+                  textStyle: {
+                      color: '#ffffff',
+                      bold: true
+                  }
+                },
+                series: {
+                  1: {
+                    color: 'white',
+                    pointShape: 'diamond',
+                    pointSize: 6,
+                    lineWidth: 1
+                  }
+                },
+                lineWidth: 3,
+                vAxis: {
+                    textPosition: 'in',
+                    textStyle: {
+                        color: '#c8dae9',
+                    },
+                    gridlines: {
+                        color: '#315a7c',
+                    },
+                    minorGridlines: {
+                        count: 0,
+                    }
+                }
+            };
+
+            let priceDataArray = [];
+            $.each(data, function (i, item) {
+                priceDataArray.push([item.episodeName, item.price]);
+            });
+
+            priceChartData = new google.visualization.DataTable();
+            priceChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+            priceChartData.addColumn('number', 'Prix'); // Implicit domain label col.
+            priceChartData.addRows(priceDataArray);
+
+            let epsDataArray = [];
+            $.each(data, function (i, item) {
+                if (item.earnings != null)
+                    epsDataArray.push([item.episodeName, item.earnings, item.dividend, 'div', 'Dividende']);
+            });
+
+            epsChartData = new google.visualization.DataTable();
+            epsChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
+            epsChartData.addColumn('number', 'Bénéfices'); // Implicit domain label col.
+            epsChartData.addColumn('number', 'Dividende'); // Implicit domain label col.
+            epsChartData.addColumn({ type: 'string', role: 'annotation' });
+            epsChartData.addColumn({ type: 'string', role: 'annotationText' });
+            epsChartData.addRows(epsDataArray);
+
+            let dataTable = [];
+            dataTable[0] = priceChartData;
+            dataTable[1] = epsChartData;
+            let options = [priceChartOptions, epsChartOptions];
+            function drawChart() {
+                priceChart.draw(dataTable[current], options[current]);
+            }
+            drawChart();
+
+            document.getElementById('btnPrice').onclick = function () {
+                current = 0;
+                drawChart();
+            }
+
+            document.getElementById('btnDividend').onclick = function () {
+              current = 1;
+              drawChart();
+            }
+
+            if (document.addEventListener) {
+                window.addEventListener('resize', drawChart);
+            }
+            else if (document.attachEvent) {
+                window.attachEvent('onresize', drawChart);
+            }
+            else {
+                window.resize = drawChart;
+            }
+            return false;
+        }
+
+  </script>
+}
+

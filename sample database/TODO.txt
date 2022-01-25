@@ -1,0 +1,15 @@
+install MS SQL server
+
+Import in this order (excerpts each table from SQLQuery.sql)
+[Category] 
+[Industry] 
+[Scenario]
+[Episode] 
+[Equity] 
+[ScenarioEquity]
+[EpisodeEquityInfo] 
+
+Delete
+[Game]
+[TradingSession]
+[GameGroup]

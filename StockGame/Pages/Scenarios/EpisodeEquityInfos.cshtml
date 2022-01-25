@@ -1,0 +1,253 @@
+@page
+@model StockGame.Pages.Scenarios.EpisodeEquityInfosModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Scenario @Html.DisplayFor(model => model.ScenarioEquity.Scenario.Name)</h2>
+
+<img src="@Url.Content(Model.ScenarioEquity.Equity.ThumbPath)" />
+<h4>@Html.DisplayFor(model => model.ScenarioEquity.Equity.Name)</h4>
+<hr />
+<div class="row" width="100%">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="@Model.ScenarioEquityId">
+            <input type="hidden" asp-for="@Model.FilterResults">
+
+            <a asp-page="./EpisodeEquityInfos" asp-route-id="@Model.ScenarioEquityId" asp-route-filterResults="@(!Model.FilterResults)">@(Model.FilterResults ? "Show All" : "Show Only Results")</a>
+            <p/>
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#info">Info</a></li>
+                <li><a data-toggle="tab" href="#news">News</a></li>
+            </ul>
+
+            @for (int i = 0; i < Model.EpisodeEquityInfos.Count; i++)
+            {
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].Id">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].EquityId">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].EpisodeId">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].CategoryId">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].OutstandingShares">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].ShortTermAssets">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].LongTermAssets">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].ShortTermLiabilities">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].Sales">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].InterestIncome">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].OtherIncome">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].CostOfGoodsSold">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].ResearchDevelopmentExpense">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].InterestExpense">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].SellingGeneralAdministrativeExpense">
+                <input type="hidden" asp-for="@Model.EpisodeEquityInfos[i].Salaries">
+            }
+
+
+            <div class="tab-content" width="100%">
+                <div id="info" class="tab-pane fade in active">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Episode</th>
+                                <th>Visible?</th>
+                                <th>Trade?</th>
+                                <th>Price</th>
+                                <th>Dividend?</th>
+                                <th>News?</th>
+                                <th>Results?</th>
+                                <th>EPS</th>
+                                <th>Cash</th>
+                                <th>Loans</th>
+                                <th>Other Assets</th>
+                                <th>Long Term Debt</th>
+                                <th>Equity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.EpisodeEquityInfos.Count; i++)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => model.EpisodeEquityInfos[i].Episode.Name)
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input asp-for="@Model.EpisodeEquityInfos[i].Visible" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input asp-for="@Model.EpisodeEquityInfos[i].AllowTransactions" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].Price" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].Price" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].Dividend" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].Dividend" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if(!String.IsNullOrEmpty(@Model.EpisodeEquityInfos[i].NewsTitle))
+                                    { 
+                                        <img src="~/images/newspaper_small.png" title="News" />
+                                    }
+                                </td>                                
+                                <td>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input asp-for="@Model.EpisodeEquityInfos[i].AnnounceFinancialResults" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].EarningPerShare" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].EarningPerShare" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].Cash" asp-format="{0:N0}" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].Cash" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].Loans" asp-format="{0:N0}" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].Loans" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].OtherAssets" asp-format="{0:N0}" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].OtherAssets" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].LongTermDebt" asp-format="{0:N0}" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].LongTermDebt" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="news" class="tab-pane fade">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th width="10%">Episode</th>
+                                <th width="30%">News Title</th>
+                                <th width="30%">News Detail</th>
+                                <th width="30%">News Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.EpisodeEquityInfos.Count; i++)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => model.EpisodeEquityInfos[i].Episode.Name)
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].NewsTitle" class="form-control" />
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].NewsTitle" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <textarea style="height:100px;resize:vertical;" asp-for="@Model.EpisodeEquityInfos[i].NewsDetail" class="form-control"></textarea>
+                                        <span asp-validation-for="@Model.EpisodeEquityInfos[i].NewsDetail" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if(!String.IsNullOrEmpty(@Model.EpisodeEquityInfos[i].NewsImgPath))
+                                    { 
+                                        <img style="height:auto;width:50%" src="@Url.Content(Model.EpisodeEquityInfos[i].NewsImgPath)" alt="image" />
+                                    }
+                                    <div class="form-group">
+                                        <input name="RawUploadedNewsImg[@i]" id="RawUploadedNewsImg[@i]" type="file" class="form-control" style="height:auto" />
+                                        <input asp-for="@Model.EpisodeEquityInfos[i].NewsImgPath" class="form-control" readonly="readonly"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="../Scenarios/Edit" asp-route-id="@Model.ScenarioEquity.ScenarioId">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    function EnableFinancialResults() {
+        var checked = $(this).is(':checked');
+        $(this).closest('td').nextAll().find('input:text').each(function () {
+            $(this).prop("disabled", !checked);
+        });
+    }
+
+    function UpdateEquity() {
+        var parentTr = $(this).closest('tr');
+        var cash = parseFloat(parentTr.find('input:text[id$="Cash"]').val().replace(/,/g,''));
+        var loans = parseFloat(parentTr.find('input:text[id$="Loans"]').val().replace(/,/g,''));
+        var otherAssets = parseFloat(parentTr.find('input:text[id$="OtherAssets"]').val().replace(/,/g,''));
+        var longTermDebt = parseFloat(parentTr.find('input:text[id$="LongTermDebt"]').val().replace(/,/g,''));
+        var isEmpty = isNaN(cash) && isNaN(otherAssets) && isNaN(loans) && isNaN(longTermDebt);
+        cash = isNaN(cash) ? 0.0 : cash;
+        loans = isNaN(loans) ? 0.0 : loans;
+        otherAssets = isNaN(otherAssets) ? 0.0 : otherAssets;
+        longTermDebt = isNaN(longTermDebt) ? 0.0 : longTermDebt;
+        var shareholderEquity = cash + loans + otherAssets - longTermDebt;
+        var strEquity = Number(shareholderEquity).toLocaleString ('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $(this).closest('td').nextAll().last().html(isEmpty ? "" : strEquity.slice(0, -3));
+    }
+
+    $(document).ready(function () {
+        $('input:checkbox[id$="AnnounceFinancialResults"]').each(EnableFinancialResults).change(EnableFinancialResults);
+
+        $('input:text[id$="Cash"]').each(UpdateEquity).change(UpdateEquity);
+        $('input:text[id$="Loans"]').change(UpdateEquity);
+        $('input:text[id$="OtherAssets"]').change(UpdateEquity);
+        $('input:text[id$="LongTermDebt"]').change(UpdateEquity);
+    });
+</script>
+}

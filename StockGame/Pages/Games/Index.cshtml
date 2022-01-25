@@ -1,0 +1,78 @@
+@page
+@model StockGame.Pages.Games.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game[0].Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game[0].CurrentEpisodeIndex)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game[0].InitialCash)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game[0].AllowJoin)
+                </th>
+                <th>AllowJoinEpisodeRange MinIndex</th>
+                <th>AllowJoinEpisodeRange MaxIndex</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Game[0].Scenario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Game) {
+        <tr class=@(item == Model.ActiveGame ? "success" : "none")>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentEpisodeIndex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InitialCash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllowJoin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllowJoinEpisodeRange.MinIndex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllowJoinEpisodeRange.MaxIndex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Scenario.Name)
+            </td>
+            <td>
+                @if(item != Model.ActiveGame)
+                {
+                    <a asp-page="./Index" asp-route-SelectActiveGameId="@item.Id">Select</a> @Html.Raw("|")
+                }
+                else
+                {
+                    <a asp-page="./Index" asp-route-SelectActiveGameId="-1">Forget</a> @Html.Raw("|")
+                }
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Enrolments" asp-route-id="@item.Id">Enrolments</a> |
+                <a asp-page="../ActiveGame/Ranking" asp-route-id="@item.Id">Ranking</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

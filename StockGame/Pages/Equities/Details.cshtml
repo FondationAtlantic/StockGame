@@ -1,0 +1,55 @@
+@page
+@model StockGame.Pages.Equities.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Equity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Equity.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equity.Name)
+        </dd>
+        <dt>Vignette</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equity.ThumbPath)
+            <br /><img src="@Url.Content(Model.Equity.ThumbPath)" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Equity.ImgPath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equity.ImgPath)
+            <br /><img src="@Url.Content(Model.Equity.ImgPath)" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Equity.Industry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equity.Industry.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Equity.DividendFrequency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equity.DividendFrequency)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Equity.StatementPresentation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equity.StatementPresentation)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Equity.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
