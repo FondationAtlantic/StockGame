@@ -1,0 +1,59 @@
+name: "Deploy"
+
+env:
+  ARTIFACT_NAME: fa-stockgame-${{ github.sha }}
+  DEPLOY_PATH: "C:\\sites\\Fondation Atlantic"
+  NETCORE_VERSION: '3.1.x'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs: 
+  build: 
+    runs-on: ${{ matrix.os }}
+    name: Build
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.NETCORE_VERSION }}
+      
+      - name: Restore dependencies
+        run: dotnet restore StockGame.sln
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Publish
+        run: dotnet publish StockGame/StockGame.csproj --no-build -c Release -o ./published
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: published
+          if-no-files-found: error
+  
+  deploy-dev:
+    needs: build
+    runs-on: [self-hosted, windows, x64, fa-stockgame]
+    name: Deploy on dev
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.DEPLOY_PATH }}
