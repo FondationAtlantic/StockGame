@@ -1,0 +1,34 @@
+/** Table de présentation des compagnies **/
+
+// Custom properties
+.sector-table {
+  --cell-padding: var(--gutter);
+}
+
+.sector-table {
+  width: 100%;
+}
+
+.sector-table :is(th,td):last-of-type {
+  text-align: end;
+}
+
+.sector-table .equity-logo {
+  max-height: 80px;
+}
+
+.sector-table tr.header {
+  border-block-end: 2px solid $c1;
+}
+
+.sector-table tr.header th {
+  padding-block-end: var(--cell-padding);
+}
+
+.sector-table td {
+  padding-block: var(--cell-padding);
+}
+
+.sector-table th {
+  vertical-align: baseline;
+}

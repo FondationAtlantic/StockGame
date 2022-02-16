@@ -1,5 +1,6 @@
 ﻿@import "mixins.scss";
 
+
 $mobileFontSize: 16;
 
 @function em($target, $context: $mobileFontSize) {
@@ -57,6 +58,17 @@ $heading: "Ubuntu", sans-serif;
 //FontAwesome
 $fa: "FontAwesome";
 $fab: "FontAwesomeBrands";
+
+@import "analysis-table";
+
+// ================================================================================================================
+// Custom properties
+// ================================================================================================================
+:root {
+  --gutter: 1rem;
+  --gutter-deci: calc(var(--gutter) * 0.8);
+}
+
 
 // ================================================================================================================
 // TEXTE
