@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/** Table de présentation des compagnies **/
 .sector-table {
   --cell-padding: var(--gutter);
 }
@@ -12,8 +11,15 @@
   text-align: end;
 }
 
+.sector-table .equity-branding {
+  font-size: 1.35rem;
+}
+
 .sector-table .equity-logo {
+  display: inline-block;
   max-height: 80px;
+  -webkit-margin-end: var(--cell-padding);
+          margin-inline-end: var(--cell-padding);
 }
 
 .sector-table tr.header {
@@ -30,10 +36,52 @@
   padding-block: var(--cell-padding);
 }
 
-.sector-table th {
+.sector-table :is(th, td) {
   vertical-align: baseline;
 }
 
+.sector-table .events-column {
+  font-size: 1.75rem;
+  vertical-align: middle;
+}
+.sector-table .events-column div {
+  display: inline-block;
+}
+.sector-table .events-column div span {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .sector-table :is(table, tr, th, td) {
+    display: block;
+  }
+
+  .sector-table :is(th, td):last-of-type {
+    text-align: start;
+  }
+
+  .sector-table td::before {
+    content: attr(data-th);
+    display: block;
+    font-weight: 500;
+  }
+
+  .sector-table th:not(:first-of-type) {
+    display: none;
+  }
+
+  .sector-table .events-column {
+    font-size: inherit;
+  }
+  .sector-table .events-column div {
+    display: block;
+  }
+  .sector-table .events-column div span {
+    display: inline-block;
+    -webkit-margin-start: var(--gutter);
+            margin-inline-start: var(--gutter);
+  }
+}
 :root {
   --gutter: 1rem;
   --gutter-deci: calc(var(--gutter) * 0.8);
@@ -161,29 +209,6 @@ img {
 .btn:hover {
   background: #468412;
   color: #fff;
-}
-.btn.buySell {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#5d993b+0,81c14b+50,a80000+51,a80000+100 */
-  background: #5d993b;
-  /* Old browsers */
-  /* FF3.6-15 */
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg, #5d993b 0%, #81c14b 50%, #a80000 51%, #a80000 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#5d993b", endColorstr="#a80000",GradientType=1 );
-  /* IE6-9 fallback on horizontal gradient */
-  border: none;
-}
-.btn.buySell:hover {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#45752d+0,76a540+50,c40000+51,7f0000+100 */
-  background: #45752d;
-  /* Old browsers */
-  /* FF3.6-15 */
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg, #45752d 0%, #76a540 50%, #c40000 51%, #7f0000 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#45752d", endColorstr="#7f0000",GradientType=1 );
-  /* IE6-9 fallback on horizontal gradient */
 }
 .btn.alt {
   background: transparent;

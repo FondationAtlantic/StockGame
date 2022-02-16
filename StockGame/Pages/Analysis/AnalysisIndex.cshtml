@@ -73,23 +73,23 @@
                   </a>
                 </td>
 
-                <td>
+                <td class="events-column" data-th="Événements">
                   @if (item.EpisodeEquityInfo.NewsTitle != null)
                   {
                     <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
-                      <div><i class="fal fa-newspaper"></i><span class="m">Communiqué de presse</span></div>
+                      <div><i class="fal fa-newspaper"></i><span>Communiqué de presse</span></div>
                     </a>
                   }
                   @if (item.EpisodeEquityInfo.AnnounceFinancialResults)
                   {
                     <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
-                      <div><i class="fal fa-file-invoice-dollar"></i><span class="m">Publication des résultats financiers</span></div>
+                      <div><i class="fal fa-file-invoice-dollar"></i><span>Publication des résultats financiers</span></div>
                     </a>
                   }
                   @if (item.EpisodeEquityInfo.Dividend.HasValue && item.EpisodeEquityInfo.Dividend.Value != 0.0f)
                   {
                     <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
-                      <div><i class="fal fa-hand-holding-usd"></i><span class="m">Dividende imminent</span></div>
+                      <div><i class="fal fa-hand-holding-usd"></i><span>Dividende imminent</span></div>
                     </a>
                   }
                   @if (item.EpisodeEquityInfo.NewsTitle == null && !item.EpisodeEquityInfo.AnnounceFinancialResults && !item.EpisodeEquityInfo.Dividend.HasValue)
@@ -98,12 +98,11 @@
                   }
                 </td>
 
-                <td>
-                  <span class="m">Bénéfice par action&nbsp;:&nbsp;</span><span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
+                <td data-th="Bénéfice par action">
+                  <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
                 </td>
 
-                <td>
-                  <span class="m">Prix&nbsp;:&nbsp;</span>
+                <td data-th="Prix">
                   @switch (item.Trend)
                   {
                     case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
@@ -118,8 +117,7 @@
                   }
                 </td>
 
-                <td>
-                  <span class="m">Rendement dividende&nbsp;:&nbsp;</span>
+                <td data-th="Rendement dividende">
                   @if (item.DividendYield > 0)
                   {
                     @Html.DisplayFor(modelItem => item.DividendYield)
@@ -132,14 +130,14 @@
                   
                 @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
                 {
-                <td>
+                <td data-th="Coût / Bénéfice">
                   @Html.DisplayFor(modelItem => item.PriceEarningsRatio)
                 </td>
                 }
 
                 @if (Model.ActiveGame.ShowLeverageEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
                 {
-                <td>
+                <td data-th="Levier">
                   @Html.DisplayFor(modelItem => item.LeverageRatio)
                 </td>
                 }
