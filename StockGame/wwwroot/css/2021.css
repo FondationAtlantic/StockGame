@@ -1832,7 +1832,8 @@ section .actions a {
     font-size: 1.5rem;
   }
   .dashboard .newsfeed .slide .right {
-    width: 4rem;
+    width: 25%;
+    min-width: 150px;
   }
   .dashboard .newsfeed .slide .img {
     width: 100%;
