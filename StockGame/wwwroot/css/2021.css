@@ -718,6 +718,7 @@ section .actions a {
 }
 .dashboard .tns-inner {
   background-image: url(../images/hero-dashboard.jpg);
+  background-size: contain;
   background-position: right top;
   background-repeat: no-repeat;
   background-color: #172A3A;
@@ -2161,7 +2162,7 @@ section .actions a {
   }
 
   .dashboard .tns-inner {
-    background-size: 100% 100%;
+    background-size: cover;
   }
 
   .dashboard .newsfeed .slide > div {
