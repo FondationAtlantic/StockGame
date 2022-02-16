@@ -1357,12 +1357,15 @@ section {
 }
 
 .analysisHero {
-  background-image: url(../images/analysis-hero.jpg);
-  background-size: 66% auto;
-  background-repeat: no-repeat;
-  background-position: right;
-  padding: 4rem 3rem 4rem 6rem;
   background-color: #172A3A;
+  background-size: contain;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(to right, #172A3A, #172A3A 70%, transparent 80%),
+    url(../images/analysis-hero.jpg);
+  padding: 4rem 3rem 4rem 6rem;
+  
   min-height: 300px;
   color: #FFF;
   position: relative;
