@@ -103,18 +103,16 @@
                 </td>
 
                 <td data-th="Prix">
-                  @switch (item.Trend)
+                  @{string className = "";}
+                  @if(item.PriceEarningsRatio > 0)
                   {
-                    case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Up:
-                      <strong class="trendUp"><i class="far fa-arrow-up"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                      break;
-                    case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Down:
-                      <strong class="trendDown"><i class="far fa-arrow-down"></i>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                      break;
-                    case StockGame.Models.ViewModels.AnalysisIndexItem.PriceTrend.Unchanged:
-                      <strong class="trendSame">@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</strong>
-                      break;
+                    className = "trendUp";
+                  } else if(item.PriceEarningsRatio < 0)
+                  {
+                    className = "trendDown";
                   }
+                  <span>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</span>
+                  <strong @(className != "") ? $"class={className}" : "">@Html.DisplayFor(modelItem => item.PriceEarningsRatio)</strong>
                 </td>
 
                 <td data-th="Rendement dividende">
