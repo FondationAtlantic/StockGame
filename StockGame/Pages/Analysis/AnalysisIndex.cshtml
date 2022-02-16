@@ -104,15 +104,17 @@
 
                 <td data-th="Prix">
                   @{string className = "";}
-                  @if(item.PriceEarningsRatio > 0)
+                  @if(item.PriceVariationRatio > 0)
                   {
                     className = "trendUp";
-                  } else if(item.PriceEarningsRatio < 0)
+                  } else if(item.PriceVariationRatio < 0)
                   {
                     className = "trendDown";
                   }
                   <span>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Price)</span>
-                  <strong @(className != "") ? $"class={className}" : "">@Html.DisplayFor(modelItem => item.PriceEarningsRatio)</strong>
+                  <span>
+                    (&nbsp;<strong @(className != "" ? $"class={className}" : "")>@Html.DisplayFor(modelItem => item.PriceVariationRatio)</strong>&nbsp;)
+                  </span>
                 </td>
 
                 <td data-th="Rendement dividende">
