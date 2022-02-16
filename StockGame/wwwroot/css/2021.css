@@ -1433,6 +1433,7 @@ section .actions a {
 }
 .detailHero .left .infos .value {
   font-size: 1.5rem;
+  white-space: nowrap;
 }
 .detailHero .right {
   position: relative;
@@ -2278,11 +2279,6 @@ section .actions a {
 
 .portfolio-graph {
   height: 16.5rem;
-}
-
-.details-graph {
-  height: 20rem;
-  width: 55vw;
 }
 
 .clicky {

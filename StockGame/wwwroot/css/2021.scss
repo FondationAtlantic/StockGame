@@ -1638,6 +1638,7 @@ section {
 
       .value {
         font-size: rem(24);
+        white-space: nowrap;
       }
     }
   }
@@ -2621,11 +2622,6 @@ section {
 
 .portfolio-graph {
   height: 16.5rem;
-}
-
-.details-graph {
-  height: 20rem;
-  width: 55vw;
 }
 
 .clicky {
