@@ -1,5 +1,6 @@
 ﻿@import "mixins.scss";
 
+
 $mobileFontSize: 16;
 
 @function em($target, $context: $mobileFontSize) {
@@ -57,6 +58,17 @@ $heading: "Ubuntu", sans-serif;
 //FontAwesome
 $fa: "FontAwesome";
 $fab: "FontAwesomeBrands";
+
+@import "analysis-table";
+
+// ================================================================================================================
+// Custom properties
+// ================================================================================================================
+:root {
+  --gutter: 1rem;
+  --gutter-deci: calc(var(--gutter) * 0.8);
+}
+
 
 // ================================================================================================================
 // TEXTE
@@ -199,24 +211,24 @@ img {
     color: #fff;
   }
 
-  &.buySell {
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#5d993b+0,81c14b+50,a80000+51,a80000+100 */
-    background: rgb(93,153,59); /* Old browsers */
-    background: -moz-linear-gradient(-45deg, rgba(93,153,59,1) 0%, rgba(129,193,75,1) 50%, rgba(168,0,0,1) 51%, rgba(168,0,0,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg, rgba(93,153,59,1) 0%,rgba(129,193,75,1) 50%,rgba(168,0,0,1) 51%,rgba(168,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg, rgba(93,153,59,1) 0%,rgba(129,193,75,1) 50%,rgba(168,0,0,1) 51%,rgba(168,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5d993b', endColorstr='#a80000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    border: none;
+  // &.buySell {
+  //   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#5d993b+0,81c14b+50,a80000+51,a80000+100 */
+  //   background: rgb(93,153,59); /* Old browsers */
+  //   background: -moz-linear-gradient(-45deg, rgba(93,153,59,1) 0%, rgba(129,193,75,1) 50%, rgba(168,0,0,1) 51%, rgba(168,0,0,1) 100%); /* FF3.6-15 */
+  //   background: -webkit-linear-gradient(-45deg, rgba(93,153,59,1) 0%,rgba(129,193,75,1) 50%,rgba(168,0,0,1) 51%,rgba(168,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  //   background: linear-gradient(135deg, rgba(93,153,59,1) 0%,rgba(129,193,75,1) 50%,rgba(168,0,0,1) 51%,rgba(168,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  //   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5d993b', endColorstr='#a80000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  //   border: none;
 
-    &:hover {
-      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#45752d+0,76a540+50,c40000+51,7f0000+100 */
-      background: rgb(69,117,45); /* Old browsers */
-      background: -moz-linear-gradient(-45deg, rgba(69,117,45,1) 0%, rgba(118,165,64,1) 50%, rgba(196,0,0,1) 51%, rgba(127,0,0,1) 100%); /* FF3.6-15 */
-      background: -webkit-linear-gradient(-45deg, rgba(69,117,45,1) 0%,rgba(118,165,64,1) 50%,rgba(196,0,0,1) 51%,rgba(127,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(135deg, rgba(69,117,45,1) 0%,rgba(118,165,64,1) 50%,rgba(196,0,0,1) 51%,rgba(127,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45752d', endColorstr='#7f0000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-    }
-  }
+  //   &:hover {
+  //     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#45752d+0,76a540+50,c40000+51,7f0000+100 */
+  //     background: rgb(69,117,45); /* Old browsers */
+  //     background: -moz-linear-gradient(-45deg, rgba(69,117,45,1) 0%, rgba(118,165,64,1) 50%, rgba(196,0,0,1) 51%, rgba(127,0,0,1) 100%); /* FF3.6-15 */
+  //     background: -webkit-linear-gradient(-45deg, rgba(69,117,45,1) 0%,rgba(118,165,64,1) 50%,rgba(196,0,0,1) 51%,rgba(127,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  //     background: linear-gradient(135deg, rgba(69,117,45,1) 0%,rgba(118,165,64,1) 50%,rgba(196,0,0,1) 51%,rgba(127,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  //     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45752d', endColorstr='#7f0000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  //   }
+  // }
 
   &.alt {
     background: transparent;
@@ -774,6 +786,7 @@ section {
 
   .tns-inner {
     background-image: url(../images/hero-dashboard.jpg);
+    background-size: contain;
     background-position: right top;
     background-repeat: no-repeat;
     background-color: $text;
@@ -1345,12 +1358,14 @@ section {
 }
 
 .analysisHero {
-  background-image: url(../images/analysis-hero.jpg);
-  background-size: 66% auto;
-  background-repeat: no-repeat;
-  background-position: right;
-  padding: 4rem 3rem 4rem 6rem;
   background-color: #172A3A;
+  background-size: contain;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(75deg, #172A3A, #172A3A 50%, transparent 75%),
+    url(../images/analysis-hero.jpg);
+  padding: 4rem 3rem 4rem 6rem;  
   min-height: 300px;
   color: #FFF;
   position: relative;
@@ -1626,6 +1641,7 @@ section {
 
       .value {
         font-size: rem(24);
+        white-space: nowrap;
       }
     }
   }
@@ -2103,7 +2119,8 @@ section {
         }
 
         .right {
-          width: 4rem;
+          width: 25%;
+          min-width: 150px;
         }
 
         .img {
@@ -2499,7 +2516,7 @@ section {
   }
 
   .dashboard .tns-inner{
-    background-size: 100% 100%;
+    background-size: cover;
   }
 
   .dashboard .newsfeed .slide > div{
@@ -2609,11 +2626,6 @@ section {
 
 .portfolio-graph {
   height: 16.5rem;
-}
-
-.details-graph {
-  height: 20rem;
-  width: 55vw;
 }
 
 .clicky {
