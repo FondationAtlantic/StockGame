@@ -259,7 +259,7 @@
         sellButtonElement.removeAttribute("disabled");
       }
       var result = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((n * tradeableEquities[index].price).toFixed(2));
-      return result.replace("US", "").trim();
+      return result.replace("CAD", "").trim();
     }
 
     function showConfirmation(type) {
