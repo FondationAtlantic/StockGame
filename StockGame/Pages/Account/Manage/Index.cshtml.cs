@@ -14,7 +14,6 @@ namespace StockGame.Pages.Account.Manage
 {
     public partial class IndexModel : StockGame.Pages.StockPageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
@@ -46,14 +45,14 @@ namespace StockGame.Pages.Account.Manage
             [Display(Name = "Courriel")]
             public string Email { get; set; }
 
-            [Display(Name = "Prénom")]
+            [Display(Name = "Prï¿½nom")]
             public string FirstMidName { get; set; }
 
             [Display(Name = "Nom de famille")]
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Numéro de téléphone")]
+            [Display(Name = "Numï¿½ro de tï¿½lï¿½phone")]
             public string PhoneNumber { get; set; }
         }
 
@@ -64,6 +63,8 @@ namespace StockGame.Pages.Account.Manage
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            await FindActiveGameAndTeam();
 
             Username = user.UserName;
 
