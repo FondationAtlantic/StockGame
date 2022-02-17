@@ -19,8 +19,8 @@ namespace StockGame.Pages
     [TypeFilter(typeof(AuthorizeIndexPageHandlerFilter))]
     public class StockPageModel : PageModel
     {
-        private readonly StockGame.Data.StockGameContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        protected readonly StockGame.Data.StockGameContext _context;
+        protected UserManager<ApplicationUser> _userManager { get; set; }
 
         public ApplicationUser CurrentUser { get; private set; }
         public Game ActiveGame { get; private set; }
