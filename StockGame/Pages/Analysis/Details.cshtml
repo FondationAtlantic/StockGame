@@ -432,7 +432,14 @@
                                 @Model.DetailsItem.EpisodeEquityInfo.Equity.Id;
         });
 
-        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.load
+        (
+          'current',
+          { 
+            packages: ['corechart'],
+            'language': 'fr-ca'
+          }
+        );
 
         const data = @Html.Raw(Json.Serialize(Model.PerShareChartItems));
 
@@ -518,7 +525,7 @@
                   }
                 },
                 series: {
-                  1: {
+                  0: {
                     color: 'white',
                     pointShape: 'diamond',
                     pointSize: 6,
