@@ -502,7 +502,7 @@
                   height: '100%',
                   bottom: '30%',
                   right: 1
-                },
+                },                
                 hAxis: {
                   slantedText: true,
                   slantedTextAngle: 15,
@@ -517,11 +517,15 @@
                     color: 'white',
                     pointShape: 'diamond',
                     pointSize: 6,
-                    lineWidth: 1
+                    lineWidth: 1,
                   }
                 },
                 lineWidth: 3,
                 vAxis: {
+                    title: 'Dividendes',
+                    titleTextStyle: {
+                      color: '#dedede',
+                    },
                     textPosition: 'in',
                     textStyle: {
                         color: '#c8dae9',
@@ -532,7 +536,7 @@
                     minorGridlines: {
                         count: 0,
                     }
-                }
+                },
             };
 
             let priceDataArray = [];
@@ -548,15 +552,13 @@
             let epsDataArray = [];
             $.each(data, function (i, item) {
                 if (item.earnings != null)
-                    epsDataArray.push([item.episodeName, item.earnings, item.dividend, 'div', 'Dividende']);
+                    epsDataArray.push([item.episodeName, item.earnings, item.dividend]);
             });
 
             epsChartData = new google.visualization.DataTable();
             epsChartData.addColumn('string', 'Episode'); // Implicit series 1 data col.
             epsChartData.addColumn('number', 'Bénéfices'); // Implicit domain label col.
             epsChartData.addColumn('number', 'Dividende'); // Implicit domain label col.
-            epsChartData.addColumn({ type: 'string', role: 'annotation' });
-            epsChartData.addColumn({ type: 'string', role: 'annotationText' });
             epsChartData.addRows(epsDataArray);
 
             let dataTable = [];

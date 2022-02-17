@@ -48,7 +48,8 @@ namespace StockGame.Pages.Analysis
                         EpisodeEquityInfo = eei,
                         Trend = (iterPastEquityInfos.Current == null || iterPastEquityInfos.Current.EquityId != eei.EquityId || iterPastEquityInfos.Current.Price == eei.Price)
                                    ? AnalysisIndexItem.PriceTrend.Unchanged
-                                   : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down)
+                                   : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
+                        PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
                     });
                 }
 
