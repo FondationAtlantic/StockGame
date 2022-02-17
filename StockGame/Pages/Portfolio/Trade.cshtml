@@ -135,11 +135,11 @@
           <h4 class="modal-title"><i class="far fa-exchange"></i>Transaction</h4>
         </div>
         <div class="tradeInfos">
-          <div class="availableMoney">
-            @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
-          </div>
           <div class="currentTransaction">
             Valeur de la transaction : <span id="totalAmount" class="value"></span>
+          </div>
+          <div class="availableMoney">
+            @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
           </div>
           <div id="ownedSharesAmount" class="currentTransaction">
             Nombre d'actions détenues : <span id="shareAmount" class="value clicky" onclick="setAllShares()"></span>
@@ -258,7 +258,7 @@
         notEnoughStockElement.classList.add("hidden");
         sellButtonElement.removeAttribute("disabled");
       }
-      var result = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((n * tradeableEquities[index].price).toFixed(2));
+      var result = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((n * tradeableEquities[index].price).toFixed(2));
       return result.replace("US", "").trim();
     }
 
