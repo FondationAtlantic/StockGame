@@ -43,14 +43,14 @@ namespace StockGame.Pages.Account.Manage
             [Display(Name = "Courriel")]
             public string Email { get; set; }
 
-            [Display(Name = "Pr�nom")]
+            [Display(Name = "Prénom")]
             public string FirstMidName { get; set; }
 
             [Display(Name = "Nom de famille")]
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Num�ro de t�l�phone")]
+            [Display(Name = "Numéro de téléphone")]
             public string PhoneNumber { get; set; }
         }
 
