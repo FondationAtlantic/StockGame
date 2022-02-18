@@ -137,7 +137,7 @@
                 </div>
               </th>
               <th align="right">
-                <a asp-page="./Ranking" asp-route-sortOrder="">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName() </a>
+                <a asp-page="./Ranking" asp-route-sortCategory="@Model.CurrentSortCategory" asp-route-sortDirection="@(Model.CurrentSortDirection == "desc" ? "asc" : "desc")">@Model.CurrentSortCategory.GetDisplayName()</a>
               </th>
               @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
               {
