@@ -9,22 +9,6 @@
   ViewData["Title"] = "Classement";
 }
 
-@{
-  Func<string, IHtmlContent> SortArrow = (prefix) => new Func<object, IHtmlContent>(@<text>
-    @if (Model.SortOrder.StartsWith(prefix))
-    {
-      @if (Model.SortOrder.EndsWith("_asc"))
-      {
-        <span class="dropup"> <span class="caret"></span> </span>
-      }
-      else
-      {
-        <span class="caret"></span>
-      }
-    }
-  </text>)(null);
-}
-
 <div class="wrapContent">
   <div class="title">
     <h2><i class="fal fa-list-ol" aria-hidden="true"></i>Classement</h2>
