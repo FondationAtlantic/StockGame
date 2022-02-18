@@ -124,21 +124,26 @@
       </table>
     </div>
     <div class="right">
-      @if (Model.DetailsItem.EpisodeEquityInfo.NewsTitle != null)
-      {
+      
         <div class="title">
           <h3><i class="fal fa-newspaper"></i>Nouvelle</h3>
         </div>
-        <div>
-          <div class="img">
-            <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.NewsImgPath)" style="max-width:100%;" />
+        @if (Model.DetailsItem.EpisodeEquityInfo.NewsTitle != null)
+        {
+          <div>
+            <div class="img">
+              <img src="@Url.Content(Model.DetailsItem.EpisodeEquityInfo.NewsImgPath)" style="max-width:100%;" />
+            </div>
+            <div class="text">
+              <b>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsTitle)</b>
+              @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsDetail)
+            </div>
           </div>
-          <div class="text">
-            <b>@Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsTitle)</b>
-            @Html.DisplayFor(model => model.DetailsItem.EpisodeEquityInfo.NewsDetail)
-          </div>
-        </div>
-      }
+        }
+        else
+        {
+          <span>Aucune nouvelle</span>
+        }
       <div class="title">
         <h3><i class="fal fa-hand-holding-usd"></i>Dividende</h3>
       </div>
@@ -427,7 +432,14 @@
                                 @Model.DetailsItem.EpisodeEquityInfo.Equity.Id;
         });
 
-        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.load
+        (
+          'current',
+          { 
+            packages: ['corechart'],
+            'language': 'fr-ca'
+          }
+        );
 
         const data = @Html.Raw(Json.Serialize(Model.PerShareChartItems));
 
@@ -513,7 +525,7 @@
                   }
                 },
                 series: {
-                  1: {
+                  0: {
                     color: 'white',
                     pointShape: 'diamond',
                     pointSize: 6,

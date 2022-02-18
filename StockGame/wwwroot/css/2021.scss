@@ -484,7 +484,9 @@ body {
     height: 100%;
 
     .oldContent {
-      height: 100%;
+      position: relative;
+      z-index: 2;
+      height: 100%;      
     }
 
     + footer {
@@ -504,6 +506,7 @@ body {
       transform: rotate(25deg);
       outline: 6px solid $text;
       outline-offset: 1rem;
+      z-index: 1;
     }
 
     &:after {
@@ -1993,16 +1996,14 @@ section {
 }
 
 @media screen and (max-width:1280px) {
-  html {
-    min-width: 1280px;
-  }
-
   .dashboard .newsfeed .slide .right {
     max-width: 300px;
   }
 
   .wrapAll {
     &.loginBody {
+      box-sizing: border-box;
+
       &:before {
         top: rem(-820);
         left: rem(-400);
@@ -2068,7 +2069,7 @@ section {
   .wrapAll {
     &.loginBody {
       &:before {
-        top: rem(-820);
+        top: rem(-920);
         left: rem(-580);
       }
 
