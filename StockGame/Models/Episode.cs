@@ -27,5 +27,6 @@ namespace StockGame.Models
         //Navigation properties
         public Scenario Scenario { get; set; }
         public ICollection<TradingSession> TradingSessions { get; set; }
-    }
+        public ICollection<EpisodeEquityInfo> EpisodeEquityInfos { get; set; }
+  }
 }

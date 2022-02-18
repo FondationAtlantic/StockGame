@@ -18,6 +18,8 @@ namespace StockGame.Pages.Analysis
     {
         public IndexModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
+            _context = context;
+            _userManager = userManager;
         }
 
         public IList<AnalysisIndexItem> IndexItems { get;set; }
@@ -50,6 +52,8 @@ namespace StockGame.Pages.Analysis
                                    ? AnalysisIndexItem.PriceTrend.Unchanged
                                    : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
                         PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
+                        _context.Transactions
+                            .Where(t => t.TeamMemberId == CurrentUser.ActiveTeamMemberId)
                     });
                 }
 
