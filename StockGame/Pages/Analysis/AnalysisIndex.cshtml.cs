@@ -52,8 +52,14 @@ namespace StockGame.Pages.Analysis
                                    ? AnalysisIndexItem.PriceTrend.Unchanged
                                    : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
                         PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
-                        _context.Transactions
+                        UserProfitLoss = _context.Transactions
                             .Where(t => t.TeamMemberId == CurrentUser.ActiveTeamMemberId)
+                            .Where(t => t.EquityId == eei.EquityId)
+                            .Sum(t => t.Amount * t.TradingSession.Episode.EpisodeEquityInfos
+                                                                            .Where(epsei => epsei.EquityId == eei.EquityId)
+                                                                            .Select(eei => new { eei.Price })
+                                                                            .SingleOrDefault()
+                                                                            .Price)
                     });
                 }
 

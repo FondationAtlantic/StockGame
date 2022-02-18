@@ -17,7 +17,7 @@ namespace StockGame.Models
         public bool AllowTransactions { get; set; } = true;
 
         [Display(Name = "Prix"), DataType(DataType.Currency)]
-        public float Price { get; set; }
+        public decimal Price { get; set; }
         [Display(Name = "Prochain Dividende"), DataType(DataType.Currency)]
         public float? Dividend { get; set; }
         [Display(Name = "Actions en circulation")]
