@@ -27,36 +27,21 @@ namespace StockGame.Pages.Games
 
         public List<PortfolioGameRankingItem> PortfolioGameRankingItems { get; set; }
 
-        public enum SortCategoryEnum { 
-            [Display(Name = "Équipe")]    
-            Team,
-            
-            [Display(Name = "Rendement Session")]
-            GainPct,
-            
-            [Display(Name = "Gain Session")]
-            Gain,
+        public string SortOrder { get; set; }
         
-            [Display(Name = "Rendement Total")]
-            TotalPct,
-            
-            [Display(Name = "Valeur Totale")]
-            TotalValue }
-        public SortCategoryEnum SortCategory { get; set; } 
-        
-        
+        [Display(Name = "Équipe")]
         public string TeamSort { get; set; }
         
-        
+        [Display(Name = "Rendement Session")]
         public string GainPctSort { get; set; }
         
-        
+        [Display(Name = "Gain Session")]
         public string GainSort { get; set; }
 
-        
+        [Display(Name = "Rendement Total")]
         public string TotalPctSort { get; set; }
 
-        
+        [Display(Name = "Valeur Totale")]
         public string TotalValueSort { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id, string sortOrder, int? SelectActiveGameId, int? SelectActiveTeamId)
@@ -143,6 +128,7 @@ namespace StockGame.Pages.Games
                     };
                 });
 
+            SortOrder = String.IsNullOrEmpty(sortOrder) ? "TotalValue_desc" : sortOrder;
             switch (sortOrder)
             {
                 case "Team_desc":
