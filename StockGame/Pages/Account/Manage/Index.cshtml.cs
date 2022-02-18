@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using StockGame.Models;
 using StockGame.Services;
 
@@ -19,10 +15,12 @@ namespace StockGame.Pages.Account.Manage
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
+            StockGame.Data.StockGameContext context,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
+            _context = context;
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
@@ -45,14 +43,14 @@ namespace StockGame.Pages.Account.Manage
             [Display(Name = "Courriel")]
             public string Email { get; set; }
 
-            [Display(Name = "Pr�nom")]
+            [Display(Name = "Prénom")]
             public string FirstMidName { get; set; }
 
             [Display(Name = "Nom de famille")]
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Num�ro de t�l�phone")]
+            [Display(Name = "Numéro de téléphone")]
             public string PhoneNumber { get; set; }
         }
 
