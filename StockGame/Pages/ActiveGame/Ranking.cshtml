@@ -1,5 +1,6 @@
 ﻿@page
 @model StockGame.Pages.Games.RankingModel
+@using Microsoft.AspNetCore.Html
 @using StockGame.Pages.Games
 @using StockGame.Models.ViewModels
 @using StockGame.Services
@@ -21,14 +22,7 @@
         <span class="caret"></span>
       }
     }
-  </text>)(null);
-
-Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlContent>(@<text>
-  @if (Model.SortOrder.StartsWith(prefix))
-  {
-    <text>active</text>
-  }
-  </text>)(null); *@
+  </text>)(null);*@
 }
 
 <div class="wrapContent">
@@ -52,20 +46,20 @@ Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlConten
           <div class="fakeSelect">
             <div class="currentValue">
               <ul>
-                <li class="">
+                <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.Team)">
                   <a asp-page="./Ranking" asp-route-sortCategory="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
                 </li>
-                <li class="">
-                  <a asp-page="./Ranking" asp-route-sortOrder="GainPctSort">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
+                <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.GainPct)">
+                  <a asp-page="./Ranking" asp-route-sortOrder="GainPct">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
                 </li>
-                <li class="">
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
+                <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.Gain)">
+                  <a asp-page="./Ranking" asp-route-sortOrder="Gain">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
                 </li>
-                <li class="">
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
+                <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.TotalPct)">
+                  <a asp-page="./Ranking" asp-route-sortOrder="TotalPct">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
                 </li>
-                <li class="">
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
+                <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.TotalValue)">
+                  <a asp-page="./Ranking" asp-route-sortOrder="TotalValue">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
                 </li>
               </ul>
               <i class="far fa-angle-down"></i>
@@ -73,19 +67,19 @@ Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlConten
             <div class="values">
               <ul>
                 <li>
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
+                  <a asp-page="./Ranking" asp-route-sortOrder="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
                 </li>
                 <li>
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
+                  <a asp-page="./Ranking" asp-route-sortOrder="GainPct">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
                 </li>
                 <li>
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
+                  <a asp-page="./Ranking" asp-route-sortOrder="Gain">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
                 </li>
                 <li>
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
+                  <a asp-page="./Ranking" asp-route-sortOrder="TotalPct">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
                 </li>
                 <li>
-                  <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
+                  <a asp-page="./Ranking" asp-route-sortOrder="TotalValue">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
                 </li>
               </ul>
             </div>
@@ -102,20 +96,20 @@ Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlConten
                   <div class="fakeSelect">
                     <div class="currentValue">
                       <ul>
-                        <li class="">
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
+                        <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.Team)">
+                          <a asp-page="./Ranking" asp-route-sortOrder="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
                         </li>
-                        <li class="">
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
+                        <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.GainPct)">
+                          <a asp-page="./Ranking" asp-route-sortOrder="GainPct">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
                         </li>
-                        <li class="">
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
+                        <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.Gain)">
+                          <a asp-page="./Ranking" asp-route-sortOrder="Gain">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
                         </li>
-                        <li class="">
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
+                        <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.TotalPct)">
+                          <a asp-page="./Ranking" asp-route-sortOrder="TotalPct">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
                         </li>
-                        <li class="">
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
+                        <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.TotalValue)">
+                          <a asp-page="./Ranking" asp-route-sortOrder="TotalValue">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
                         </li>
                       </ul>
                       <i class="far fa-angle-down"></i>
@@ -123,19 +117,19 @@ Func<string, IHtmlContent> SortActive = (prefix) => new Func<object, IHtmlConten
                     <div class="values">
                       <ul>
                         <li>
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TeamSort">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
+                          <a asp-page="./Ranking" asp-route-sortOrder="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
                         </li>
                         <li>
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainPctSort">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
+                          <a asp-page="./Ranking" asp-route-sortOrder="GainPct">@RankingModel.SortCategoryEnum.GainPct.GetDisplayName()</a>
                         </li>
                         <li>
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.GainSort">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
+                          <a asp-page="./Ranking" asp-route-sortOrder="Gain">@RankingModel.SortCategoryEnum.Gain.GetDisplayName()</a>
                         </li>
                         <li>
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalPctSort">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
+                          <a asp-page="./Ranking" asp-route-sortOrder="TotalPct">@RankingModel.SortCategoryEnum.TotalPct.GetDisplayName()</a>
                         </li>
                         <li>
-                          <a asp-page="./Ranking" asp-route-sortOrder="@Model.TotalValueSort">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
+                          <a asp-page="./Ranking" asp-route-sortOrder="TotalValue">@RankingModel.SortCategoryEnum.TotalValue.GetDisplayName()</a>
                         </li>
                       </ul>
                     </div>

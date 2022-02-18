@@ -19,6 +19,7 @@ namespace StockGame.Pages.Games
     {
         public RankingModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
+            CurrentSortCategory = SortCategoryEnum.GainPct;
         }
 
         public Game Game { get; set; }
@@ -42,23 +43,8 @@ namespace StockGame.Pages.Games
             
             [Display(Name = "Valeur Totale")]
             TotalValue }
-        public SortCategoryEnum SortCategory { get; set; } 
+        public SortCategoryEnum CurrentSortCategory { get; set; } 
         
-        
-        public string TeamSort { get; set; }
-        
-        
-        public string GainPctSort { get; set; }
-        
-        
-        public string GainSort { get; set; }
-
-        
-        public string TotalPctSort { get; set; }
-
-        
-        public string TotalValueSort { get; set; }
-
         public async Task<IActionResult> OnGetAsync(int? id, string sortOrder, int? SelectActiveGameId, int? SelectActiveTeamId)
         {
             await GetCurrentUser();
@@ -109,12 +95,6 @@ namespace StockGame.Pages.Games
 
             if(Game == null)
                 return NotFound();
-
-            TeamSort = sortOrder == "Team_asc" ? "Team_desc" : "Team_asc";
-            GainPctSort = sortOrder == "GainPct_desc" ? "GainPct_asc" : "GainPct_desc";
-            GainSort = sortOrder == "Gain_desc" ? "Gain_asc" : "Gain_desc";
-            TotalPctSort = sortOrder == "TotalPct_desc" ? "TotalPct_asc" : "TotalPct_desc";
-            TotalValueSort = String.IsNullOrEmpty(sortOrder) ? "TotalValue_asc" : "";
 
             PortfolioGameHistory = await PortfolioHistories(Game, null, activeEpisodeIndex);
             bool activeTeamOnTop = !isAdmin;
@@ -178,6 +158,15 @@ namespace StockGame.Pages.Games
             }
 
             return Page();
+        }
+
+        public string IsCategoryActive(SortCategoryEnum SortCategory) {
+            if(CurrentSortCategory == SortCategory)
+            {
+                return "active";
+            }
+            
+            return "";
         }
     }
 }
