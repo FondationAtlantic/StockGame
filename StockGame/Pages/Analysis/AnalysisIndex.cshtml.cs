@@ -45,6 +45,22 @@ namespace StockGame.Pages.Analysis
 
                 if(eei.Visible)
                 {
+                    var query = (
+                        from transactions in _context.Transactions
+                        join tradingSessions in _context.TradingSessions
+                            on transactions.TradingSessionId equals tradingSessions.Id
+                        join episodes in _context.Episodes
+                            on tradingSessions.EpisodeId equals episodes.Id
+                        join episodeEquityInfo in _context.EpisodeEquityInfos
+                            on new { transactions.EquityId, tradingSessions.EpisodeId }
+                                equals new { episodeEquityInfo.EquityId, episodeEquityInfo.EpisodeId }
+                        where transactions.TeamMemberId == CurrentUser.ActiveTeamMemberId
+                        where transactions.EquityId == eei.EquityId
+                        select new {
+                            transactionValue = transactions.Amount * episodeEquityInfo.Price
+                        }
+                    ).Sum(t => t.transactionValue);
+                    
                     items.Add(new AnalysisIndexItem
                     {
                         EpisodeEquityInfo = eei,
@@ -52,14 +68,22 @@ namespace StockGame.Pages.Analysis
                                    ? AnalysisIndexItem.PriceTrend.Unchanged
                                    : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
                         PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
-                        UserProfitLoss = _context.Transactions
-                            .Where(t => t.TeamMemberId == CurrentUser.ActiveTeamMemberId)
-                            .Where(t => t.EquityId == eei.EquityId)
-                            .Sum(t => t.Amount * t.TradingSession.Episode.EpisodeEquityInfos
-                                                                            .Where(epsei => epsei.EquityId == eei.EquityId)
-                                                                            .Select(eei => new { eei.Price })
-                                                                            .SingleOrDefault()
-                                                                            .Price)
+                        
+                        
+                        
+                        // UserProfitLoss = (decimal) _context.Transactions
+                        //     .Join(_context.EpisodeEquityInfos,
+                        //         t => t.EquityId,
+                        //         eei => eei.EquityId,
+                        //         (t, eei) =>  new{})
+                        //     .Where(t => t.TeamMemberId == CurrentUser.ActiveTeamMemberId)
+                        //     .Where(t => t.EquityId == eei.EquityId)
+                        //     .Select(t => t.Amount * t.TradingSession.Episode.EpisodeEquityInfos
+                        //                                                     .Where(epsei => epsei.EquityId == eei.EquityId)
+                        //                                                     .Select(eei => new { eei.Price })
+                        //                                                     .SingleOrDefault()
+                        //                                                     .Price)
+                        //     .Sum()
                     });
                 }
 
