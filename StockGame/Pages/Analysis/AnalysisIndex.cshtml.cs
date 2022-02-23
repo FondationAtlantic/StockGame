@@ -45,7 +45,7 @@ namespace StockGame.Pages.Analysis
 
                 if(eei.Visible)
                 {
-                    var query = (
+                    float ProfitLoss = (
                         from transactions in _context.Transactions
                         join tradingSessions in _context.TradingSessions
                             on transactions.TradingSessionId equals tradingSessions.Id
@@ -60,31 +60,17 @@ namespace StockGame.Pages.Analysis
                             transactionValue = transactions.Amount * episodeEquityInfo.Price
                         }
                     ).Sum(t => t.transactionValue);
-                    
-                    items.Add(new AnalysisIndexItem
-                    {
-                        EpisodeEquityInfo = eei,
-                        Trend = (iterPastEquityInfos.Current == null || iterPastEquityInfos.Current.EquityId != eei.EquityId || iterPastEquityInfos.Current.Price == eei.Price)
-                                   ? AnalysisIndexItem.PriceTrend.Unchanged
-                                   : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
-                        PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
-                        
-                        
-                        
-                        // UserProfitLoss = (decimal) _context.Transactions
-                        //     .Join(_context.EpisodeEquityInfos,
-                        //         t => t.EquityId,
-                        //         eei => eei.EquityId,
-                        //         (t, eei) =>  new{})
-                        //     .Where(t => t.TeamMemberId == CurrentUser.ActiveTeamMemberId)
-                        //     .Where(t => t.EquityId == eei.EquityId)
-                        //     .Select(t => t.Amount * t.TradingSession.Episode.EpisodeEquityInfos
-                        //                                                     .Where(epsei => epsei.EquityId == eei.EquityId)
-                        //                                                     .Select(eei => new { eei.Price })
-                        //                                                     .SingleOrDefault()
-                        //                                                     .Price)
-                        //     .Sum()
-                    });
+
+          items.Add(new AnalysisIndexItem
+          {
+            EpisodeEquityInfo = eei,
+            Trend = (iterPastEquityInfos.Current == null || iterPastEquityInfos.Current.EquityId != eei.EquityId || iterPastEquityInfos.Current.Price == eei.Price)
+                         ? AnalysisIndexItem.PriceTrend.Unchanged
+                         : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
+            PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
+            UserProfitLoss = (decimal)ProfitLoss * -1
+
+          });
                 }
 
                 iterPastEquityInfos.MoveNext();

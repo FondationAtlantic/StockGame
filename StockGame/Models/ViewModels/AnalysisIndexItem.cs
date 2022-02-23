@@ -20,7 +20,7 @@ namespace StockGame.Models.ViewModels
     [DisplayFormat(DataFormatString = "{0:0.00} %")]
     public decimal PriceVariationRatio { get; set; }
     
-    [Display(Name = "Profits et pertes"), DataType(DataType.Currency)]
+    [Display(Name = "Profits / pertes"), DataType(DataType.Currency)]
     public decimal UserProfitLoss { get; set; }
   }
 }

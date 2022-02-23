@@ -65,6 +65,7 @@ $fab: "FontAwesomeBrands";
 // Custom properties
 // ================================================================================================================
 :root {
+  --gutter-hecto: calc(var(--gutter) * 2);
   --gutter: 1rem;
   --gutter-deci: calc(var(--gutter) * 0.8);
 }

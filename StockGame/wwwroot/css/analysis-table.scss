@@ -7,6 +7,8 @@
 
 .sector-table {
   width: 100%;
+  border-spacing: var(--gutter-hecto);
+  border-collapse: separate;
 }
 
 .sector-table :is(th,td):last-of-type {
