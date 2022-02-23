@@ -1,44 +1,41 @@
 .sector-table {
-  --cell-padding: var(--gutter);
+  --cell-padding: 0.75vw;
 }
 
 .sector-table {
   width: 100%;
   border-spacing: var(--gutter-hecto);
-  border-collapse: separate;
+  border-collapse: collapse;
 }
-
+.sector-table :is(th, td) {
+  padding: var(--cell-padding);
+  vertical-align: middle;
+}
 .sector-table :is(th, td):last-of-type {
   text-align: end;
 }
-
 .sector-table .equity-branding {
   font-size: 1.35rem;
 }
-
-.sector-table .equity-logo {
-  display: inline-block;
-  max-height: 80px;
+.sector-table .equity-branding > div {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gutter);
+}
+.sector-table .equity-branding > div a:first-of-type {
+  width: 25%;
   -webkit-margin-end: var(--cell-padding);
           margin-inline-end: var(--cell-padding);
+}
+
+.sector-table .equity-logo {
+  max-width: 80px;
 }
 
 .sector-table tr.header {
   -webkit-border-after: 2px solid #81C14B;
           border-block-end: 2px solid #81C14B;
-}
-
-.sector-table tr.header th {
-  -webkit-padding-after: var(--cell-padding);
-          padding-block-end: var(--cell-padding);
-}
-
-.sector-table td {
-  padding-block: var(--cell-padding);
-}
-
-.sector-table :is(th, td) {
-  vertical-align: baseline;
 }
 
 .sector-table .events-column {

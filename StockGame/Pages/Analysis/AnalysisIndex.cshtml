@@ -65,12 +65,14 @@
               
               <tr>
                 <td colspan="2" class="equity-branding">
-                  <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
-                    <img class="equity-logo" src="@Url.Content(item.EpisodeEquityInfo.Equity.ImgPath)" />
-                  </a>
-                  <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
-                    <b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b>
-                  </a>
+                  <div>
+                    <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
+                      <img class="equity-logo" src="@Url.Content(item.EpisodeEquityInfo.Equity.ImgPath)" />
+                    </a>
+                    <a style="all: unset; cursor: pointer" asp-page="./Details" asp-route-id="@item.EpisodeEquityInfo.Id">
+                      <b>@Html.DisplayFor(modelItem => item.EpisodeEquityInfo.Equity.Name)</b>
+                    </a>
+                  </div>
                 </td>
 
                 <td data-th="@Html.DisplayNameFor(model => model.IndexItems[0].UserProfitLoss)">
