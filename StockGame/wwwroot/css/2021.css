@@ -9,7 +9,7 @@
 }
 .sector-table :is(th, td) {
   padding: var(--cell-padding);
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 .sector-table :is(th, td):last-of-type {
   text-align: end;
@@ -27,6 +27,9 @@
   width: 25%;
   -webkit-margin-end: var(--cell-padding);
           margin-inline-end: var(--cell-padding);
+}
+.sector-table .price-column span {
+  display: block;
 }
 
 .sector-table .equity-logo {

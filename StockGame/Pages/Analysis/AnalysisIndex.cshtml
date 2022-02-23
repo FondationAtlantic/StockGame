@@ -108,7 +108,7 @@
                   <span class="@(item.LastKnownEarningsPerShare < 0.0f ? "negative" : "")">@Html.DisplayFor(modelItem => item.LastKnownEarningsPerShare)</span>
                 </td>
 
-                <td data-th="Prix">
+                <td data-th="Prix" class="price-column">
                   @{string className = "";}
                   @if(item.PriceVariationRatio > 0)
                   {

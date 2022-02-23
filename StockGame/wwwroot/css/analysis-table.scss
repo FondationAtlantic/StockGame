@@ -12,7 +12,7 @@
 
   & :is(th, td) {
     padding: var(--cell-padding);
-    vertical-align: middle;
+    vertical-align: baseline;
   }
 
   & :is(th,td):last-of-type {
@@ -34,6 +34,10 @@
         margin-inline-end: var(--cell-padding);
       }
     }
+  }
+
+  & .price-column span {
+    display: block;
   }
 }
 
