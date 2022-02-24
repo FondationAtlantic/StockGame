@@ -175,9 +175,6 @@ a {
   text-decoration: underline;
   color: $c2;
 
-  &:visited {
-  }
-
   &:hover,
   &:active {
     text-decoration: none;
@@ -1997,6 +1994,14 @@ section {
 }
 
 @media screen and (max-width:1280px) {
+  .analysisHero {
+    background-size: cover;
+  }
+  
+  .dashboard .tns-inner{
+    background-size: cover;
+  }
+  
   .dashboard .newsfeed .slide .right {
     max-width: 300px;
   }
@@ -2517,9 +2522,7 @@ section {
     min-width: 0;
   }
 
-  .dashboard .tns-inner{
-    background-size: cover;
-  }
+  
 
   .dashboard .newsfeed .slide > div{
     min-height: 0;
