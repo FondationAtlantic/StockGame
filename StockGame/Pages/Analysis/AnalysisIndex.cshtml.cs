@@ -69,7 +69,6 @@ namespace StockGame.Pages.Analysis
                                     : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
                         PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
                         UserProfitLoss = (decimal)ProfitLoss * -1
-
                     });
                 }
 
