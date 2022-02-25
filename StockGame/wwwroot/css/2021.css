@@ -1,43 +1,44 @@
-@charset "UTF-8";
 .sector-table {
-  --cell-padding: var(--gutter);
+  --cell-padding: 0.75vw;
 }
 
 .sector-table {
   width: 100%;
+  border-spacing: var(--gutter-hecto);
+  border-collapse: collapse;
 }
-
+.sector-table :is(th, td) {
+  padding: var(--cell-padding);
+  vertical-align: baseline;
+}
 .sector-table :is(th, td):last-of-type {
   text-align: end;
 }
-
 .sector-table .equity-branding {
   font-size: 1.35rem;
 }
-
-.sector-table .equity-logo {
-  display: inline-block;
-  max-height: 80px;
+.sector-table .equity-branding > div {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gutter);
+}
+.sector-table .equity-branding > div a:first-of-type {
+  width: 25%;
   -webkit-margin-end: var(--cell-padding);
           margin-inline-end: var(--cell-padding);
+}
+.sector-table .price-column span {
+  display: block;
+}
+
+.sector-table .equity-logo {
+  max-width: 80px;
 }
 
 .sector-table tr.header {
   -webkit-border-after: 2px solid #81C14B;
           border-block-end: 2px solid #81C14B;
-}
-
-.sector-table tr.header th {
-  -webkit-padding-after: var(--cell-padding);
-          padding-block-end: var(--cell-padding);
-}
-
-.sector-table td {
-  padding-block: var(--cell-padding);
-}
-
-.sector-table :is(th, td) {
-  vertical-align: baseline;
 }
 
 .sector-table .events-column {
@@ -83,6 +84,7 @@
   }
 }
 :root {
+  --gutter-hecto: calc(var(--gutter) * 2);
   --gutter: 1rem;
   --gutter-deci: calc(var(--gutter) * 0.8);
 }
@@ -161,7 +163,7 @@ h4 {
   line-height: 1.3;
 }
 .text ul > li:before {
-  content: "";
+  content: "\f0da";
   font-family: "Font Awesome 5 Pro";
   display: inline-block;
   font-size: 1rem;
@@ -378,7 +380,7 @@ form label {
   align-items: center;
 }
 .customCheckbox input:checked + span:before {
-  content: "";
+  content: "\f00c";
   font-family: "Font Awesome 5 Pro";
   display: inline-block;
   font-size: 0.875rem;
@@ -1727,6 +1729,14 @@ section .actions a {
   }
 }
 @media screen and (max-width: 1280px) {
+  .analysisHero {
+    background-size: cover;
+  }
+
+  .dashboard .tns-inner {
+    background-size: cover;
+  }
+
   .dashboard .newsfeed .slide .right {
     max-width: 300px;
   }
@@ -2162,10 +2172,6 @@ section .actions a {
 
   .modal-content {
     min-width: 0;
-  }
-
-  .dashboard .tns-inner {
-    background-size: cover;
   }
 
   .dashboard .newsfeed .slide > div {

@@ -16,7 +16,11 @@ namespace StockGame.Models.ViewModels
     };
 
     public PriceTrend Trend { get; set; }
+    
     [DisplayFormat(DataFormatString = "{0:0.00} %")]
     public decimal PriceVariationRatio { get; set; }
+    
+    [Display(Name = "Profits / pertes"), DataType(DataType.Currency)]
+    public decimal UserProfitLoss { get; set; }
   }
 }

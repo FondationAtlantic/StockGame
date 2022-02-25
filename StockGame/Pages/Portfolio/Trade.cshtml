@@ -272,8 +272,8 @@
       let index = document.getElementById('equitySelect').selectedIndex;
       let name = tradeableEquities[index].name;
       let side = type == 'Achat' ? 'Acheter' : 'Vendre';
-      let strValue = (tradeableEquities[index].price * amount).toFixed(2);
-      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de $' + strValue + '?';
+      let strValue = Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((tradeableEquities[index].price * amount).toFixed(2));
+      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + '?';
       document.getElementById("confirmation").classList.remove("hidden");
       formInputElement.classList.add("hidden");
     }

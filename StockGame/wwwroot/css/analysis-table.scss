@@ -2,41 +2,51 @@
 
 // Custom properties ++++++++
 .sector-table {
-  --cell-padding: var(--gutter);
+  --cell-padding: 0.75vw;
 }
 
 .sector-table {
   width: 100%;
-}
+  border-spacing: var(--gutter-hecto);
+  border-collapse: collapse;
 
-.sector-table :is(th,td):last-of-type {
-  text-align: end;
-}
+  & :is(th, td) {
+    padding: var(--cell-padding);
+    vertical-align: baseline;
+  }
 
-.sector-table .equity-branding {
-  font-size: 1.35rem;
+  & :is(th,td):last-of-type {
+    text-align: end;
+  }
+
+  & .equity-branding {
+    font-size: 1.35rem;
+
+    & > div{
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--gutter);
+
+      & a:first-of-type {
+        width: calc(100% / 4);
+
+        margin-inline-end: var(--cell-padding);
+      }
+    }
+  }
+
+  & .price-column span {
+    display: block;
+  }
 }
 
 .sector-table .equity-logo {
-  display:inline-block;
-  max-height: 80px;
-  margin-inline-end: var(--cell-padding);
+  max-width: 80px;  
 }
 
 .sector-table tr.header {
   border-block-end: 2px solid $c1;
-}
-
-.sector-table tr.header th {
-  padding-block-end: var(--cell-padding);
-}
-
-.sector-table td {
-  padding-block: var(--cell-padding);
-}
-
-.sector-table :is(th, td) {
-  vertical-align: baseline;
 }
 
 .sector-table .events-column {
