@@ -1801,10 +1801,10 @@ section .actions a {
 
   .wrapAll.loginBody:before {
     top: -57.5rem;
-    left: -36.25rem;
+    left: -38.75rem;
   }
   .wrapAll.loginBody:after {
-    bottom: -51.25rem;
+    bottom: -61.25rem;
     right: -36.25rem;
   }
 
