@@ -30,9 +30,6 @@
           <div class="fakeSelect">
             <div class="currentValue">
               <ul>
-                <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.Team)">
-                  <a asp-page="./Ranking" asp-route-sortCategory="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
-                </li>
                 <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.PctGain)">
                   <a asp-page="./Ranking" asp-route-sortCategory="PctGain">@RankingModel.SortCategoryEnum.PctGain.GetDisplayName()</a>
                 </li>
@@ -50,9 +47,6 @@
             </div>
             <div class="values">
               <ul>
-                <li>
-                  <a asp-page="./Ranking" asp-route-sortCategory="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
-                </li>
                 <li>
                   <a asp-page="./Ranking" asp-route-sortCategory="PctGain">@RankingModel.SortCategoryEnum.PctGain.GetDisplayName()</a>
                 </li>
@@ -74,15 +68,14 @@
         <table class="table">
           <thead>
             <tr>
-              <th colspan="2">
+              <th></th>
+              <th>
+               
                 <div class="orderBy m">
                   <label>Classer par</label>
                   <div class="fakeSelect">
                     <div class="currentValue">
                       <ul>
-                        <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.Team)">
-                          <a asp-page="./Ranking" asp-route-sortCategory="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
-                        </li>
                         <li class="@Model.IsCategoryActive(RankingModel.SortCategoryEnum.PctGain)">
                           <a asp-page="./Ranking" asp-route-sortCategory="PctGain">@RankingModel.SortCategoryEnum.PctGain.GetDisplayName()</a>
                         </li>
@@ -101,9 +94,6 @@
                     <div class="values">
                       <ul>
                         <li>
-                          <a asp-page="./Ranking" asp-route-sortCategory="Team">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
-                        </li>
-                        <li>
                           <a asp-page="./Ranking" asp-route-sortCategory="PctGain">@RankingModel.SortCategoryEnum.PctGain.GetDisplayName()</a>
                         </li>
                         <li>
@@ -119,6 +109,15 @@
                     </div>
                   </div>
                 </div>
+                <div class="team-sorting">
+                  @if(Model.CurrentSortDirection == "asc")
+                  {
+                    <span class="dropup"><span class="caret"></span></span>
+                  } else {
+                    <span class="caret"></span>
+                  }
+                  <a asp-page="./Ranking" asp-route-sortCategory="@RankingModel.SortCategoryEnum.Team" asp-route-sortDirection="@(Model.CurrentSortDirection == "desc" ? "asc" : "desc")">@RankingModel.SortCategoryEnum.Team.GetDisplayName()</a>
+                </div>
               </th>
               <th align="right">
                 @if(Model.CurrentSortDirection == "asc")
@@ -127,7 +126,7 @@
                 } else {
                   <span class="caret"></span>
                 }
-                <a asp-page="./Ranking" asp-route-sortCategory="@Model.CurrentSortCategory" asp-route-sortDirection="@(Model.CurrentSortDirection == "desc" ? "asc" : "desc")">@Model.CurrentSortCategory.GetDisplayName()</a>
+                <a asp-page="./Ranking" asp-route-sortCategory="@Model.CurrentSortStat" asp-route-sortDirection="@(Model.CurrentSortDirection == "desc" ? "asc" : "desc")">@Model.CurrentSortStat.GetDisplayName()</a>
               </th>
               @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
               {
@@ -145,7 +144,6 @@
                 <td>
                   <span class="nameAndTotal">
                     <b>@Html.DisplayFor(model => item.Team.Name)</b>
-                    <span><i><span class="@(item.TotalPctGain < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalPctGain)</span></i>&nbsp;|&nbsp;<i><span class="@(item.TotalValue < 0.0f ? "negative" : "")">@Html.DisplayFor(model => item.TotalValue)</span></i></span>
                   </span>
                 </td>
                 <td align="right">

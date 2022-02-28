@@ -1649,8 +1649,12 @@ section .actions a {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.wrapRanking th {
+.wrapRanking th:last-of-type {
   text-align: right;
+}
+.wrapRanking .team-sorting {
+  -webkit-margin-before: var(--gutter);
+          margin-block-start: var(--gutter);
 }
 .wrapRanking .position {
   width: 50px;

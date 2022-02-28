@@ -1903,8 +1903,12 @@ section {
 
 
 .wrapRanking {
-  th {
+  th:last-of-type {
     text-align: right;
+  }
+
+  .team-sorting {
+    margin-block-start: var(--gutter);
   }
 
   .position {

@@ -19,7 +19,8 @@ namespace StockGame.Pages.Games
     {
         public RankingModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
-            CurrentSortCategory = SortCategoryEnum.PctGain;
+            CurrentSortStat = SortCategoryEnum.PctGain;
+            CurrentSortCategory = CurrentSortStat;
             CurrentSortDirection = "desc";
         }
 
@@ -45,7 +46,8 @@ namespace StockGame.Pages.Games
             [Display(Name = "Valeur Totale")]
             TotalValue }
         public SortCategoryEnum CurrentSortCategory { get; set; }
-        public string CurrentSortDirection { get; set; }        
+        public SortCategoryEnum CurrentSortStat { get; set; }
+        public string CurrentSortDirection { get; set; }
         public async Task<IActionResult> OnGetAsync(
             int? id,
         #nullable enable    
@@ -135,6 +137,9 @@ namespace StockGame.Pages.Games
             if(sortCategory != null) {
                 // Caster la string reçue en type d'enum
                 CurrentSortCategory = (SortCategoryEnum)Enum.Parse(typeof(SortCategoryEnum), sortCategory, true);
+                if(CurrentSortCategory != SortCategoryEnum.Team) {
+                    CurrentSortStat = CurrentSortCategory;
+                }
             }
 
             if(sortDirection != null) {
@@ -164,7 +169,7 @@ namespace StockGame.Pages.Games
         }
 
         public string IsCategoryActive(SortCategoryEnum SortCategory) {
-            if(CurrentSortCategory == SortCategory)
+            if(CurrentSortStat == SortCategory)
             {
                 return "active";
             }
