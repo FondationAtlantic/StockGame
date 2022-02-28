@@ -19,7 +19,7 @@ namespace StockGame.Pages.Games
     {
         public RankingModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
-            CurrentSortCategory = SortCategoryEnum.GainPct;
+            CurrentSortCategory = SortCategoryEnum.PctGain;
             CurrentSortDirection = "desc";
         }
 
@@ -34,13 +34,13 @@ namespace StockGame.Pages.Games
             Team,
             
             [Display(Name = "Rendement Session")]
-            GainPct,
+            PctGain,
             
             [Display(Name = "Gain Session")]
             Gain,
         
             [Display(Name = "Rendement Total")]
-            TotalPct,
+            TotalPctGain,
             
             [Display(Name = "Valeur Totale")]
             TotalValue }
@@ -146,9 +146,9 @@ namespace StockGame.Pages.Games
                 Func<PortfolioGameRankingItem, dynamic>
             > SortingCategoryMethods = new Dictionary<SortCategoryEnum, Func<PortfolioGameRankingItem, dynamic>>();
                 SortingCategoryMethods.Add(SortCategoryEnum.Team, ri => ri.Team.Name);
-                SortingCategoryMethods.Add(SortCategoryEnum.GainPct, ri => ri.PctGain);
+                SortingCategoryMethods.Add(SortCategoryEnum.PctGain, ri => ri.PctGain);
                 SortingCategoryMethods.Add(SortCategoryEnum.Gain, ri => ri.Gain);
-                SortingCategoryMethods.Add(SortCategoryEnum.TotalPct, ri => ri.TotalPctGain);
+                SortingCategoryMethods.Add(SortCategoryEnum.TotalPctGain, ri => ri.TotalPctGain);
                 SortingCategoryMethods.Add(SortCategoryEnum.TotalValue, ri => ri.TotalValue);
             
             Dictionary<
@@ -169,6 +169,28 @@ namespace StockGame.Pages.Games
                 return "active";
             }
             
+            return "";
+        }
+
+        public float? GetCurrentCategoryValue(PortfolioGameRankingItem item) {
+            string enumName = CurrentSortCategory.ToString();
+            if(float.TryParse(item.GetType().GetProperty(enumName).GetValue(item, null)?.ToString(), out float catValue))
+            {
+              return catValue;
+            }
+
+            return null;
+        }
+
+        public string GetTrendCSSClass(float? value) {
+            if(value > 0) {
+                return "trendUp";
+            }
+
+            if(value < 0) {
+                return "trendDown";
+            }
+
             return "";
         }
     }
