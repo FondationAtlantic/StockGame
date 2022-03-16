@@ -135,11 +135,11 @@
           <h4 class="modal-title"><i class="far fa-exchange"></i>Transaction</h4>
         </div>
         <div class="tradeInfos">
-          <div class="availableMoney">
-            @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
-          </div>
           <div class="currentTransaction">
             Valeur de la transaction : <span id="totalAmount" class="value"></span>
+          </div>
+          <div class="availableMoney">
+            @Html.DisplayNameFor(model => model.Portfolio.Cash): <span class="value">@Html.DisplayFor(model => model.Portfolio.Cash)</span>
           </div>
           <div id="ownedSharesAmount" class="currentTransaction">
             Nombre d'actions détenues : <span id="shareAmount" class="value clicky" onclick="setAllShares()"></span>
@@ -258,8 +258,8 @@
         notEnoughStockElement.classList.add("hidden");
         sellButtonElement.removeAttribute("disabled");
       }
-      var result = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((n * tradeableEquities[index].price).toFixed(2));
-      return result.replace("US", "").trim();
+      var result = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((n * tradeableEquities[index].price).toFixed(2));
+      return result.replace("CAD", "").trim();
     }
 
     function showConfirmation(type) {
@@ -272,8 +272,8 @@
       let index = document.getElementById('equitySelect').selectedIndex;
       let name = tradeableEquities[index].name;
       let side = type == 'Achat' ? 'Acheter' : 'Vendre';
-      let strValue = (tradeableEquities[index].price * amount).toFixed(2);
-      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de $' + strValue + '?';
+      let strValue = Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format((tradeableEquities[index].price * amount).toFixed(2));
+      document.getElementById("confirmationMsg").textContent = side + ' ' + amount + ' ' + name + ' pour la somme totale de ' + strValue + '?';
       document.getElementById("confirmation").classList.remove("hidden");
       formInputElement.classList.add("hidden");
     }
@@ -319,7 +319,14 @@
       stockNumberElement.blur();
     }
 
-    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.load
+    (
+      'current',
+      { 
+        packages: ['corechart'],
+        'language': 'fr-ca'
+      }       
+    );
 
     const data = @Html.Raw(Json.Serialize(Model.PortfolioTeamHistory?.Items));
 

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using StockGame.Data;
 using StockGame.Models;
 using StockGame.Models.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace StockGame.Pages.Games
 {
@@ -18,6 +19,9 @@ namespace StockGame.Pages.Games
     {
         public RankingModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
+            CurrentSortStat = SortCategoryEnum.PctGain;
+            CurrentSortCategory = CurrentSortStat;
+            CurrentSortDirection = "desc";
         }
 
         public Game Game { get; set; }
@@ -26,15 +30,33 @@ namespace StockGame.Pages.Games
 
         public List<PortfolioGameRankingItem> PortfolioGameRankingItems { get; set; }
 
-        public string SortOrder { get; set; }
-
-        public string TeamSort { get; set; }
-        public string GainPctSort { get; set; }
-        public string GainSort { get; set; }
-        public string TotalPctSort { get; set; }
-        public string TotalValueSort { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(int? id, string sortOrder, int? SelectActiveGameId, int? SelectActiveTeamId)
+        public enum SortCategoryEnum { 
+            [Display(Name = "Équipe")]    
+            Team,
+            
+            [Display(Name = "Rendement Session")]
+            PctGain,
+            
+            [Display(Name = "Gain Session")]
+            Gain,
+        
+            [Display(Name = "Rendement Total")]
+            TotalPctGain,
+            
+            [Display(Name = "Valeur Totale")]
+            TotalValue }
+        public SortCategoryEnum CurrentSortCategory { get; set; }
+        public SortCategoryEnum CurrentSortStat { get; set; }
+        public string CurrentSortDirection { get; set; }
+        public async Task<IActionResult> OnGetAsync(
+            int? id,
+        #nullable enable    
+            string? sortDirection,
+            string? sortCategory,
+        #nullable disable
+            int? SelectActiveGameId,
+            int? SelectActiveTeamId
+        )
         {
             await GetCurrentUser();
             bool isAdmin = await UserManager.IsInRoleAsync(CurrentUser, "Admin");
@@ -85,12 +107,6 @@ namespace StockGame.Pages.Games
             if(Game == null)
                 return NotFound();
 
-            TeamSort = sortOrder == "Team_asc" ? "Team_desc" : "Team_asc";
-            GainPctSort = sortOrder == "GainPct_desc" ? "GainPct_asc" : "GainPct_desc";
-            GainSort = sortOrder == "Gain_desc" ? "Gain_asc" : "Gain_desc";
-            TotalPctSort = sortOrder == "TotalPct_desc" ? "TotalPct_asc" : "TotalPct_desc";
-            TotalValueSort = String.IsNullOrEmpty(sortOrder) ? "TotalValue_asc" : "";
-
             PortfolioGameHistory = await PortfolioHistories(Game, null, activeEpisodeIndex);
             bool activeTeamOnTop = !isAdmin;
             //active team on top, then sort by value
@@ -118,42 +134,69 @@ namespace StockGame.Pages.Games
                     };
                 });
 
-            SortOrder = String.IsNullOrEmpty(sortOrder) ? "TotalValue_desc" : sortOrder;
-            switch (sortOrder)
-            {
-                case "Team_desc":
-                    PortfolioGameRankingItems = rankItems.OrderByDescending(ri => ri.Team.Name).ToList();
-                    break;
-                case "Team_asc":
-                    PortfolioGameRankingItems = rankItems.OrderBy(ri => ri.Team.Name).ToList();
-                    break;
-                case "GainPct_asc":
-                    PortfolioGameRankingItems = rankItems.OrderBy(ri => ri.PctGain).ToList();
-                    break;
-                case "GainPct_desc":
-                    PortfolioGameRankingItems = rankItems.OrderByDescending(ri => ri.PctGain).ToList();
-                    break;
-                case "Gain_asc":
-                    PortfolioGameRankingItems = rankItems.OrderBy(ri => ri.Gain).ToList();
-                    break;
-                case "Gain_desc":
-                    PortfolioGameRankingItems = rankItems.OrderByDescending(ri => ri.Gain).ToList();
-                    break;
-                case "TotalPct_asc":
-                    PortfolioGameRankingItems = rankItems.OrderBy(ri => ri.TotalPctGain).ToList();
-                    break;
-                case "TotalPct_desc":
-                    PortfolioGameRankingItems = rankItems.OrderByDescending(ri => ri.TotalPctGain).ToList();
-                    break;
-                case "TotalValue_asc":
-                    PortfolioGameRankingItems = rankItems.OrderBy(ri => ri.TotalValue).ToList();
-                    break;
-                default: //total value descending
-                    PortfolioGameRankingItems = rankItems.OrderByDescending(ri => ri.TotalValue).ToList();
-                    break;
+            if(sortCategory != null) {
+                // Caster la string reçue en type d'enum
+                CurrentSortCategory = (SortCategoryEnum)Enum.Parse(typeof(SortCategoryEnum), sortCategory, true);
+                if(CurrentSortCategory != SortCategoryEnum.Team) {
+                    CurrentSortStat = CurrentSortCategory;
+                }
             }
 
+            if(sortDirection != null) {
+                CurrentSortDirection = sortDirection;
+            }
+
+            Dictionary<
+                SortCategoryEnum,
+                Func<PortfolioGameRankingItem, dynamic>
+            > SortingCategoryMethods = new Dictionary<SortCategoryEnum, Func<PortfolioGameRankingItem, dynamic>>();
+                SortingCategoryMethods.Add(SortCategoryEnum.Team, ri => ri.Team.Name);
+                SortingCategoryMethods.Add(SortCategoryEnum.PctGain, ri => ri.PctGain);
+                SortingCategoryMethods.Add(SortCategoryEnum.Gain, ri => ri.Gain);
+                SortingCategoryMethods.Add(SortCategoryEnum.TotalPctGain, ri => ri.TotalPctGain);
+                SortingCategoryMethods.Add(SortCategoryEnum.TotalValue, ri => ri.TotalValue);
+            
+            Dictionary<
+                string,
+                List<PortfolioGameRankingItem>
+            > SortingDirectionMethods = new Dictionary<string, List<PortfolioGameRankingItem>>();
+                SortingDirectionMethods.Add("desc", rankItems.OrderByDescending(SortingCategoryMethods[CurrentSortCategory]).ToList());
+                SortingDirectionMethods.Add("asc", rankItems.OrderBy(SortingCategoryMethods[CurrentSortCategory]).ToList());
+
+            PortfolioGameRankingItems = SortingDirectionMethods[CurrentSortDirection];
+
             return Page();
+        }
+
+        public string IsCategoryActive(SortCategoryEnum SortCategory) {
+            if(CurrentSortStat == SortCategory)
+            {
+                return "active";
+            }
+            
+            return "";
+        }
+
+        public float? GetCurrentCategoryValue(PortfolioGameRankingItem item) {
+            string enumName = CurrentSortCategory.ToString();
+            if(float.TryParse(item.GetType().GetProperty(enumName).GetValue(item, null)?.ToString(), out float catValue))
+            {
+              return catValue;
+            }
+
+            return null;
+        }
+
+        public string GetTrendCSSClass(float? value) {
+            if(value > 0) {
+                return "trendUp";
+            }
+
+            if(value < 0) {
+                return "trendDown";
+            }
+
+            return "";
         }
     }
 }

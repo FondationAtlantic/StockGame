@@ -18,6 +18,8 @@ namespace StockGame.Pages.Analysis
     {
         public IndexModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
+            _context = context;
+            _userManager = userManager;
         }
 
         public IList<AnalysisIndexItem> IndexItems { get;set; }
@@ -27,6 +29,8 @@ namespace StockGame.Pages.Analysis
             await FindActiveGameAndTeam();
 
             await FindActiveEpisodeEquityInfos();
+
+            PortfolioGameHistory Portfolio = await PortfolioHistories(ActiveGame, new List<Team>(){ActiveTeam});
 
             var items = new List<AnalysisIndexItem>();
 
@@ -43,12 +47,38 @@ namespace StockGame.Pages.Analysis
 
                 if(eei.Visible)
                 {
+                    PortfolioItem eeiCurrent = Portfolio.TeamHistories[0]
+                                             .Items[ActiveEpisodeIndex]
+                                             .Items.Find(i => i.EquityId == eei.EquityId);
+                    float ProfitLoss = (
+                        from transactions in _context.Transactions
+                        join tradingSessions in _context.TradingSessions
+                            on transactions.TradingSessionId equals tradingSessions.Id
+                        join episodes in _context.Episodes
+                            on tradingSessions.EpisodeId equals episodes.Id
+                        join episodeEquityInfo in _context.EpisodeEquityInfos
+                            on new { transactions.EquityId, tradingSessions.EpisodeId }
+                                equals new { episodeEquityInfo.EquityId, episodeEquityInfo.EpisodeId }
+                        where transactions.TeamMemberId == CurrentUser.ActiveTeamMemberId
+                        where transactions.EquityId == eei.EquityId
+                        select new {
+                            transactionValue = transactions.Amount * episodeEquityInfo.Price
+                        }
+                    ).Sum(t => t.transactionValue);
+
+                    float ProfitLossWithCurrentHoldings =
+                        (eeiCurrent.Amount > 0) ?
+                        ProfitLoss + (eeiCurrent.Value * -1) :
+                        ProfitLoss;
+
                     items.Add(new AnalysisIndexItem
                     {
                         EpisodeEquityInfo = eei,
                         Trend = (iterPastEquityInfos.Current == null || iterPastEquityInfos.Current.EquityId != eei.EquityId || iterPastEquityInfos.Current.Price == eei.Price)
-                                   ? AnalysisIndexItem.PriceTrend.Unchanged
-                                   : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down)
+                                    ? AnalysisIndexItem.PriceTrend.Unchanged
+                                    : (iterPastEquityInfos.Current.Price < eei.Price ? AnalysisIndexItem.PriceTrend.Up : AnalysisIndexItem.PriceTrend.Down),
+                        PriceVariationRatio = ((decimal)(eei.Price - iterPastEquityInfos.Current.Price) / (decimal)(eei.Price)) * 100,
+                        UserProfitLoss = (decimal)ProfitLossWithCurrentHoldings * -1
                     });
                 }
 
