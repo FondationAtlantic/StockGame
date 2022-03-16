@@ -1,0 +1,101 @@
+// Table de présentation des compagnies //
+
+// Custom properties ++++++++
+.sector-table {
+  --cell-padding: 0.75vw;
+}
+
+.sector-table {
+  width: 100%;
+  border-spacing: var(--gutter-hecto);
+  border-collapse: collapse;
+
+  & :is(th, td) {
+    padding: var(--cell-padding);
+    vertical-align: baseline;
+  }
+
+  & :is(th,td):last-of-type {
+    text-align: end;
+  }
+
+  & .equity-branding {
+    font-size: 1.35rem;
+
+    & > div{
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--gutter);
+
+      & a:first-of-type {
+        width: calc(100% / 4);
+
+        margin-inline-end: var(--cell-padding);
+      }
+    }
+  }
+
+  & .price-column span {
+    display: block;
+  }
+}
+
+.sector-table .equity-logo {
+  max-width: 80px;  
+}
+
+.sector-table tr.header {
+  border-block-end: 2px solid $c1;
+}
+
+.sector-table .events-column {
+  // Gérer la grosseur des icônes
+  font-size: 1.75rem;
+
+  // Centrer les icônes événements
+  vertical-align: middle;
+
+  & div {
+    display: inline-block;
+
+    & span {
+      display: none
+    }
+  }
+}
+
+// Media queries ++++++++
+@media screen and (max-width: 768px) {
+  .sector-table :is(table, tr, th, td) {
+    display: block;
+  }
+
+  .sector-table :is(th,td):last-of-type {
+    text-align: start;
+  }
+
+  .sector-table td::before {
+    content: attr(data-th);
+    display: block;
+
+    font-weight: 500;
+  }
+
+  .sector-table th:not(:first-of-type) {
+    display: none;
+  }
+
+  .sector-table .events-column {
+    font-size: inherit;
+
+    & div {
+      display: block;
+
+      & span {
+        display: inline-block;
+        margin-inline-start: var(--gutter);
+      }
+    }
+  }
+}

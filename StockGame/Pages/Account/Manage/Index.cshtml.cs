@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using StockGame.Models;
 using StockGame.Services;
 
@@ -14,16 +10,17 @@ namespace StockGame.Pages.Account.Manage
 {
     public partial class IndexModel : StockGame.Pages.StockPageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
+            StockGame.Data.StockGameContext context,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
+            _context = context;
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
@@ -46,14 +43,14 @@ namespace StockGame.Pages.Account.Manage
             [Display(Name = "Courriel")]
             public string Email { get; set; }
 
-            [Display(Name = "Prénom")]
+            [Display(Name = "PrÃ©nom")]
             public string FirstMidName { get; set; }
 
             [Display(Name = "Nom de famille")]
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Numéro de téléphone")]
+            [Display(Name = "NumÃ©ro de tÃ©lÃ©phone")]
             public string PhoneNumber { get; set; }
         }
 
@@ -64,6 +61,8 @@ namespace StockGame.Pages.Account.Manage
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            await FindActiveGameAndTeam();
 
             Username = user.UserName;
 

@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/** Table de présentation des compagnies **/
+.sector-table {
+  width: 100%;
+}
+
+.sector-table :is(th, td):last-of-type {
+  text-align: end;
+}
+
+.sector-table .equity-logo {
+  max-height: 80px;
+}
+
+.sector-table tr.header {
+  -webkit-border-after: 2px;
+          border-block-end: 2px;
+}
+
+.sector-table tr.header th {
+  -webkit-padding-after: 1rem;
+          padding-block-end: 1rem;
+}
+
+.sector-table th {
+  vertical-align: baseline;
+}

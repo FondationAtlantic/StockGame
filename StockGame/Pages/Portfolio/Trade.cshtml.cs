@@ -74,7 +74,7 @@ namespace StockGame.Pages.Portfolio
                     ModelState.AddModelError("TransactionEntry.Amount", "Argent disponible insuffisant pour l'achat!");
             }
             else if (TransactionEntry.Amount > item.Amount) //sell
-                ModelState.AddModelError("TransactionEntry.Amount", "Quantité disponible insuffisante pour la vente!");
+                ModelState.AddModelError("TransactionEntry.Amount", "QuantitÃ© disponible insuffisante pour la vente!");
 
             if (!ModelState.IsValid)
                 return PopulatePage();

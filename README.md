@@ -1,4 +1,5 @@
 [![.NET](https://github.com/NmediaSolutions/StockGame/actions/workflows/dotnet.yml/badge.svg)](https://github.com/NmediaSolutions/StockGame/actions/workflows/dotnet.yml)
+[![StockGame Deployment](https://github.com/NmediaSolutions/StockGame/actions/workflows/azure-vm-deploy.yml/badge.svg)](https://github.com/NmediaSolutions/StockGame/actions/workflows/azure-vm-deploy.yml)
 
 ---
 
