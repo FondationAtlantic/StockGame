@@ -19,7 +19,8 @@ namespace StockGame.Pages.Games
     {
         public RankingModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
-            CurrentSortCategory = SortCategoryEnum.GainPct;
+            CurrentSortStat = SortCategoryEnum.PctGain;
+            CurrentSortCategory = CurrentSortStat;
             CurrentSortDirection = "desc";
         }
 
@@ -34,18 +35,19 @@ namespace StockGame.Pages.Games
             Team,
             
             [Display(Name = "Rendement Session")]
-            GainPct,
+            PctGain,
             
             [Display(Name = "Gain Session")]
             Gain,
         
             [Display(Name = "Rendement Total")]
-            TotalPct,
+            TotalPctGain,
             
             [Display(Name = "Valeur Totale")]
             TotalValue }
         public SortCategoryEnum CurrentSortCategory { get; set; }
-        public string CurrentSortDirection { get; set; }        
+        public SortCategoryEnum CurrentSortStat { get; set; }
+        public string CurrentSortDirection { get; set; }
         public async Task<IActionResult> OnGetAsync(
             int? id,
         #nullable enable    
@@ -135,6 +137,9 @@ namespace StockGame.Pages.Games
             if(sortCategory != null) {
                 // Caster la string reçue en type d'enum
                 CurrentSortCategory = (SortCategoryEnum)Enum.Parse(typeof(SortCategoryEnum), sortCategory, true);
+                if(CurrentSortCategory != SortCategoryEnum.Team) {
+                    CurrentSortStat = CurrentSortCategory;
+                }
             }
 
             if(sortDirection != null) {
@@ -146,9 +151,9 @@ namespace StockGame.Pages.Games
                 Func<PortfolioGameRankingItem, dynamic>
             > SortingCategoryMethods = new Dictionary<SortCategoryEnum, Func<PortfolioGameRankingItem, dynamic>>();
                 SortingCategoryMethods.Add(SortCategoryEnum.Team, ri => ri.Team.Name);
-                SortingCategoryMethods.Add(SortCategoryEnum.GainPct, ri => ri.PctGain);
+                SortingCategoryMethods.Add(SortCategoryEnum.PctGain, ri => ri.PctGain);
                 SortingCategoryMethods.Add(SortCategoryEnum.Gain, ri => ri.Gain);
-                SortingCategoryMethods.Add(SortCategoryEnum.TotalPct, ri => ri.TotalPctGain);
+                SortingCategoryMethods.Add(SortCategoryEnum.TotalPctGain, ri => ri.TotalPctGain);
                 SortingCategoryMethods.Add(SortCategoryEnum.TotalValue, ri => ri.TotalValue);
             
             Dictionary<
@@ -164,11 +169,33 @@ namespace StockGame.Pages.Games
         }
 
         public string IsCategoryActive(SortCategoryEnum SortCategory) {
-            if(CurrentSortCategory == SortCategory)
+            if(CurrentSortStat == SortCategory)
             {
                 return "active";
             }
             
+            return "";
+        }
+
+        public float? GetCurrentCategoryValue(PortfolioGameRankingItem item) {
+            string enumName = CurrentSortCategory.ToString();
+            if(float.TryParse(item.GetType().GetProperty(enumName).GetValue(item, null)?.ToString(), out float catValue))
+            {
+              return catValue;
+            }
+
+            return null;
+        }
+
+        public string GetTrendCSSClass(float? value) {
+            if(value > 0) {
+                return "trendUp";
+            }
+
+            if(value < 0) {
+                return "trendDown";
+            }
+
             return "";
         }
     }

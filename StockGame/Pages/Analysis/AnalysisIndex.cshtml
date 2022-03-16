@@ -136,7 +136,7 @@
                   
                 @if (Model.ActiveGame.ShowPriceEarningsEpisodeRange.Contains(Model.ActiveTradingSession.Episode.EpisodeIndex) || User.IsInRole("Admin"))
                 {
-                <td data-th="Coût / Bénéfice">
+                <td data-th="Cours / Bénéfice">
                   @Html.DisplayFor(modelItem => item.PriceEarningsRatio)
                 </td>
                 }
