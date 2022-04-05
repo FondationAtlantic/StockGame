@@ -24,8 +24,7 @@ namespace StockGame.Pages.Portfolio
 
         public IActionResult PopulatePage()
         {
-            TradeableEquities = Portfolio.Items.Where(i => i.AllowTransactions)
-                                               .Where(i => i.EpisodeId == ActiveEpisodeIndex);
+            TradeableEquities = Portfolio.Items.Where(i => i.AllowTransactions);
 
             ViewData["EquityId"] = new SelectList(
                         TradeableEquities.Select(i => new SelectListItem

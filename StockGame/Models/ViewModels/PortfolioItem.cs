@@ -19,7 +19,6 @@ namespace StockGame.Models.ViewModels
         public float Value { get { return Amount * Price; } }
         public string Name { get { return Equity.Name; } }
         public bool AllowTransactions { get; set; } = true;
-        public int EpisodeId { get; set; }
 
         //Navigation properties
         [JsonIgnore]
