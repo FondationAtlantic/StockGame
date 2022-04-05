@@ -19,12 +19,13 @@ namespace StockGame.Pages.Portfolio
     {
         public TradeModel(UserManager<ApplicationUser> userManager, StockGameContext context) : base(userManager, context)
         {
+            _context = context;
         }
 
         public IActionResult PopulatePage()
         {
             TradeableEquities = Portfolio.Items.Where(i => i.AllowTransactions)
-                                               .Where(i => i.);
+                                               .Where(i => i.EpisodeId == ActiveEpisodeIndex);
 
             ViewData["EquityId"] = new SelectList(
                         TradeableEquities.Select(i => new SelectListItem
