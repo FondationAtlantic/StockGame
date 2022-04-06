@@ -437,10 +437,7 @@ form label {
 html {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   scroll-behavior: smooth;
-  height: 100%;
-  width: 100%;
   font-family: $font;
   color: $text;
   font-size: 16px;
@@ -452,7 +449,6 @@ body {
   background-color: #fff;
   height: 100vh;
   width: 100%;
-  @include flex(column,nowrap,space-between,flex-start,flex-start);
 }
 
 .oldContent {
@@ -465,8 +461,6 @@ body {
   box-sizing: border-box;
   font-family: $font;
   color: $text;
-  height: 100%;
-  overflow: hidden;
 
   &.notFixed {
     height: auto;
@@ -562,12 +556,18 @@ footer {
 // TOPBAR
 // ================================================================================================================
 .topBar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  
   height: rem(60);
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  background: #FFF;
 
   .left {
     display: flex;
@@ -2087,12 +2087,6 @@ section {
         right: rem(-580);
       }
     }
-  }
-
-  .topBar {
-    position: relative;
-    z-index: 20;
-    background: #FFF;
   }
 
   h2 {

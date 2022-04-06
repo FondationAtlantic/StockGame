@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,8 @@ using StockGame.Data;
 using StockGame.Models;
 using StockGame.Services;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace StockGame
 {
@@ -24,6 +27,23 @@ namespace StockGame
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Forcer la locale fr-CA sur l'application au lieu de prendre celle du serveur, par défaut
+            CultureInfo[] supportedCultures = new[]
+            {
+                new CultureInfo("fr-CA")
+            };
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("fr-CA");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                };
+            });
             services.AddDbContext<StockGameContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<StockGameContext>(options =>
@@ -85,6 +105,8 @@ namespace StockGame
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseRequestLocalization();
 
             app.UseMvc();
         }
