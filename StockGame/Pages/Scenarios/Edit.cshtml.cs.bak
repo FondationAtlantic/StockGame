@@ -89,74 +89,76 @@ namespace StockGame.Pages.Scenarios
           || HttpContext.Request.Form.Files.Count != Episodes.Count + ScenarioEquities.Count)
           return await OnGetAsync(Scenario.Id, null); */
 
-        
-            for (int i = 0; i < HttpContext.Request.Form.Files.Count; i++)
+      //Is this a CSV Import submit ?
+            if (HttpContext.Request.Form.Files.Count > 0)
             {
+              for (int i = Episodes.Count; i < Episodes.Count + ScenarioEquities.Count; i++)
+              {
                 if (HttpContext.Request.Form.Files[i] != null)
                 {
-                    IFormFile file = HttpContext.Request.Form.Files[i];
-                    if (file.Length > 0)
-                    {
+                  IFormFile file = HttpContext.Request.Form.Files[i];
+                  if (file.Length > 0)
+                  {
                     ScenarioEquity se = ScenarioEquities[i - Episodes.Count];
                     if (await ImportCsvEquityEpisodeData(file, se, "ScenarioEquities[" + (i - Episodes.Count).ToString() + "].Id"))
-                        return RedirectToPage("./EpisodeEquityInfos", new { id = se.Id });
+                      return RedirectToPage("./EpisodeEquityInfos", new { id = se.Id });
                     else
-                        return await OnGetAsync(Scenario.Id, null);
-                    }
+                      return await OnGetAsync(Scenario.Id, null);
+                  }
                 }
-            }
+              }
 
 
-            Context.Attach(Scenario).State = EntityState.Modified;
-            for (int i = 0; i < Episodes.Count; i++)
-            {
-            Episode ep = Episodes[i];
+              Context.Attach(Scenario).State = EntityState.Modified;
+              for (int i = 0; i < Episodes.Count; i++)
+              {
+                Episode ep = Episodes[i];
 
-            //TODO YLA duplicate code
-            IFormFile file = HttpContext.Request.Form.Files[i];
-            if (file.Length > 0)
-            {
-                //Getting FileName
-                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-                // concating  FileName + FileExtension
-                string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
-
-                // Combines two strings into a path.
-                fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
-
-                ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
-
-                using (FileStream fs = System.IO.File.Create(fileName))
+                //TODO YLA duplicate code
+                IFormFile file = HttpContext.Request.Form.Files[i];
+                if (file.Length > 0)
                 {
-                file.CopyTo(fs);
-                fs.Flush();
+                  //Getting FileName
+                  string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                  // concating  FileName + FileExtension
+                  string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
+
+                  // Combines two strings into a path.
+                  fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
+
+                  ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
+
+                  using (FileStream fs = System.IO.File.Create(fileName))
+                  {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                  }
+
+                  //TODO YLA Thumbnail Resize
+                  //resize if necessary
+                  /*
+                  using (Image<Rgba32> srcImage = Image.Load(fileName))
+                  {
+                      if (srcImage.Width > 500 || srcImage.Height > 250)
+                      {
+                          ResizeOptions resizeOptions = new ResizeOptions
+                          {
+                              Mode = ResizeMode.Max,
+                              Sampler = new BicubicResampler(),
+                              Size = new SixLabors.Primitives.Size(500, 250)
+                          };
+
+                          using (Image<Rgba32> thumbImage = srcImage.Resize(resizeOptions))
+                          {
+                              thumbImage.Save(fileName);
+                          }
+                      }
+                  }*/
                 }
 
-                //TODO YLA Thumbnail Resize
-                //resize if necessary
-                /*
-                using (Image<Rgba32> srcImage = Image.Load(fileName))
-                {
-                    if (srcImage.Width > 500 || srcImage.Height > 250)
-                    {
-                        ResizeOptions resizeOptions = new ResizeOptions
-                        {
-                            Mode = ResizeMode.Max,
-                            Sampler = new BicubicResampler(),
-                            Size = new SixLabors.Primitives.Size(500, 250)
-                        };
-
-                        using (Image<Rgba32> thumbImage = srcImage.Resize(resizeOptions))
-                        {
-                            thumbImage.Save(fileName);
-                        }
-                    }
-                }*/
-            }
-
-            Context.Attach(ep).State = EntityState.Modified;
-              
+                Context.Attach(ep).State = EntityState.Modified;
+              }
             }
 
             try
