@@ -1,6 +1,7 @@
 //using ImageSharp;
 //using ImageSharp.Processing;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,9 @@ namespace StockGame.Pages.Scenarios
     [Authorize(Roles = "Admin")]
     public class EditModel : StockGame.Pages.StockPageModel
     {
-        private readonly IHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostEnvironment environment) : base(userManager, context)
+        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IWebHostEnvironment environment) : base(userManager, context)
         {
             _environment = environment;
         }
@@ -99,6 +100,14 @@ namespace StockGame.Pages.Scenarios
                 continue;
               }
 
+              string pattern = @"\[(\d+)\]$";
+              Regex regex = new Regex(pattern);
+
+              Match match = regex.Match(file.Name);
+              int episodeIndex = int.Parse(match.Groups[1].ToString());
+
+              Episode episode = Episodes[episodeIndex];
+
               if (file.Name.Contains("Csv")) {
                 ScenarioEquity se = ScenarioEquities[i - Episodes.Count];
                 if (await ImportCsvEquityEpisodeData(file, se, "ScenarioEquities[" + (i - Episodes.Count).ToString() + "].Id"))
@@ -109,16 +118,22 @@ namespace StockGame.Pages.Scenarios
 
               if (file.Name.Contains("NewsImg"))
               {
-                string pattern = @"\[(\d+)]$";
-                Regex regex = new Regex(pattern);
+                string fileName = file.FileName.Trim('"');
+                string GUIDedFilename = $@"{Guid.NewGuid().ToString()}{Path.GetExtension(fileName)}";
+                fileName = $@"{Path.Combine(_environment.WebRootPath, "images/db/upload_news_img")}/{GUIDedFilename}";
 
-                Match match = regex.Match(file.Name);
-                int episodeIndex = int.Parse(match.Groups[0].ToString());
+                episode.NewsImgPath = $@"~/images/db/upload_news_img/{GUIDedFilename}";
+                
+                // Si le directory n'existe pas, le créer
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-                Episode episode = Episodes[episodeIndex];  
-                continue;
+                using (FileStream fs = System.IO.File.Create(fileName))
+                {
+                  file.CopyTo(fs);
+                  fs.Flush();
+                }
               }
-            
+
               //TODO YLA duplicate code
               /* if (file.Length > 0)
               {
@@ -165,6 +180,11 @@ namespace StockGame.Pages.Scenarios
               
             }
 
+            foreach (var episode in Episodes)
+            {
+              Context.Attach(episode).State = EntityState.Modified;
+            }
+          
             try
             {
                 await Context.SaveChangesAsync();
