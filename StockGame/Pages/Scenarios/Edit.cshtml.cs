@@ -89,73 +89,79 @@ namespace StockGame.Pages.Scenarios
           || HttpContext.Request.Form.Files.Count != Episodes.Count + ScenarioEquities.Count)
           return await OnGetAsync(Scenario.Id, null); */
 
-        
+
             for (int i = 0; i < HttpContext.Request.Form.Files.Count; i++)
             {
-                if (HttpContext.Request.Form.Files[i] != null)
-                {
-                    IFormFile file = HttpContext.Request.Form.Files[i];
-                    if (file.Length > 0)
-                    {
-                    ScenarioEquity se = ScenarioEquities[i - Episodes.Count];
-                    if (await ImportCsvEquityEpisodeData(file, se, "ScenarioEquities[" + (i - Episodes.Count).ToString() + "].Id"))
-                        return RedirectToPage("./EpisodeEquityInfos", new { id = se.Id });
-                    else
-                        return await OnGetAsync(Scenario.Id, null);
-                    }
-                }
-            }
+              IFormFile file = HttpContext.Request.Form.Files[i];
 
+              if (file.Length == 0)
+              {
+                continue;
+              }
 
-            Context.Attach(Scenario).State = EntityState.Modified;
-            for (int i = 0; i < Episodes.Count; i++)
-            {
-            Episode ep = Episodes[i];
+              if (file.Name.Contains("Csv")) {
+                ScenarioEquity se = ScenarioEquities[i - Episodes.Count];
+                if (await ImportCsvEquityEpisodeData(file, se, "ScenarioEquities[" + (i - Episodes.Count).ToString() + "].Id"))
+                  return RedirectToPage("./EpisodeEquityInfos", new { id = se.Id });
+                else
+                  return await OnGetAsync(Scenario.Id, null);
+              }
 
-            //TODO YLA duplicate code
-            IFormFile file = HttpContext.Request.Form.Files[i];
-            if (file.Length > 0)
-            {
-                //Getting FileName
-                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+              if (file.Name.Contains("NewsImg"))
+              {
+                string pattern = @"\[(\d+)]$";
+                Regex regex = new Regex(pattern);
 
-                // concating  FileName + FileExtension
-                string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
+                Match match = regex.Match(file.Name);
+                int episodeIndex = int.Parse(match.Groups[0].ToString());
 
-                // Combines two strings into a path.
-                fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
+                Episode episode = Episodes[episodeIndex];  
+                continue;
+              }
+            
+              //TODO YLA duplicate code
+              /* if (file.Length > 0)
+              {
+                  //Getting FileName
+                  string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
 
-                ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
+                  // concating  FileName + FileExtension
+                  string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
 
-                using (FileStream fs = System.IO.File.Create(fileName))
-                {
-                file.CopyTo(fs);
-                fs.Flush();
-                }
+                  // Combines two strings into a path.
+                  fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
 
-                //TODO YLA Thumbnail Resize
-                //resize if necessary
-                /*
-                using (Image<Rgba32> srcImage = Image.Load(fileName))
-                {
-                    if (srcImage.Width > 500 || srcImage.Height > 250)
-                    {
-                        ResizeOptions resizeOptions = new ResizeOptions
-                        {
-                            Mode = ResizeMode.Max,
-                            Sampler = new BicubicResampler(),
-                            Size = new SixLabors.Primitives.Size(500, 250)
-                        };
+                  ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
 
-                        using (Image<Rgba32> thumbImage = srcImage.Resize(resizeOptions))
-                        {
-                            thumbImage.Save(fileName);
-                        }
-                    }
-                }*/
-            }
+                  using (FileStream fs = System.IO.File.Create(fileName))
+                  {
+                  file.CopyTo(fs);
+                  fs.Flush();
+                  }
 
-            Context.Attach(ep).State = EntityState.Modified;
+                  //TODO YLA Thumbnail Resize
+                  //resize if necessary
+                  /*
+                  using (Image<Rgba32> srcImage = Image.Load(fileName))
+                  {
+                      if (srcImage.Width > 500 || srcImage.Height > 250)
+                      {
+                          ResizeOptions resizeOptions = new ResizeOptions
+                          {
+                              Mode = ResizeMode.Max,
+                              Sampler = new BicubicResampler(),
+                              Size = new SixLabors.Primitives.Size(500, 250)
+                          };
+
+                          using (Image<Rgba32> thumbImage = srcImage.Resize(resizeOptions))
+                          {
+                              thumbImage.Save(fileName);
+                          }
+                      }
+                  }
+              }
+
+              Context.Attach(ep).State = EntityState.Modified;*/
               
             }
 
