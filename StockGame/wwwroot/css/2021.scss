@@ -1,5 +1,5 @@
-﻿@import "mixins.scss";
-
+﻿@use "analysis-table.scss";
+@import "mixins.scss";
 
 $mobileFontSize: 16;
 
@@ -58,8 +58,6 @@ $heading: "Ubuntu", sans-serif;
 //FontAwesome
 $fa: "FontAwesome";
 $fab: "FontAwesomeBrands";
-
-@import "analysis-table";
 
 // ================================================================================================================
 // Custom properties
@@ -439,10 +437,7 @@ form label {
 html {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   scroll-behavior: smooth;
-  height: 100%;
-  width: 100%;
   font-family: $font;
   color: $text;
   font-size: 16px;
@@ -454,7 +449,6 @@ body {
   background-color: #fff;
   height: 100vh;
   width: 100%;
-  @include flex(column,nowrap,space-between,flex-start,flex-start);
 }
 
 .oldContent {
@@ -467,8 +461,6 @@ body {
   box-sizing: border-box;
   font-family: $font;
   color: $text;
-  height: 100%;
-  overflow: hidden;
 
   &.notFixed {
     height: auto;
@@ -564,12 +556,18 @@ footer {
 // TOPBAR
 // ================================================================================================================
 .topBar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  
   height: rem(60);
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  background: #FFF;
 
   .left {
     display: flex;
@@ -1290,9 +1288,12 @@ section {
 
   .flex {
     display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
 
     .left {
       width: 40%;
+      min-inline-size: 60ch;
 
       .walletInfo {
         h2 {
@@ -1335,12 +1336,8 @@ section {
       }
     }
 
-    .wrapGraph {
-      background: #FFF;
-      padding: rem(32);
-      flex: 1;
-      border-radius: rem(12);
-      overflow: hidden;
+    .right {
+      min-inline-size: 400px; 
     }
   }
 
@@ -1411,16 +1408,23 @@ section {
 .wrapActions {
   > div {
     display: flex;
-    padding: rem(18) 0;
-    font-size: rem(16);
+    flex-wrap: wrap;
     align-items: center;
+    gap: 1rem;
+
+    padding: rem(18);
+    font-size: rem(16);
+
+    > * {
+      flex-basis: calc((100% / 5) - 1rem);
+      flex-grow: 1;
+
+      text-align: center;
+      white-space: nowrap;
+    }
 
     &:nth-child(odd) {
       background: rgba(0, 0, 0, 0.1);
-    }
-
-    > div {
-      padding: 0 rem(12);
     }
 
     .logo {
@@ -1434,30 +1438,14 @@ section {
       }
     }
 
-    .name {
-      width: 25%;
-    }
-
     b {
       font-weight: 700;
       font-size: rem(20);
     }
 
-    .totalValue {
-      width: 10%;
-    }
-
-    .variant {
-      i {
-        margin-right: 0.5rem;
-      }
-    }
-
     .actions {
-      flex: 1;
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      justify-content: center;
     }
   }
 }
@@ -2046,6 +2034,17 @@ section {
     display: none !important;
   }
 
+  .wrapActions {
+    > div {
+      flex-direction: column;
+      align-items: flex-start;
+
+      > * {
+        text-align: start;
+      }
+    }
+  }
+
   .btn {
     height: rem(48);
     display: inline-flex;
@@ -2088,12 +2087,6 @@ section {
         right: rem(-580);
       }
     }
-  }
-
-  .topBar {
-    position: relative;
-    z-index: 20;
-    background: #FFF;
   }
 
   h2 {
@@ -2307,6 +2300,14 @@ section {
     }
   }
 
+  .walletHero {
+    > .flex {
+      > :is(.left, .right) {
+        min-inline-size: 40ch;
+      }
+    }
+  }
+
   .walletHero .date {
     font-size: 1rem;
   }
@@ -2464,11 +2465,8 @@ section {
   }
 
   .walletHero .flex {
-    flex-direction: column-reverse;
-
     .left {
-      width: 100%;
-
+      
       .walletInfo {
         h3 {
           font-size: rem(18);
@@ -2490,35 +2488,6 @@ section {
           }
         }
       }
-    }
-
-    .right {
-      width: 100%;
-    }
-  }
-
-  .wrapActions > div {
-    flex-wrap: wrap;
-
-    .name {
-      flex: 1;
-      margin-bottom: rem(12);
-    }
-
-    .totalValue, .variant {
-      width: 100%;
-      box-sizing: border-box;
-      padding-left: calc(120px + 0.75rem);
-    }
-
-    .variant {
-      margin-top: rem(12);
-    }
-
-    .actions {
-      margin-top: rem(28);
-      padding-left: calc(120px + 0.75rem);
-      align-items: flex-start;
     }
   }
 

@@ -1,6 +1,7 @@
 //using ImageSharp;
 //using ImageSharp.Processing;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,9 @@ namespace StockGame.Pages.Scenarios
     [Authorize(Roles = "Admin")]
     public class EditModel : StockGame.Pages.StockPageModel
     {
-        private readonly IHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IHostEnvironment environment) : base(userManager, context)
+        public EditModel(UserManager<ApplicationUser> userManager, StockGameContext context, IWebHostEnvironment environment) : base(userManager, context)
         {
             _environment = environment;
         }
@@ -37,6 +38,7 @@ namespace StockGame.Pages.Scenarios
 
         [BindProperty]
         public List<ScenarioEquity> ScenarioEquities { get; set; }
+        public List<string> RawUploadedNewsImg { get; set; }
 
         public string EquitySort { get; set; }
         public string IndustrySort { get; set; }
@@ -84,75 +86,105 @@ namespace StockGame.Pages.Scenarios
             if (!ModelState.IsValid)
                 return await OnGetAsync(Scenario.Id, null);
 
-            if (HttpContext.Request.Form.Files == null
-                || HttpContext.Request.Form.Files.Count != Episodes.Count + ScenarioEquities.Count)
-                return await OnGetAsync(Scenario.Id, null);
+      /* if (HttpContext.Request.Form.Files == null
+          || HttpContext.Request.Form.Files.Count != Episodes.Count + ScenarioEquities.Count)
+          return await OnGetAsync(Scenario.Id, null); */
 
-            //Is this a CSV Import submit ?
-            for (int i = Episodes.Count; i < Episodes.Count + ScenarioEquities.Count; i++)
+
+            for (int i = 0; i < HttpContext.Request.Form.Files.Count; i++)
             {
-                IFormFile file = HttpContext.Request.Form.Files[i];
-                if (file.Length > 0)
+              IFormFile file = HttpContext.Request.Form.Files[i];
+
+              if (file.Length == 0)
+              {
+                continue;
+              }
+
+              string pattern = @"\[(\d+)\]$";
+              Regex regex = new Regex(pattern);
+
+              Match match = regex.Match(file.Name);
+              int episodeIndex = int.Parse(match.Groups[1].ToString());
+
+              Episode episode = Episodes[episodeIndex];
+
+              if (file.Name.Contains("Csv")) {
+                ScenarioEquity se = ScenarioEquities[i - Episodes.Count];
+                if (await ImportCsvEquityEpisodeData(file, se, "ScenarioEquities[" + (i - Episodes.Count).ToString() + "].Id"))
+                  return RedirectToPage("./EpisodeEquityInfos", new { id = se.Id });
+                else
+                  return await OnGetAsync(Scenario.Id, null);
+              }
+
+              if (file.Name.Contains("NewsImg"))
+              {
+                string fileName = file.FileName.Trim('"');
+                string GUIDedFilename = $@"{Guid.NewGuid().ToString()}{Path.GetExtension(fileName)}";
+                fileName = $@"{Path.Combine(_environment.WebRootPath, "images/db/upload_news_img")}/{GUIDedFilename}";
+
+                episode.NewsImgPath = $@"~/images/db/upload_news_img/{GUIDedFilename}";
+                
+                // Si le directory n'existe pas, le créer
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+
+                using (FileStream fs = System.IO.File.Create(fileName))
                 {
-                    ScenarioEquity se = ScenarioEquities[i - Episodes.Count];
-                    if (await ImportCsvEquityEpisodeData(file, se, "ScenarioEquities[" + (i - Episodes.Count).ToString() + "].Id"))
-                        return RedirectToPage("./EpisodeEquityInfos", new { id = se.Id });
-                    else
-                        return await OnGetAsync(Scenario.Id, null);
+                  file.CopyTo(fs);
+                  fs.Flush();
                 }
+              }
+
+              //TODO YLA duplicate code
+              /* if (file.Length > 0)
+              {
+                  //Getting FileName
+                  string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+                  // concating  FileName + FileExtension
+                  string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
+
+                  // Combines two strings into a path.
+                  fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
+
+                  ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
+
+                  using (FileStream fs = System.IO.File.Create(fileName))
+                  {
+                  file.CopyTo(fs);
+                  fs.Flush();
+                  }
+
+                  //TODO YLA Thumbnail Resize
+                  //resize if necessary
+                  /*
+                  using (Image<Rgba32> srcImage = Image.Load(fileName))
+                  {
+                      if (srcImage.Width > 500 || srcImage.Height > 250)
+                      {
+                          ResizeOptions resizeOptions = new ResizeOptions
+                          {
+                              Mode = ResizeMode.Max,
+                              Sampler = new BicubicResampler(),
+                              Size = new SixLabors.Primitives.Size(500, 250)
+                          };
+
+                          using (Image<Rgba32> thumbImage = srcImage.Resize(resizeOptions))
+                          {
+                              thumbImage.Save(fileName);
+                          }
+                      }
+                  }
+              }
+
+              Context.Attach(ep).State = EntityState.Modified;*/
+              
             }
 
-            Context.Attach(Scenario).State = EntityState.Modified;
-            for (int i = 0; i < Episodes.Count; i++)
+            foreach (var episode in Episodes)
             {
-                Episode ep = Episodes[i];
-
-                //TODO YLA duplicate code
-                IFormFile file = HttpContext.Request.Form.Files[i];
-                if (file.Length > 0)
-                {
-                    //Getting FileName
-                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-                    // concating  FileName + FileExtension
-                    string newFileName = Convert.ToString(Guid.NewGuid()) + Path.GetExtension(fileName);
-
-                    // Combines two strings into a path.
-                    fileName = Path.Combine(_environment.ContentRootPath, "images/db/upload_news_img") + $@"\{newFileName}";
-
-                    ep.NewsImgPath = "~/images/db/upload_news_img/" + newFileName;
-
-                    using (FileStream fs = System.IO.File.Create(fileName))
-                    {
-                        file.CopyTo(fs);
-                        fs.Flush();
-                    }
-
-                    //TODO YLA Thumbnail Resize
-                    //resize if necessary
-                    /*
-                    using (Image<Rgba32> srcImage = Image.Load(fileName))
-                    {
-                        if (srcImage.Width > 500 || srcImage.Height > 250)
-                        {
-                            ResizeOptions resizeOptions = new ResizeOptions
-                            {
-                                Mode = ResizeMode.Max,
-                                Sampler = new BicubicResampler(),
-                                Size = new SixLabors.Primitives.Size(500, 250)
-                            };
-
-                            using (Image<Rgba32> thumbImage = srcImage.Resize(resizeOptions))
-                            {
-                                thumbImage.Save(fileName);
-                            }
-                        }
-                    }*/
-                }
-
-                Context.Attach(ep).State = EntityState.Modified;
+              Context.Attach(episode).State = EntityState.Modified;
             }
-
+          
             try
             {
                 await Context.SaveChangesAsync();
