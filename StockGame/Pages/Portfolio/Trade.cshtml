@@ -50,8 +50,10 @@
       </div>
       @if (Model.PortfolioTeamHistory.Items.Count > 1)
       {
-        <div class="right" style="flex: 1; overflow: hidden; margin-right: 4%;">
-            <div class="graph-transition portfolio-graph" id="portfolio_chart_div"></div>
+        <div class="right ">
+            <div class="graph-transition portfolio-graph"
+                 id="portfolio_chart_div"
+                 style="inline-size: 100%;"></div>
         </div>
       }
     </div>
@@ -85,7 +87,6 @@
               </div>
             </div>
             <div class="totalValue">
-              <b></b>
               @if (item.Value > 0f)
               {
                 <b>@Html.DisplayFor(modelItem => item.Value)</b>
@@ -106,7 +107,7 @@
                 else
                 {
                   <strong class="trendUp">
-                    <i class="far fa-arrow-up"></i>@Model.PriceDifference[@item.EquityId].ToString("0.00") $
+                    <i class="far fa-arrow-up"></i>&nbsp;@Model.PriceDifference[@item.EquityId].ToString("0.00") $
                   </strong>
                 }
               }
@@ -356,7 +357,7 @@
           areaOpacity: 0.1,
           backgroundColor: backgroundColorDark,
           chartArea: {
-              width: '100%',
+              width: '94%',
               height: '100%',
               bottom: '26%',
               top: '2%',
@@ -365,12 +366,11 @@
           },
           colors: [lineColor],
           hAxis: {
-              slantedText: true,
-              slantedTextAngle: 15,
               textStyle: {
                   color: '#ffffff',
                   bold: true
-              }
+              },
+              allowContainerBoundaryTextCutoff: true
           },
           lineWidth: 3,
           vAxis: {
@@ -384,7 +384,8 @@
             minorGridlines: {
               count: 0,
             }
-          }
+          },
+          width: '100%'
         };
 
         let portfolioDataArray = [];
@@ -415,6 +416,7 @@
     }
 
     function ResizeCharts(data) {
+        portfolioChart.clearChart()
         portfolioChart.draw(portfolioChartData, portfolioChartOptions);
     }
 

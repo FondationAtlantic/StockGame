@@ -48,7 +48,7 @@ namespace StockGame.Models.ViewModels
             }
         }
 
-        [Display(Name = "Rendement Dividende")]
+        [Display(Name = "Rendement du dividende")]
         [DisplayFormat(DataFormatString = "{0:0.00} %")]
         public float? DividendYield
         {

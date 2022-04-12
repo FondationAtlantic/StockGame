@@ -237,7 +237,7 @@
         otherAssets = isNaN(otherAssets) ? 0.0 : otherAssets;
         longTermDebt = isNaN(longTermDebt) ? 0.0 : longTermDebt;
         var shareholderEquity = cash + loans + otherAssets - longTermDebt;
-        var strEquity = Number(shareholderEquity).toLocaleString ('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var strEquity = Number(shareholderEquity).toLocaleString ('fr-CA', { style: 'currency', currency: 'CAD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $(this).closest('td').nextAll().last().html(isEmpty ? "" : strEquity.slice(0, -3));
     }
 
