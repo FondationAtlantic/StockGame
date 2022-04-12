@@ -307,7 +307,7 @@ namespace StockGame.Pages
                             EquityId = equity.Id,
                             AllowTransactions = episode.AllowTransactions && eei.AllowTransactions,
                             Amount = investedAmount,
-                            Price = eei.Price
+                            Price = eei.Price,
                         };
                         historyItem.Items.Add(item);
 
